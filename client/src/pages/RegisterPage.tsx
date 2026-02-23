@@ -69,9 +69,9 @@ export default function RegisterPage() {
         {/* Content Top */}
         <div className="relative z-10 w-full mb-12">
           <Link to="/" className="flex items-center gap-2 text-white mb-12">
-            <div className="w-10 h-10 bg-brand-sun rounded-full flex items-center justify-center">
+            {/* <div className="w-10 h-10 bg-brand-sun rounded-full flex items-center justify-center">
               <Leaf className="w-6 h-6 text-brand-green" />
-            </div>
+            </div> */}
             <div>
               <div className="font-bold text-xl">Seed Tracker NG</div>
             </div>
@@ -79,12 +79,13 @@ export default function RegisterPage() {
 
           <div className="max-w-lg">
             <h1 className="text-6xl font-black leading-[1.1] text-white mb-6 tracking-tighter">
-              Grow Your <br /> Agri-Business <br />{" "}
-              <span className="text-brand-sun">Nationwide</span>
+              Transform Your <br /> Value Chain <br />{" "}
+              <span className="text-brand-sun">Visibility</span>
             </h1>
             <p className="text-xl text-white/60 leading-relaxed font-medium">
-              Join thousands of producers, processors, and distributors managing
-              their operations with clear value chain visibility.
+              Establish your presence in Nigeria's leading seed marketplace.
+              Join thousands of verified actors making their mark on national
+              food security.
             </p>
           </div>
         </div>
@@ -138,9 +139,9 @@ export default function RegisterPage() {
               to="/"
               className="lg:hidden inline-flex items-center gap-2 mb-8"
             >
-              <div className="w-10 h-10 bg-brand-green rounded-full flex items-center justify-center">
+              {/* <div className="w-10 h-10 bg-brand-green rounded-full flex items-center justify-center">
                 <Leaf className="w-6 h-6 text-white" />
-              </div>
+              </div> */}
               <span className="font-bold text-xl text-gray-900">
                 Seed Tracker NG
               </span>

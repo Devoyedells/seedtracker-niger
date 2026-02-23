@@ -46,9 +46,9 @@ export function Footer() {
           {/* Brand */}
           <div className="lg:col-span-2">
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
+              {/* <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
                 <Leaf className="w-6 h-6 text-brand-green" />
-              </div>
+              </div> */}
               <div>
                 <div className="font-bold text-lg">Seed Tracker NG</div>
                 <div className="text-xs text-white/80">
@@ -104,7 +104,7 @@ export function Footer() {
         </div>
 
         {/* Contact Info */}
-        <div className="border-t border-white/20 pt-8 mb-8">
+        {/* <div className="border-t border-white/20 pt-8 mb-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="flex items-start gap-3">
               <MapPin className="w-5 h-5 text-white/70 flex-shrink-0 mt-0.5" />
@@ -140,13 +140,11 @@ export function Footer() {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* Bottom */}
         <div className="border-t border-white/20 pt-6 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-white/80">
-          <div>
-            © 2026 Seed Tracker NG. All rights reserved. A NASC Initiative.
-          </div>
+          <div>© 2026 Seed Tracker NG. All rights reserved.</div>
           <div className="flex gap-6">
             <a href="#" className="hover:text-white transition-colors">
               Privacy

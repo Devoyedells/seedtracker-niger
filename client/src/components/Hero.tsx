@@ -37,7 +37,7 @@ export function Hero() {
             >
               <Network className="w-4 h-4 text-brand-sun" />
               <span className="text-sm font-bold tracking-wide">
-                Nigeria&apos;s Seed Value Chain Platform
+                Farmer&apos; Information Management Platform
               </span>
             </motion.div>
 
@@ -113,17 +113,17 @@ export function Hero() {
           </div>
 
           {/* Right Content - Abstract Dashboard Visuals */}
-          <div className="relative flex-1 w-full mt-8 lg:mt-0 py-10 lg:py-0">
-            <div className="relative mx-auto h-[380px] sm:h-[480px] lg:h-[550px] w-full max-w-[340px] sm:max-w-[450px] lg:max-w-[500px]">
+          <div className="relative flex-1 w-full mt-12 lg:mt-0 py-10 lg:py-0">
+            <div className="relative mx-auto h-[400px] sm:h-[480px] lg:h-[550px] w-full max-w-[340px] sm:max-w-[450px] lg:max-w-[500px]">
               {/* Nationwide Reach Card */}
               <motion.div
-                animate={{ y: [0, -10, 0] }}
+                animate={{ y: ["0px", "-15px", "0px"] }}
                 transition={{
                   duration: 4,
                   repeat: Infinity,
                   ease: "easeInOut",
                 }}
-                className="absolute right-0 sm:right-4 lg:-right-4 top-0 lg:top-4 z-20 w-[180px] sm:w-[240px] lg:w-[280px] rounded-2xl sm:rounded-3xl bg-white p-4 sm:p-6 shadow-2xl border border-gray-100"
+                className="absolute right-0 sm:right-0 lg:-right-8 top-0 lg:top-4 z-20 w-[180px] sm:w-[240px] lg:w-[260px] rounded-2xl sm:rounded-3xl bg-white p-4 sm:p-6 shadow-2xl border border-gray-100"
               >
                 <div className="mb-3 sm:mb-4 flex flex-col gap-1">
                   <p className="text-[10px] sm:text-xs uppercase tracking-widest text-gray-400 font-bold">
@@ -156,14 +156,13 @@ export function Hero() {
 
               {/* Verified Actors Card */}
               <motion.div
-                animate={{ y: [0, 10, 0] }}
+                animate={{ y: ["0px", "15px", "0px"] }}
                 transition={{
-                  duration: 5,
+                  duration: 4.5,
                   repeat: Infinity,
                   ease: "easeInOut",
-                  delay: 1,
                 }}
-                className="absolute left-0 top-20 sm:top-28 lg:top-36 z-10 w-[190px] sm:w-[260px] lg:w-[320px] rounded-[24px] sm:rounded-[32px] bg-white p-4 sm:p-6 lg:p-8 shadow-2xl border border-gray-100"
+                className="absolute -left-2 sm:left-0 lg:-left-12 top-24 sm:top-28 lg:top-40 z-10 w-[200px] sm:w-[260px] lg:w-[300px] rounded-[24px] sm:rounded-[32px] bg-white p-4 sm:p-6 lg:p-8 shadow-2xl border border-gray-100"
               >
                 <div className="mb-4 sm:mb-6 flex items-center justify-between">
                   <h4 className="text-lg sm:text-xl font-black text-gray-900">
@@ -216,14 +215,17 @@ export function Hero() {
 
               {/* Seed Varieties Card */}
               <motion.div
-                animate={{ x: [0, 5, 0], y: [0, -5, 0], rotate: [-1, 0, -1] }}
+                animate={{
+                  x: ["0px", "6px", "0px"],
+                  y: ["0px", "-8px", "0px"],
+                  rotate: [-2, 0, -2],
+                }}
                 transition={{
-                  duration: 6,
+                  duration: 5.5,
                   repeat: Infinity,
                   ease: "easeInOut",
-                  delay: 0.5,
                 }}
-                className="absolute right-0 sm:-right-4 lg:-right-8 bottom-0 sm:bottom-4 lg:bottom-12 z-30 w-[170px] sm:w-[220px] lg:w-[260px] transform rounded-2xl sm:rounded-3xl bg-brand-sun p-4 sm:p-6 lg:p-8 text-brand-green shadow-2xl"
+                className="absolute right-0 sm:-right-4 lg:-right-12 bottom-0 sm:bottom-4 lg:bottom-12 z-30 w-[170px] sm:w-[220px] lg:w-[260px] transform rounded-2xl sm:rounded-3xl bg-brand-sun p-4 sm:p-6 lg:p-8 text-brand-green shadow-2xl"
               >
                 <div className="mb-3 sm:mb-4 flex items-center justify-between">
                   <span className="text-base sm:text-lg font-black tracking-tight">
