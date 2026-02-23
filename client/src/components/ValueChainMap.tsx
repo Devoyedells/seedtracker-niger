@@ -19,52 +19,55 @@ export function ValueChainMap() {
       icon: Factory,
       title: "Production",
       actors: "1,240 Registered",
-      description: "Seed breeders, foundation seed farms, multiplication farms",
+      description: "Breeders and foundation seed farms",
       color: "bg-brand-green",
     },
     {
       icon: Package,
       title: "Processing",
       actors: "680 Facilities",
-      description: "Cleaning, grading, treatment, packaging, quality testing",
-      color: "bg-brand-earth",
+      description: "Cleaning, grading, and packaging",
+      color: "bg-amber-500",
     },
     {
       icon: Truck,
       title: "Distribution",
-      actors: "2,100 Distributors",
-      description: "Wholesalers, regional hubs, logistics providers",
-      color: "bg-brand-sun",
+      actors: "2,100 Hubs",
+      description: "Wholesalers and logistics providers",
+      color: "bg-blue-500",
     },
     {
       icon: Store,
       title: "Retail",
       actors: "3,850 Outlets",
-      description: "Agro-dealers, seed shops, rural sales points",
-      color: "bg-brand-green/80",
+      description: "Agro-dealers and rural sales points",
+      color: "bg-brand-sun",
     },
     {
       icon: Users,
       title: "End Users",
       actors: "2,630 Groups",
-      description: "Individual farmers, cooperatives, commercial farms",
-      color: "bg-brand-earth/80",
+      description: "Farmers and commercial cooperatives",
+      color: "bg-emerald-600",
     },
   ];
 
   return (
     <section
-      className="py-24 bg-gradient-to-br from-brand-green to-brand-green/95 relative overflow-hidden"
+      id="value-chain-map"
+      className="relative overflow-hidden bg-brand-green py-24 lg:py-32"
       ref={ref}
     >
-      {/* Background Pattern */}
-      <div
-        className="absolute inset-0 opacity-[0.06]"
-        style={{
-          backgroundImage: `radial-gradient(circle at 1px 1px, #fff 1px, transparent 0)`,
-          backgroundSize: "36px 36px",
-        }}
-      />
+      {/* Plus Background Effects */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        <div
+          className="absolute inset-0 opacity-10"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+          }}
+        />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,#ffffff_0%,transparent_60%)] opacity-5" />
+      </div>
 
       <div className="section-px relative z-10">
         <motion.div
@@ -73,10 +76,13 @@ export function ValueChainMap() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+          <span className="mb-4 inline-block rounded-full bg-white/10 px-4 py-2 text-sm font-bold text-white border border-white/20 backdrop-blur-md">
+            Ecosystem Connectivity
+          </span>
+          <h2 className="mb-6 text-4xl font-extrabold leading-tight text-white md:text-5xl lg:text-5xl tracking-tight">
             Seed Value Chain Mapping
           </h2>
-          <p className="text-xl text-white/75 max-w-3xl mx-auto">
+          <p className="text-lg md:text-xl text-white/80 max-w-3xl mx-auto font-medium">
             End-to-end visibility across all stages of Nigeria&apos;s seed
             ecosystem
           </p>
@@ -84,28 +90,31 @@ export function ValueChainMap() {
 
         {/* Desktop View — Horizontal Flow */}
         <div className="hidden lg:block">
-          <div className="flex items-center justify-between gap-2 max-w-6xl mx-auto">
+          <div className="flex items-center justify-between gap-3 max-w-[1280px] mx-auto px-4">
             {chainStages.map((stage, index) => (
               <div key={stage.title} className="flex items-center">
                 <motion.div
                   initial={{ opacity: 0, scale: 0.85 }}
                   animate={isInView ? { opacity: 1, scale: 1 } : {}}
                   transition={{ duration: 0.6, delay: index * 0.15 }}
-                  className="relative"
+                  className="relative group cursor-pointer"
                 >
-                  <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/15 hover:bg-white/15 transition-all w-44">
+                  <div className="bg-white/10 backdrop-blur-md rounded-3xl p-6 border border-white/20 shadow-2xl transition-all duration-300 group-hover:bg-white/15 group-hover:-translate-y-2 w-48 relative overflow-hidden">
+                    {/* Subtle inner glow on hover */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
                     <div
-                      className={`w-12 h-12 ${stage.color} rounded-xl flex items-center justify-center mb-4 mx-auto`}
+                      className={`w-14 h-14 ${stage.color} rounded-2xl flex items-center justify-center mb-5 shadow-lg relative z-10`}
                     >
-                      <stage.icon className="w-6 h-6 text-white" />
+                      <stage.icon className="w-7 h-7 text-white" />
                     </div>
-                    <h3 className="text-base font-bold text-white mb-1 text-center">
+                    <h3 className="text-xl font-bold text-white mb-2 relative z-10 leading-tight">
                       {stage.title}
                     </h3>
-                    <p className="text-brand-sun text-xs font-semibold text-center mb-3">
+                    <p className="text-brand-sun text-sm font-bold mb-3 uppercase tracking-wide relative z-10">
                       {stage.actors}
                     </p>
-                    <p className="text-white/60 text-xs text-center leading-relaxed">
+                    <p className="text-white/70 text-sm leading-relaxed relative z-10">
                       {stage.description}
                     </p>
                   </div>
@@ -117,9 +126,9 @@ export function ValueChainMap() {
                     initial={{ opacity: 0, x: -10 }}
                     animate={isInView ? { opacity: 1, x: 0 } : {}}
                     transition={{ duration: 0.5, delay: index * 0.15 + 0.25 }}
-                    className="mx-1 flex-shrink-0"
+                    className="mx-3 flex-shrink-0 text-white/40"
                   >
-                    <ArrowRight className="w-6 h-6 text-white/40" />
+                    <ArrowRight className="w-6 h-6" />
                   </motion.div>
                 )}
               </div>
@@ -128,18 +137,18 @@ export function ValueChainMap() {
         </div>
 
         {/* Mobile View — Vertical Stack */}
-        <div className="lg:hidden space-y-4">
+        <div className="lg:hidden space-y-4 max-w-md mx-auto">
           {chainStages.map((stage, index) => (
             <div key={stage.title}>
               <motion.div
                 initial={{ opacity: 0, x: -30 }}
                 animate={isInView ? { opacity: 1, x: 0 } : {}}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/15"
+                className="bg-white/10 backdrop-blur-md rounded-3xl p-6 border border-white/20 shadow-xl"
               >
-                <div className="flex items-start gap-4">
+                <div className="flex items-center gap-5">
                   <div
-                    className={`w-14 h-14 ${stage.color} rounded-xl flex items-center justify-center flex-shrink-0`}
+                    className={`w-14 h-14 ${stage.color} rounded-2xl flex items-center justify-center flex-shrink-0 shadow-md`}
                   >
                     <stage.icon className="w-7 h-7 text-white" />
                   </div>
@@ -147,17 +156,19 @@ export function ValueChainMap() {
                     <h3 className="text-xl font-bold text-white mb-1">
                       {stage.title}
                     </h3>
-                    <p className="text-brand-sun text-sm font-semibold mb-2">
+                    <p className="text-brand-sun text-xs uppercase tracking-wider font-bold mb-2">
                       {stage.actors}
                     </p>
-                    <p className="text-white/65 text-sm">{stage.description}</p>
+                    <p className="text-white/70 text-sm leading-relaxed">
+                      {stage.description}
+                    </p>
                   </div>
                 </div>
               </motion.div>
 
               {index < chainStages.length - 1 && (
-                <div className="flex justify-center py-2">
-                  <ArrowRight className="w-5 h-5 text-white/40 rotate-90" />
+                <div className="flex justify-center py-3">
+                  <ArrowRight className="w-6 h-6 text-white/40 rotate-90" />
                 </div>
               )}
             </div>

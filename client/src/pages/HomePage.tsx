@@ -14,10 +14,8 @@ export default function HomePage() {
       <div id="registration">
         <ActorRegistration />
       </div>
-      <div id="map">
-        <ValueChainMap />
-        <ActorMap />
-      </div>
+      <ValueChainMap />
+      <ActorMap />
       <ValueChainVisibility />
       <StakeholderBenefits />
       <div id="faq">
