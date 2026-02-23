@@ -12,7 +12,7 @@ export function ValueChainVisibility() {
       icon: Eye,
       title: "Real-Time Visibility",
       description:
-        "Track seed movement from production to farmer’s field with live inventory data across all 36 states.",
+        "Track seed movement from production to farmer’s field with live inventory data across all 3 states.",
     },
     {
       icon: TrendingUp,

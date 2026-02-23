@@ -109,7 +109,7 @@ export default function LoginPage() {
           <StatCard
             icon={<Activity className="w-6 h-6" />}
             title="Platform Reach"
-            value="36 States"
+            value="3 states"
             detail="Coverage"
             colorClass="bg-[#3b82f6]"
             animationDelay="0.4s"

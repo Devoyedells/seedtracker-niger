@@ -36,7 +36,7 @@ export function FAQ() {
     {
       question: "Can I track seed availability across different states?",
       answer:
-        "Yes! Our platform provides real-time inventory tracking across all 36 states. Use the search and filter tools in the marketplace to find specific varieties by location, price range, and availability status.",
+        "Yes! Our platform provides real-time inventory tracking across all 3 states. Use the search and filter tools in the marketplace to find specific varieties by location, price range, and availability status.",
     },
     {
       question: "What support is available for new users?",

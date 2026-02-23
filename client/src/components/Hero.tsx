@@ -62,7 +62,7 @@ export function Hero() {
             >
               Register as a value chain actor, list your products, connect with
               stakeholders, and access Nigeria&apos;s comprehensive seed
-              marketplace across all 36 states.
+              marketplace across all 3 states.
             </motion.p>
 
             {/* CTA Buttons */}
@@ -99,9 +99,9 @@ export function Hero() {
                 {[1, 2, 3, 4].map((i) => (
                   <img
                     key={i}
-                    src={`/assets/images/testimonial-user-${i}.svg`}
+                    src={`/assets/images/testimonial-user-${i}.jpg`}
                     alt={`User ${i}`}
-                    className="h-10 w-10 rounded-full border-2 border-brand-green bg-white"
+                    className="h-10 w-10 rounded-full border-2 border-brand-green bg-white object-cover"
                   />
                 ))}
               </div>
@@ -130,7 +130,7 @@ export function Hero() {
                     Total Network Reach
                   </p>
                   <h3 className="text-xl sm:text-3xl font-black text-gray-900 leading-tight">
-                    36 States
+                    3 states
                   </h3>
                 </div>
                 <div className="flex items-center gap-2 mt-4">
