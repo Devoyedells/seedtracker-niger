@@ -176,7 +176,7 @@ export function ActorRegistration() {
             {/* Image Container */}
             <div className="relative overflow-hidden rounded-[32px] border-4 border-white shadow-2xl w-full max-h-[600px] h-full">
               <img
-                src="/images/istockphoto-1441154968-612x612.jpg"
+                src="/assets/images/istockphoto-1441154968-612x612.jpg"
                 alt="Agricultural workers"
                 className="h-full w-full object-cover min-h-[500px]"
               />

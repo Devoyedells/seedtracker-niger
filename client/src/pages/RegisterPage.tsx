@@ -167,7 +167,7 @@ export default function RegisterPage() {
                     id="FullName"
                     type="text"
                     placeholder="Enter your registered name"
-                    className="w-full rounded-2xl border-2 border-brand-green/20 bg-gray-50 hover:bg-gray-100 hover:border-brand-green/40 focus:bg-white focus:border-brand-sun focus:ring-4 focus:ring-brand-sun/20 transition-all px-5 py-3.5 text-[15px] font-medium outline-none"
+                    className="w-full rounded-2xl border-2 border-brand-green/20 bg-gray-50 hover:bg-gray-100 hover:border-brand-green/40 focus:bg-white focus:border-brand-green focus:ring-4 focus:ring-brand-green/20 transition-all px-5 py-3.5 text-[15px] font-medium outline-none"
                     disabled={isLoading}
                     required
                   />
@@ -186,7 +186,7 @@ export default function RegisterPage() {
                     id="Email"
                     type="email"
                     placeholder="Enter official email"
-                    className="w-full rounded-2xl border-2 border-brand-green/20 bg-gray-50 hover:bg-gray-100 hover:border-brand-green/40 focus:bg-white focus:border-brand-sun focus:ring-4 focus:ring-brand-sun/20 transition-all px-5 py-3.5 text-[15px] font-medium outline-none"
+                    className="w-full rounded-2xl border-2 border-brand-green/20 bg-gray-50 hover:bg-gray-100 hover:border-brand-green/40 focus:bg-white focus:border-brand-green focus:ring-4 focus:ring-brand-green/20 transition-all px-5 py-3.5 text-[15px] font-medium outline-none"
                     disabled={isLoading}
                     required
                   />
@@ -203,7 +203,7 @@ export default function RegisterPage() {
                 <div className="relative">
                   <select
                     id="ActorType"
-                    className="w-full appearance-none rounded-2xl border-2 border-brand-green/20 bg-gray-50 hover:bg-gray-100 hover:border-brand-green/40 focus:bg-white focus:border-brand-sun focus:ring-4 focus:ring-brand-sun/20 transition-all px-5 py-3.5 text-[15px] font-medium outline-none text-gray-600"
+                    className="w-full appearance-none rounded-2xl border-2 border-brand-green/20 bg-gray-50 hover:bg-gray-100 hover:border-brand-green/40 focus:bg-white focus:border-brand-green focus:ring-4 focus:ring-brand-green/20 transition-all px-5 py-3.5 text-[15px] font-medium outline-none text-gray-600"
                     disabled={isLoading}
                     required
                   >
@@ -230,7 +230,7 @@ export default function RegisterPage() {
                     id="RegistrationState"
                     type="text"
                     placeholder="E.g. Niger State"
-                    className="w-full rounded-2xl border-2 border-brand-green/20 bg-gray-50 hover:bg-gray-100 hover:border-brand-green/40 focus:bg-white focus:border-brand-sun focus:ring-4 focus:ring-brand-sun/20 transition-all px-5 py-3.5 text-[15px] font-medium outline-none"
+                    className="w-full rounded-2xl border-2 border-brand-green/20 bg-gray-50 hover:bg-gray-100 hover:border-brand-green/40 focus:bg-white focus:border-brand-green focus:ring-4 focus:ring-brand-green/20 transition-all px-5 py-3.5 text-[15px] font-medium outline-none"
                     disabled={isLoading}
                     required
                   />
@@ -249,7 +249,7 @@ export default function RegisterPage() {
                     id="Password"
                     type={showPassword ? "text" : "password"}
                     placeholder="Create a password"
-                    className="w-full rounded-2xl border-2 border-brand-green/20 bg-gray-50 hover:bg-gray-100 hover:border-brand-green/40 focus:bg-white focus:border-brand-sun focus:ring-4 focus:ring-brand-sun/20 transition-all px-5 py-3.5 pr-12 text-[15px] font-medium outline-none"
+                    className="w-full rounded-2xl border-2 border-brand-green/20 bg-gray-50 hover:bg-gray-100 hover:border-brand-green/40 focus:bg-white focus:border-brand-green focus:ring-4 focus:ring-brand-green/20 transition-all px-5 py-3.5 pr-12 text-[15px] font-medium outline-none"
                     required
                     disabled={isLoading}
                   />
@@ -279,7 +279,7 @@ export default function RegisterPage() {
                     id="ConfirmPassword"
                     type={showConfirmPassword ? "text" : "password"}
                     placeholder="Re-enter your password"
-                    className="w-full rounded-2xl border-2 border-brand-green/20 bg-gray-50 hover:bg-gray-100 hover:border-brand-green/40 focus:bg-white focus:border-brand-sun focus:ring-4 focus:ring-brand-sun/20 transition-all px-5 py-3.5 pr-12 text-[15px] font-medium outline-none"
+                    className="w-full rounded-2xl border-2 border-brand-green/20 bg-gray-50 hover:bg-gray-100 hover:border-brand-green/40 focus:bg-white focus:border-brand-green focus:ring-4 focus:ring-brand-green/20 transition-all px-5 py-3.5 pr-12 text-[15px] font-medium outline-none"
                     required
                     disabled={isLoading}
                   />
@@ -302,7 +302,7 @@ export default function RegisterPage() {
               <input
                 type="checkbox"
                 id="terms"
-                className="w-5 h-5 border-gray-300 rounded-md text-brand-green focus:ring-brand-green transition-all cursor-pointer bg-white"
+                className="w-5 h-5 border-gray-300 rounded-md text-brand-green focus:ring-brand-green transition-all cursor-pointer bg-white accent-brand-green"
                 required
               />
               <label

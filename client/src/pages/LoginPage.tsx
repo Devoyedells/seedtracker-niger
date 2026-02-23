@@ -173,7 +173,7 @@ export default function LoginPage() {
                   id="Email"
                   type="email"
                   placeholder="Enter your email"
-                  className="w-full rounded-2xl border-2 border-brand-green/20 bg-gray-50 hover:bg-gray-100 hover:border-brand-green/40 focus:bg-white focus:border-brand-sun focus:ring-4 focus:ring-brand-sun/20 transition-all px-6 py-4 text-base font-medium outline-none"
+                  className="w-full rounded-2xl border-2 border-brand-green/20 bg-gray-50 hover:bg-gray-100 hover:border-brand-green/40 focus:bg-white focus:border-brand-green focus:ring-4 focus:ring-brand-green/20 transition-all px-6 py-4 text-base font-medium outline-none"
                   disabled={isLoading}
                   required
                 />
@@ -200,7 +200,7 @@ export default function LoginPage() {
                   id="Password"
                   type={showPassword ? "text" : "password"}
                   placeholder="Enter your password"
-                  className="w-full rounded-2xl border-2 border-brand-green/20 bg-gray-50 hover:bg-gray-100 hover:border-brand-green/40 focus:bg-white focus:border-brand-sun focus:ring-4 focus:ring-brand-sun/20 transition-all px-6 py-4 pr-12 text-base font-medium outline-none"
+                  className="w-full rounded-2xl border-2 border-brand-green/20 bg-gray-50 hover:bg-gray-100 hover:border-brand-green/40 focus:bg-white focus:border-brand-green focus:ring-4 focus:ring-brand-green/20 transition-all px-6 py-4 pr-12 text-base font-medium outline-none"
                   required
                   disabled={isLoading}
                 />
@@ -222,7 +222,7 @@ export default function LoginPage() {
               <input
                 type="checkbox"
                 id="remember"
-                className="w-5 h-5 border-gray-300 rounded-md text-brand-green focus:ring-brand-green transition-all cursor-pointer bg-white"
+                className="w-5 h-5 border-gray-300 rounded-md text-brand-green focus:ring-brand-green transition-all cursor-pointer bg-white accent-brand-green"
               />
               <label
                 htmlFor="remember"
