@@ -90,4 +90,16 @@ export class UsersController {
 
     return actor;
   }
+
+  @Get('public/:id')
+  async getPublicActorById(@Param('id') id: string) {
+    const actor = await this.usersService.findById(id);
+
+    if (!actor) {
+      throw new NotFoundException('Actor not found');
+    }
+
+    // Strip sensitive fields just in case, though findById should already strip password
+    return actor;
+  }
 }

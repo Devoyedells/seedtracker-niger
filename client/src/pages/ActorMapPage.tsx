@@ -92,7 +92,10 @@ const STATE_BOUNDS: Record<
 export default function ActorMapPage() {
   const mapRef = useRef<HTMLDivElement>(null);
   const leafletMapRef = useRef<any>(null);
+  const featureGroupRef = useRef<any>(null);
   const [mapReady, setMapReady] = useState(false);
+  const [selectedState, setSelectedState] = useState("all");
+  const [selectedType, setSelectedType] = useState("all");
 
   // Fetch a very large limit so we can plot all actors on the map in one go
   const { data: response, isLoading } = useQuery({
@@ -124,15 +127,35 @@ export default function ActorMapPage() {
 
       leafletMapRef.current = mapInstance;
 
-      // Tile layer
-      L.tileLayer(
-        "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+      // Base Layers
+      const osmLayer = L.tileLayer(
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
         {
           attribution:
-            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
           maxZoom: 19,
         },
-      ).addTo(mapInstance);
+      );
+
+      const satelliteLayer = L.tileLayer(
+        "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+        {
+          attribution:
+            "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community",
+          maxZoom: 19,
+        },
+      );
+
+      // Default to OSM
+      osmLayer.addTo(mapInstance);
+
+      // Layer control
+      const baseMaps = {
+        Map: osmLayer,
+        Satellite: satelliteLayer,
+      };
+
+      L.control.layers(baseMaps).addTo(mapInstance);
 
       // Draw state highlight rectangles
       Object.values(STATE_BOUNDS).forEach(({ bounds, name, color }) => {
@@ -170,12 +193,30 @@ export default function ActorMapPage() {
 
     // Using simple L.circleMarker avoids React component overhead (massive performance gain for many markers)
     import("leaflet").then((L) => {
+      // Clear previous feature group if exists
+      if (featureGroupRef.current) {
+        leafletMapRef.current.removeLayer(featureGroupRef.current);
+      }
+
       const featureGroup = L.featureGroup();
+      featureGroupRef.current = featureGroup;
+
+      let addedCount = 0;
 
       actors.forEach((actor) => {
         if (!actor.lat || !actor.lng) return;
 
+        // Filtering Logic
+        if (
+          selectedState !== "all" &&
+          actor.registrationState !== selectedState
+        )
+          return;
+
         const actorType = actor.actorType || "others";
+        if (selectedType !== "all" && actorType !== selectedType) return;
+
+        addedCount++;
         const style = ACTOR_STYLES[actorType] || ACTOR_STYLES.others;
 
         const circle = L.default
@@ -202,19 +243,19 @@ export default function ActorMapPage() {
 
       featureGroup.addTo(leafletMapRef.current);
 
-      // Auto-fit bounds if we have actors
-      if (actors.length > 0) {
+      // Auto-fit bounds if we have actors (re-fit when filters change)
+      if (addedCount > 0) {
         try {
           leafletMapRef.current.fitBounds(featureGroup.getBounds(), {
             padding: [20, 20],
-            maxZoom: 10,
+            maxZoom: 12,
           });
         } catch (e) {
           /* ignore empty bounds */
         }
       }
     });
-  }, [actors, mapReady]);
+  }, [actors, mapReady, selectedState, selectedType]);
 
   return (
     <div className="space-y-6 animate-in fade-in duration-500 h-full flex flex-col">
@@ -238,8 +279,8 @@ export default function ActorMapPage() {
         }
       `}</style>
 
-      {/* Header */}
-      <div className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-100 shadow-sm flex-shrink-0">
+      {/* Header & Filters */}
+      <div className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-100 shadow-sm flex-shrink-0 flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
           <h1 className="text-2xl font-black text-gray-900 tracking-tight flex items-center gap-2">
             <MapIcon className="w-6 h-6 text-brand-green" /> Actor Map
@@ -247,6 +288,32 @@ export default function ActorMapPage() {
           <p className="text-gray-500 text-sm font-medium mt-1">
             Geospatial visualization of all registered value chain actors.
           </p>
+        </div>
+
+        <div className="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
+          <select
+            value={selectedState}
+            onChange={(e) => setSelectedState(e.target.value)}
+            className="w-full sm:w-auto bg-gray-50 border border-gray-200 text-sm font-medium rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-brand-green/20"
+          >
+            <option value="all">Every State</option>
+            <option value="Ekiti">Ekiti State</option>
+            <option value="Niger">Niger State</option>
+            <option value="Anambra">Anambra State</option>
+          </select>
+
+          <select
+            value={selectedType}
+            onChange={(e) => setSelectedType(e.target.value)}
+            className="w-full sm:w-auto bg-gray-50 border border-gray-200 text-sm font-medium rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-brand-green/20"
+          >
+            <option value="all">All Actor Types</option>
+            {Object.entries(ACTOR_STYLES).map(([key, val]) => (
+              <option key={key} value={key}>
+                {val.label}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
 

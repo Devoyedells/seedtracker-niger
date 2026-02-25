@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Menu, X, Leaf } from "lucide-react";
 import { Button } from "./ui/button";
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
+  const isHome = location.pathname === "/";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,7 +29,11 @@ export function Header() {
   return (
     <header
       className={`fixed top-0 left-0 right-0 mx-auto max-w-[2000px] z-50 transition-all duration-300 ${
-        isSolidBg ? "bg-white/95 backdrop-blur-md shadow-md" : "bg-transparent"
+        isSolidBg
+          ? "bg-white/95 backdrop-blur-md shadow-md"
+          : isHome
+            ? "bg-transparent"
+            : "bg-[#004225]"
       }`}
     >
       <div className="section-px py-4">

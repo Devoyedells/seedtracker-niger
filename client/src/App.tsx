@@ -10,6 +10,8 @@ import ProfilePage from "@/pages/ProfilePage";
 import ValueChainActorsPage from "@/pages/ValueChainActorsPage";
 import ActorDetailsPage from "@/pages/ActorDetailsPage";
 import ActorMapPage from "@/pages/ActorMapPage";
+import QRCodePage from "@/pages/QRCodePage";
+import PublicActorPage from "@/pages/PublicActorPage";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import DashboardLayout from "@/layouts/DashboardLayout";
 
@@ -24,6 +26,7 @@ export default function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
+            <Route path="/actor/:id" element={<PublicActorPage />} />
             <Route
               path="/dashboard"
               element={
@@ -70,6 +73,16 @@ export default function App() {
                 <ProtectedRoute>
                   <DashboardLayout>
                     <ActorMapPage />
+                  </DashboardLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/dashboard/qrcode"
+              element={
+                <ProtectedRoute>
+                  <DashboardLayout>
+                    <QRCodePage />
                   </DashboardLayout>
                 </ProtectedRoute>
               }
