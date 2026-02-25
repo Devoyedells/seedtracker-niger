@@ -1,13 +1,15 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Leaf } from "lucide-react";
+import { Menu, X, Leaf, LayoutDashboard } from "lucide-react";
 import { Button } from "./ui/button";
+import { useAuth } from "@/context/AuthContext";
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
   const isHome = location.pathname === "/";
+  const { user } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -76,23 +78,33 @@ export function Header() {
 
           {/* Desktop CTA Buttons */}
           <div className="hidden lg:flex items-center gap-3">
-            <Link to="/login">
-              <Button
-                variant="ghost"
-                className={
-                  isSolidBg
-                    ? "text-gray-700 hover:text-brand-green hover:bg-brand-green/5"
-                    : "text-white hover:text-white hover:bg-white/20"
-                }
-              >
-                Log In
-              </Button>
-            </Link>
-            <Link to="/register">
-              <Button className="bg-brand-sun hover:bg-white text-brand-green font-bold transition-all shadow-sm">
-                Get Started
-              </Button>
-            </Link>
+            {user ? (
+              <Link to="/dashboard">
+                <Button className="bg-brand-sun hover:bg-white text-brand-green font-bold transition-all shadow-sm flex items-center gap-2">
+                  <LayoutDashboard className="w-4 h-4" /> Go to Dashboard
+                </Button>
+              </Link>
+            ) : (
+              <>
+                <Link to="/login">
+                  <Button
+                    variant="ghost"
+                    className={
+                      isSolidBg
+                        ? "text-gray-700 hover:text-brand-green hover:bg-brand-green/5"
+                        : "text-white hover:text-white hover:bg-white/20"
+                    }
+                  >
+                    Log In
+                  </Button>
+                </Link>
+                <Link to="/register">
+                  <Button className="bg-brand-sun hover:bg-white text-brand-green font-bold transition-all shadow-sm">
+                    Get Started
+                  </Button>
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -127,19 +139,38 @@ export function Header() {
                 </a>
               ))}
               <div className="flex flex-col gap-4 mt-6 px-4">
-                <Link to="/login" onClick={() => setIsMobileMenuOpen(false)}>
-                  <Button
-                    variant="outline"
-                    className="w-full text-brand-green border-brand-green hover:bg-brand-green/5 h-14 text-lg font-semibold rounded-xl"
+                {user ? (
+                  <Link
+                    to="/dashboard"
+                    onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    Log In
-                  </Button>
-                </Link>
-                <Link to="/register" onClick={() => setIsMobileMenuOpen(false)}>
-                  <Button className="w-full bg-brand-sun hover:bg-white text-brand-green h-14 text-lg font-bold rounded-xl shadow-md transition-all">
-                    Get Started
-                  </Button>
-                </Link>
+                    <Button className="w-full bg-brand-sun hover:bg-white text-brand-green h-14 text-lg font-bold rounded-xl shadow-md transition-all flex items-center justify-center gap-2">
+                      <LayoutDashboard className="w-5 h-5" /> Go to Dashboard
+                    </Button>
+                  </Link>
+                ) : (
+                  <>
+                    <Link
+                      to="/login"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      <Button
+                        variant="outline"
+                        className="w-full text-brand-green border-brand-green hover:bg-brand-green/5 h-14 text-lg font-semibold rounded-xl"
+                      >
+                        Log In
+                      </Button>
+                    </Link>
+                    <Link
+                      to="/register"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      <Button className="w-full bg-brand-sun hover:bg-white text-brand-green h-14 text-lg font-bold rounded-xl shadow-md transition-all">
+                        Get Started
+                      </Button>
+                    </Link>
+                  </>
+                )}
               </div>
             </nav>
           </div>
