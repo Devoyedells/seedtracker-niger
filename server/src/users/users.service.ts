@@ -26,26 +26,45 @@ export class UsersService {
       .exec();
   }
 
-  async getStats(): Promise<Record<string, any>> {
-    const totalActors = await this.userModel.countDocuments();
+  async getStats(
+    userRole: string,
+    userState?: string,
+  ): Promise<Record<string, any>> {
+    const matchFilter: any = {};
+
+    if (userRole === 'ekadmin') matchFilter.registrationState = 'Ekiti';
+    if (userRole === 'anadmin') matchFilter.registrationState = 'Anambra';
+    if (userRole === 'ngadmin') matchFilter.registrationState = 'Niger';
+
+    const totalActors = await this.userModel.countDocuments(matchFilter);
 
     // Count actors by type
     const actorTypeCounts = await this.userModel.aggregate([
-      { $match: { actorType: { $exists: true, $ne: null } } },
+      {
+        $match: {
+          actorType: { $exists: true, $ne: null },
+          ...matchFilter,
+        },
+      },
       { $group: { _id: '$actorType', count: { $sum: 1 } } },
       { $sort: { count: -1 } },
     ]);
 
     // Count actors by state
     const stateCounts = await this.userModel.aggregate([
-      { $match: { registrationState: { $exists: true, $ne: null } } },
+      {
+        $match: {
+          registrationState: { $exists: true, $ne: null },
+          ...matchFilter,
+        },
+      },
       { $group: { _id: '$registrationState', count: { $sum: 1 } } },
     ]);
 
     // Recent registrations (last 5)
     const recentActors = await this.userModel
-      .find({})
-      .select('-password')
+      .find(matchFilter)
+      .select('-password -__v -updatedAt')
       .sort({ createdAt: -1 })
       .limit(5)
       .exec();
@@ -59,5 +78,19 @@ export class UsersService {
       stateCounts,
       recentActors,
     };
+  }
+
+  async getActors(userRole: string, userState?: string): Promise<User[]> {
+    const matchFilter: any = {};
+
+    if (userRole === 'ekadmin') matchFilter.registrationState = 'Ekiti';
+    if (userRole === 'anadmin') matchFilter.registrationState = 'Anambra';
+    if (userRole === 'ngadmin') matchFilter.registrationState = 'Niger';
+
+    return this.userModel
+      .find(matchFilter)
+      .select('-password -__v -updatedAt')
+      .sort({ createdAt: -1 })
+      .exec();
   }
 }

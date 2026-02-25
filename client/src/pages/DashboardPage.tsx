@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import {
   Users,
   MapPin,
@@ -7,10 +6,12 @@ import {
   TrendingUp,
   ArrowRight,
   Loader2,
+  User,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import api from "@/services/api";
+import { useQuery } from "@tanstack/react-query";
 
 // ── Types ──────────────────────────────────────────────────────────────
 interface Stats {
@@ -291,16 +292,17 @@ function RecentActors({ actors }: { actors: Stats["recentActors"] }) {
 // ── Page ──────────────────────────────────────────────────────────────
 export default function DashboardPage() {
   const { user } = useAuth();
-  const [stats, setStats] = useState<Stats | null>(null);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    api
-      .get("/users/stats")
-      .then((res) => setStats(res.data))
-      .catch(console.error)
-      .finally(() => setLoading(false));
-  }, []);
+  const isAdmin = user?.role && user.role !== "user";
+
+  const { data: stats, isLoading: loading } = useQuery({
+    queryKey: ["dashboard-stats"],
+    queryFn: async (): Promise<Stats> => {
+      const { data } = await api.get("/users/stats");
+      return data;
+    },
+    enabled: !!isAdmin, // Only fetch stats if the user is an admin
+  });
 
   const hour = new Date().getHours();
   const greeting =
@@ -343,7 +345,7 @@ export default function DashboardPage() {
           </p>
 
           {(user?.actorType || user?.role === "admin") && (
-            <div className="mt-4 inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5">
+            <div className="mt-4 inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 backdrop-blur-sm">
               <BadgeCheck className="w-3.5 h-3.5 text-brand-sun" />
               <span className="text-white text-xs font-bold">
                 {user?.role === "admin"
@@ -355,8 +357,31 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Stat Cards */}
-      {loading ? (
+      {/* ── Normal User View ── */}
+      {!isAdmin && (
+        <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 text-center max-w-2xl mx-auto mt-6">
+          <div className="w-16 h-16 bg-brand-green/10 text-brand-green rounded-full flex items-center justify-center mx-auto mb-4">
+            <Sprout className="w-8 h-8" />
+          </div>
+          <h2 className="text-xl font-black text-gray-900 mb-2">
+            Welcome to your Dashboard
+          </h2>
+          <p className="text-gray-500 mb-6 text-sm">
+            Keep your profile information up to date to ensure you remain
+            visible within the Nigerian Seed Value Chain network.
+          </p>
+          <Link
+            to="/dashboard/profile"
+            className="inline-flex items-center gap-2 bg-brand-green hover:bg-brand-green/90 text-white font-bold py-2.5 px-6 rounded-xl transition-all shadow-sm"
+          >
+            <User className="w-4 h-4" />
+            Manage My Profile
+          </Link>
+        </div>
+      )}
+
+      {/* ── Admin View (Stats) ── */}
+      {isAdmin && loading && (
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
           {[...Array(4)].map((_, i) => (
             <div
@@ -368,12 +393,14 @@ export default function DashboardPage() {
             </div>
           ))}
         </div>
-      ) : (
+      )}
+
+      {isAdmin && !loading && stats && (
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
           <StatCard
             icon={Users}
             label="Registered Actors"
-            value={stats?.totalActors ?? 0}
+            value={stats.totalActors}
             sub="Total on platform"
             accentClass="bg-brand-green"
             delay="0ms"
@@ -381,7 +408,7 @@ export default function DashboardPage() {
           <StatCard
             icon={MapPin}
             label="Active States"
-            value={stats?.activeStates ?? 0}
+            value={stats.activeStates}
             sub="State coverage"
             accentClass="bg-brand-earth"
             delay="60ms"
@@ -389,7 +416,7 @@ export default function DashboardPage() {
           <StatCard
             icon={Sprout}
             label="Actor Types"
-            value={stats?.actorTypeCounts?.length ?? 0}
+            value={stats.actorTypeCounts.length}
             sub="Value chain roles"
             accentClass="bg-brand-sun"
             delay="120ms"
@@ -397,7 +424,7 @@ export default function DashboardPage() {
           <StatCard
             icon={BadgeCheck}
             label="Verified Members"
-            value={stats?.totalActors ?? 0}
+            value={stats.totalActors}
             sub="All registered"
             accentClass="bg-emerald-500"
             delay="180ms"
@@ -405,8 +432,7 @@ export default function DashboardPage() {
         </div>
       )}
 
-      {/* Bottom Grid: Breakdown + Recent */}
-      {!loading && stats && (
+      {isAdmin && !loading && stats && (
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
           <div className="lg:col-span-2">
             <ActorBreakdown
@@ -420,7 +446,7 @@ export default function DashboardPage() {
         </div>
       )}
 
-      {loading && (
+      {isAdmin && loading && (
         <div className="flex items-center justify-center py-20">
           <Loader2 className="w-6 h-6 animate-spin text-brand-green" />
         </div>
