@@ -8,17 +8,11 @@ import {
   Menu,
   X,
   Sprout,
-  Bell,
   ChevronRight,
+  BookUser,
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { toast } from "sonner";
-
-const navItems = [
-  { label: "Dashboard", icon: LayoutDashboard, path: "/dashboard" },
-  { label: "Profile", icon: User, path: "/dashboard/profile" },
-  { label: "Actor Map", icon: Map, path: "/" },
-];
 
 const actorTypeLabel: Record<string, string> = {
   producer: "Seed Producer",
@@ -54,6 +48,19 @@ export default function DashboardLayout({
     .toUpperCase()
     .slice(0, 2);
 
+  const navItems = [
+    { label: "Dashboard", icon: LayoutDashboard, path: "/dashboard" },
+    { label: "Profile", icon: User, path: "/dashboard/profile" },
+  ];
+
+  if (user?.role && user.role !== "user") {
+    navItems.push({
+      label: "Directory",
+      icon: BookUser,
+      path: "/dashboard/actors",
+    });
+  }
+
   const currentPage =
     navItems.find((n) => n.path === location.pathname)?.label ?? "Dashboard";
 
@@ -66,7 +73,10 @@ export default function DashboardLayout({
 
   return (
     // Outer shell: full viewport, no overflow — all scrolling handled inside
-    <div className="flex h-screen overflow-hidden bg-[#f5f6f8]">
+    <div
+      className="flex h-screen overflow-hidden bg-[#f5f6f8]"
+      style={{ fontFamily: "'Inter', sans-serif" }}
+    >
       {/* ── Mobile Backdrop ──────────────────────────────────────── */}
       {sidebarOpen && (
         <div
@@ -215,11 +225,6 @@ export default function DashboardLayout({
           </div>
 
           <div className="ml-auto flex items-center gap-3">
-            {/* Bell */}
-            <button className="p-2.5 rounded-xl bg-gray-100 hover:bg-brand-green/10 text-gray-500 hover:text-brand-green transition-all">
-              <Bell className="w-4 h-4" />
-            </button>
-
             {/* User chip */}
             <Link
               to="/dashboard/profile"

@@ -8,6 +8,7 @@ import {
 import api from "@/services/api";
 
 export interface User {
+  _id?: string;
   id: string;
   fullName: string;
   email: string;
@@ -35,6 +36,8 @@ export interface User {
   farmSizeHectares?: number;
   farmerGroupSize?: number;
   cropsGrown?: string[];
+  targetCommodities?: string[];
+  sourcingAreas?: string[];
   createdAt?: string;
 }
 
