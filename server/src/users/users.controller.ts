@@ -6,6 +6,7 @@ import {
   UseGuards,
   Request,
   Param,
+  Query,
   ForbiddenException,
   NotFoundException,
 } from '@nestjs/common';
@@ -46,7 +47,12 @@ export class UsersController {
 
   @UseGuards(JwtAuthGuard)
   @Get('actors')
-  async getActors(@Request() req) {
+  async getActors(
+    @Request() req,
+    @Query('page') page: string = '1',
+    @Query('limit') limit: string = '10',
+    @Query('search') search: string = '',
+  ) {
     if (req.user.role === 'user') {
       throw new ForbiddenException(
         'Users do not have access to the actor directory',
@@ -55,6 +61,9 @@ export class UsersController {
     return this.usersService.getActors(
       req.user.role,
       req.user.registrationState,
+      parseInt(page, 10),
+      parseInt(limit, 10),
+      search,
     );
   }
 

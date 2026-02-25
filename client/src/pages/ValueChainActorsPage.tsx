@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -7,6 +7,7 @@ import {
   BadgeCheck,
   Loader2,
   ChevronRight,
+  ChevronLeft,
   BookUser,
 } from "lucide-react";
 import api from "@/services/api";
@@ -37,24 +38,34 @@ const actorTypeColor: Record<string, string> = {
 export default function ValueChainActorsPage() {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
 
-  const { data: actors = [], isLoading } = useQuery<User[]>({
-    queryKey: ["actors-directory"],
+  const [page, setPage] = useState(1);
+  const limit = 10;
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(searchTerm);
+      setPage(1);
+    }, 400);
+    return () => clearTimeout(timer);
+  }, [searchTerm]);
+
+  const { data: response, isLoading } = useQuery({
+    queryKey: ["actors-directory", page, limit, debouncedSearch],
     queryFn: async () => {
-      const res = await api.get("/users/actors");
+      const res = await api.get(
+        `/users/actors?page=${page}&limit=${limit}&search=${encodeURIComponent(
+          debouncedSearch,
+        )}`,
+      );
       return res.data;
     },
   });
 
-  const filteredActors = actors.filter((actor) => {
-    if (!searchTerm) return true;
-    const term = searchTerm.toLowerCase();
-    return (
-      actor.fullName?.toLowerCase().includes(term) ||
-      actor.email?.toLowerCase().includes(term) ||
-      actor.registrationState?.toLowerCase().includes(term)
-    );
-  });
+  const actors: User[] = response?.data || [];
+  const totalPages: number = response?.totalPages || 1;
+  const totalActors: number = response?.total || 0;
 
   return (
     <div className="space-y-6 animate-in fade-in duration-500">
@@ -86,13 +97,13 @@ export default function ValueChainActorsPage() {
           <div className="flex items-center justify-center py-32">
             <Loader2 className="w-8 h-8 animate-spin text-brand-green" />
           </div>
-        ) : filteredActors.length === 0 ? (
+        ) : actors.length === 0 ? (
           <div className="text-center py-20 text-gray-400">
             <p className="text-sm font-semibold">No actors found.</p>
           </div>
         ) : (
           <div className="divide-y divide-gray-50">
-            {filteredActors.map((actor) => {
+            {actors.map((actor) => {
               const initials = actor.fullName
                 ?.split(" ")
                 .map((n) => n[0])
@@ -154,6 +165,32 @@ export default function ValueChainActorsPage() {
           </div>
         )}
       </div>
+
+      {/* Pagination Controls */}
+      {!isLoading && totalPages > 1 && (
+        <div className="flex flex-col sm:flex-row items-center justify-between bg-white rounded-3xl p-5 border border-gray-100 shadow-sm mt-6 gap-4">
+          <p className="text-sm font-semibold text-gray-500">
+            Page {page} of {totalPages}{" "}
+            <span className="opacity-60">({totalActors} total)</span>
+          </p>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setPage((p) => Math.max(1, p - 1))}
+              disabled={page === 1}
+              className="px-4 py-2 text-sm font-bold text-gray-600 bg-gray-50 rounded-xl hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-1"
+            >
+              <ChevronLeft className="w-4 h-4" /> Prev
+            </button>
+            <button
+              onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+              disabled={page === totalPages}
+              className="px-4 py-2 text-sm font-bold text-gray-600 bg-gray-50 rounded-xl hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-1"
+            >
+              Next <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

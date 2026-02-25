@@ -80,17 +80,52 @@ export class UsersService {
     };
   }
 
-  async getActors(userRole: string, userState?: string): Promise<User[]> {
+  async getActors(
+    userRole: string,
+    userState?: string,
+    page: number = 1,
+    limit: number = 10,
+    search: string = '',
+  ): Promise<{
+    data: User[];
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+  }> {
     const matchFilter: any = {};
 
     if (userRole === 'ekadmin') matchFilter.registrationState = 'Ekiti';
     if (userRole === 'anadmin') matchFilter.registrationState = 'Anambra';
     if (userRole === 'ngadmin') matchFilter.registrationState = 'Niger';
 
-    return this.userModel
-      .find(matchFilter)
-      .select('-password -__v -updatedAt')
-      .sort({ createdAt: -1 })
-      .exec();
+    if (search) {
+      matchFilter.$or = [
+        { fullName: { $regex: search, $options: 'i' } },
+        { email: { $regex: search, $options: 'i' } },
+        { registrationState: { $regex: search, $options: 'i' } },
+      ];
+    }
+
+    const skip = (page - 1) * limit;
+
+    const [data, total] = await Promise.all([
+      this.userModel
+        .find(matchFilter)
+        .select('-password -__v -updatedAt')
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
+        .exec(),
+      this.userModel.countDocuments(matchFilter).exec(),
+    ]);
+
+    return {
+      data,
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit) || 1,
+    };
   }
 }
