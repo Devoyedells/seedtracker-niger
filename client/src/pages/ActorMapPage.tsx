@@ -101,7 +101,7 @@ export default function ActorMapPage() {
   const { data: response, isLoading } = useQuery({
     queryKey: ["actors-map-data"],
     queryFn: async () => {
-      const res = await api.get("/users/actors?limit=5000");
+      const res = await api.get("/users/map-data");
       return res.data;
     },
   });

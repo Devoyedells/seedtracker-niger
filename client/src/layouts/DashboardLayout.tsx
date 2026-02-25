@@ -115,9 +115,6 @@ export default function DashboardLayout({
 
         {/* Logo */}
         <div className="relative z-10 flex items-center gap-3 px-6 pt-7 pb-6 flex-shrink-0">
-          <div className="w-9 h-9 bg-brand-sun rounded-xl flex items-center justify-center shadow-lg flex-shrink-0">
-            <Sprout className="w-5 h-5 text-brand-green" />
-          </div>
           <div>
             <div className="text-white font-black text-[15px] leading-none tracking-tight">
               Seed Tracker
@@ -195,7 +192,7 @@ export default function DashboardLayout({
           </Link>
           <button
             onClick={handleLogout}
-            className="w-full flex items-center gap-3 px-4 py-2.5 rounded-2xl text-white/50 hover:bg-red-500/15 hover:text-red-300 transition-all text-sm font-bold"
+            className="w-full flex items-center gap-3 px-4 py-2.5 rounded-2xl text-white/50 hover:bg-red-500/15 hover:text-red-300 transition-all text-sm font-bold cursor-pointer"
           >
             <LogOut className="w-4 h-4" />
             Sign Out

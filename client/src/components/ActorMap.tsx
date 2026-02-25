@@ -1,7 +1,8 @@
 import { useEffect, useRef } from "react";
-import { motion } from "motion/react";
-import { useInView } from "motion/react";
+import { motion, useInView } from "motion/react";
 import { MapPin } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import api from "@/services/api";
 import "leaflet/dist/leaflet.css";
 
 // Anonymized actor data for three highlighted states
@@ -163,19 +164,68 @@ const STATE_BOUNDS: Record<
 export function ActorMap() {
   const mapRef = useRef<HTMLDivElement>(null);
   const leafletMapRef = useRef<any>(null);
+  const featureGroupRef = useRef<any>(null);
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
 
+  const { data: actors } = useQuery({
+    queryKey: ["public-map-actors"],
+    queryFn: async () => {
+      const res = await api.get("/users/public-data/actors");
+      const mapped = res.data.data || []; // Backend returns { data: [...] }
+      localStorage.setItem("public_map_actors_cache", JSON.stringify(mapped));
+      return mapped;
+    },
+    initialData: () => {
+      const cached = localStorage.getItem("public_map_actors_cache");
+      if (cached) {
+        try {
+          return JSON.parse(cached);
+        } catch (e) {
+          /* ignore error */
+        }
+      }
+      return actorData;
+    },
+  });
+
   useEffect(() => {
     let L: any;
-    let mapInstance: any;
 
     const initMap = async () => {
       L = (await import("leaflet")).default;
 
-      if (!mapRef.current || leafletMapRef.current) return;
+      if (!mapRef.current) return;
 
-      mapInstance = L.map(mapRef.current, {
+      // If already initialized, just sync markers
+      if (leafletMapRef.current) {
+        if (featureGroupRef.current && actors) {
+          featureGroupRef.current.clearLayers();
+          actors.forEach((actor: any) => {
+            if (!actor.lat || !actor.lng) return;
+            const actorType = actor.actorType || actor.type || "others";
+            const style = ACTOR_STYLES[actorType] || ACTOR_STYLES.others;
+            const circle = L.circleMarker([actor.lat, actor.lng], {
+              radius: style?.radius || 6,
+              color: style?.color || "#555",
+              fillColor: style?.fillColor || "#999",
+              fillOpacity: 0.85,
+              weight: 1.5,
+            });
+            circle.bindPopup(
+              `<div style="font-family:sans-serif;font-size:13px;padding:4px 2px;">
+                <strong style="color:${style?.color || "#555"}">${style?.label || "Actor"}</strong>
+                <br/><span style="color:#555;font-size:12px;">Anonymized location</span>
+              </div>`,
+              { maxWidth: 220 },
+            );
+            featureGroupRef.current.addLayer(circle);
+          });
+        }
+        return;
+      }
+
+      const mapInstance = L.map(mapRef.current, {
         center: [8.5, 6.5],
         zoom: 6,
         zoomControl: true,
@@ -185,63 +235,76 @@ export function ActorMap() {
 
       leafletMapRef.current = mapInstance;
 
-      // Tile layer — light/neutral Carto style
-      L.tileLayer(
-        "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+      const osmLayer = L.tileLayer(
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
         {
-          attribution:
-            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+          attribution: "&copy; OpenStreetMap contributors",
           maxZoom: 19,
         },
-      ).addTo(mapInstance);
+      );
 
-      // Draw state highlight rectangles
+      const satelliteLayer = L.tileLayer(
+        "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+        {
+          attribution: "Tiles &copy; Esri",
+          maxZoom: 19,
+        },
+      );
+
+      osmLayer.addTo(mapInstance);
+      L.control
+        .layers({ Map: osmLayer, Satellite: satelliteLayer })
+        .addTo(mapInstance);
+
       Object.values(STATE_BOUNDS).forEach(({ bounds, name, color }) => {
-        const rect = L.rectangle(bounds, {
-          color: color,
+        L.rectangle(bounds, {
+          color,
           weight: 2,
           fillColor: color,
           fillOpacity: 0.07,
           dashArray: "6 4",
-        }).addTo(mapInstance);
+        })
+          .addTo(mapInstance)
+          .bindTooltip(name, {
+            permanent: true,
+            direction: "center",
+            className: "state-label-tooltip",
+          });
+      });
 
-        rect.bindTooltip(name, {
-          permanent: true,
-          direction: "center",
-          className: "state-label-tooltip",
+      const fg = L.featureGroup().addTo(mapInstance);
+      featureGroupRef.current = fg;
+
+      if (actors) {
+        actors.forEach((actor: any) => {
+          if (!actor.lat || !actor.lng) return;
+          const actorType = actor.actorType || actor.type || "others";
+          const style = ACTOR_STYLES[actorType] || ACTOR_STYLES.others;
+          const circle = L.circleMarker([actor.lat, actor.lng], {
+            radius: style?.radius || 6,
+            color: style?.color || "#555",
+            fillColor: style?.fillColor || "#999",
+            fillOpacity: 0.85,
+            weight: 1.5,
+          });
+          circle.bindPopup(
+            `<div style="font-family:sans-serif;font-size:13px;padding:4px 2px;">
+              <strong style="color:${style?.color || "#555"}">${style?.label || "Actor"}</strong>
+              <br/><span style="color:#555;font-size:12px;">Anonymized location</span>
+            </div>`,
+            { maxWidth: 220 },
+          );
+          fg.addLayer(circle);
         });
-      });
-
-      // Add anonymized actor markers
-      actorData.forEach((actor) => {
-        const style = ACTOR_STYLES[actor.type];
-        const circle = L.circleMarker([actor.lat, actor.lng], {
-          radius: style.radius,
-          color: style.color,
-          fillColor: style.fillColor,
-          fillOpacity: 0.85,
-          weight: 1.5,
-        }).addTo(mapInstance);
-
-        circle.bindPopup(
-          `<div style="font-family:sans-serif;font-size:13px;padding:4px 2px;">
-            <strong style="color:${style.color}">${style.label}</strong>
-            <br/><span style="color:#555;font-size:12px;">Anonymized actor — location approximate</span>
-          </div>`,
-          { maxWidth: 220 },
-        );
-      });
+      }
     };
 
     initMap();
 
     return () => {
-      if (leafletMapRef.current) {
-        leafletMapRef.current.remove();
-        leafletMapRef.current = null;
-      }
+      // Don't remove map instance on re-render unless it's a cleanup
     };
-  }, []);
+  }, [actors]);
 
   return (
     <section id="map" className="py-24 bg-white" ref={sectionRef}>

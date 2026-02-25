@@ -1,8 +1,66 @@
 import { motion } from "motion/react";
 import { ArrowRight, Network } from "lucide-react";
 import { Button } from "./ui/button";
+import { useQuery } from "@tanstack/react-query";
+import api from "@/services/api";
 
 export function Hero() {
+  const { data: stats } = useQuery({
+    queryKey: ["public-hero-stats"],
+    queryFn: async () => {
+      const res = await api.get("/users/public-data/stats");
+      localStorage.setItem("public_hero_stats_cache", JSON.stringify(res.data));
+      return res.data;
+    },
+    initialData: () => {
+      const cached = localStorage.getItem("public_hero_stats_cache");
+      if (cached) {
+        try {
+          return JSON.parse(cached);
+        } catch (e) {
+          /* ignore error */
+        }
+      }
+      return {
+        totalActors: 10000,
+        stateCounts: [{ _id: "Ekiti" }, { _id: "Niger" }, { _id: "Anambra" }],
+        actorTypeCounts: [
+          { _id: "producer", count: 1240 },
+          { _id: "dealer", count: 850 },
+          { _id: "input_provider", count: 420 },
+          { _id: "aggregator", count: 310 },
+          { _id: "offtaker", count: 180 },
+        ],
+      };
+    },
+  });
+
+  const getActorCount = (type: string, fallback: number) => {
+    if (!stats || !stats.actorTypeCounts) return fallback;
+    const found = stats.actorTypeCounts.find((a: any) => a._id === type);
+    return found ? found.count : 0; // Use actual zero if not found in real data, but we use hardcoded mapping in UI
+  };
+
+  const calculateWidth = (count: number, max: number) => {
+    return `${Math.max(5, Math.min(100, (count / max) * 100))}%`;
+  };
+
+  const producerCount = getActorCount("producer", 1240);
+  const dealerCount = getActorCount("dealer", 850);
+  const providerCount = getActorCount("input_provider", 420);
+  const aggregatorCount = getActorCount("aggregator", 310);
+  const offtakerCount = getActorCount("offtaker", 180);
+
+  // We find the max actor count dynamically so the bars scale well
+  const maxCount = Math.max(
+    producerCount,
+    dealerCount,
+    providerCount,
+    aggregatorCount,
+    offtakerCount,
+    1,
+  );
+
   return (
     <section
       id="home"
@@ -106,8 +164,12 @@ export function Hero() {
                 ))}
               </div>
               <p className="text-sm font-medium text-white/80">
-                <span className="font-bold text-white">10k+</span> verified
-                actors integrated
+                <span className="font-bold text-white">
+                  {stats?.totalActors >= 1000
+                    ? `${(stats.totalActors / 1000).toFixed(1)}k+`
+                    : stats?.totalActors}
+                </span>{" "}
+                verified actors integrated
               </p>
             </motion.div>
           </div>
@@ -130,7 +192,7 @@ export function Hero() {
                     Total Network Reach
                   </p>
                   <h3 className="text-xl sm:text-3xl font-black text-gray-900 leading-tight">
-                    3 states
+                    {stats?.stateCounts ? stats.stateCounts.length : 3} states
                   </h3>
                 </div>
                 <div className="flex items-center gap-2 mt-4">
@@ -183,11 +245,16 @@ export function Hero() {
                           Seed Producers
                         </span>
                         <span className="text-xs font-black text-gray-800">
-                          1,240
+                          {producerCount.toLocaleString()}
                         </span>
                       </div>
                       <div className="h-1 w-full bg-gray-100 rounded-full overflow-hidden">
-                        <div className="h-full bg-blue-500 rounded-full w-[70%]" />
+                        <div
+                          className="h-full bg-blue-500 rounded-full"
+                          style={{
+                            width: calculateWidth(producerCount, maxCount),
+                          }}
+                        />
                       </div>
                     </div>
                   </div>
@@ -202,11 +269,16 @@ export function Hero() {
                           Dealers
                         </span>
                         <span className="text-xs font-black text-gray-800">
-                          850
+                          {dealerCount.toLocaleString()}
                         </span>
                       </div>
                       <div className="h-1 w-full bg-gray-100 rounded-full overflow-hidden">
-                        <div className="h-full bg-orange-500 rounded-full w-[45%]" />
+                        <div
+                          className="h-full bg-orange-500 rounded-full"
+                          style={{
+                            width: calculateWidth(dealerCount, maxCount),
+                          }}
+                        />
                       </div>
                     </div>
                   </div>
@@ -221,11 +293,16 @@ export function Hero() {
                           Input Providers
                         </span>
                         <span className="text-xs font-black text-gray-800">
-                          420
+                          {providerCount.toLocaleString()}
                         </span>
                       </div>
                       <div className="h-1 w-full bg-gray-100 rounded-full overflow-hidden">
-                        <div className="h-full bg-green-500 rounded-full w-[25%]" />
+                        <div
+                          className="h-full bg-green-500 rounded-full"
+                          style={{
+                            width: calculateWidth(providerCount, maxCount),
+                          }}
+                        />
                       </div>
                     </div>
                   </div>
@@ -240,11 +317,16 @@ export function Hero() {
                           Aggregators
                         </span>
                         <span className="text-xs font-black text-gray-800">
-                          310
+                          {aggregatorCount.toLocaleString()}
                         </span>
                       </div>
                       <div className="h-1 w-full bg-gray-100 rounded-full overflow-hidden">
-                        <div className="h-full bg-purple-500 rounded-full w-[20%]" />
+                        <div
+                          className="h-full bg-purple-500 rounded-full"
+                          style={{
+                            width: calculateWidth(aggregatorCount, maxCount),
+                          }}
+                        />
                       </div>
                     </div>
                   </div>
@@ -259,11 +341,16 @@ export function Hero() {
                           Offtakers
                         </span>
                         <span className="text-xs font-black text-gray-800">
-                          180
+                          {offtakerCount.toLocaleString()}
                         </span>
                       </div>
                       <div className="h-1 w-full bg-gray-100 rounded-full overflow-hidden">
-                        <div className="h-full bg-red-500 rounded-full w-[15%]" />
+                        <div
+                          className="h-full bg-red-500 rounded-full"
+                          style={{
+                            width: calculateWidth(offtakerCount, maxCount),
+                          }}
+                        />
                       </div>
                     </div>
                   </div>

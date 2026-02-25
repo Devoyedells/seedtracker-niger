@@ -20,8 +20,8 @@ export function Header() {
   }, []);
 
   const navLinks = [
-    { label: "Home", href: "#" },
-    { label: "Map", href: "#map" },
+    { label: "Home", href: "/" },
+    { label: "Map", href: "/#map" },
     { label: "Contact", href: "#" },
   ];
 

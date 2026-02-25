@@ -218,10 +218,10 @@ function RecentActors({ actors }: { actors: Stats["recentActors"] }) {
           </p>
         </div>
         <Link
-          to="/"
+          to="/dashboard/actors"
           className="flex items-center gap-1 text-xs font-black text-brand-green hover:underline underline-offset-4"
         >
-          View Map <ArrowRight className="w-3 h-3" />
+          View All <ArrowRight className="w-3 h-3" />
         </Link>
       </div>
 

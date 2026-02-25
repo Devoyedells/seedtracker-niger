@@ -278,9 +278,9 @@ export default function RegisterPage() {
                     <option value="" disabled selected>
                       Select State
                     </option>
-                    <option value="ekiti">Ekiti</option>
-                    <option value="anambra">Anambra</option>
-                    <option value="niger">Niger</option>
+                    <option value="Ekiti">Ekiti</option>
+                    <option value="Anambra">Anambra</option>
+                    <option value="Niger">Niger</option>
                   </select>
                 </div>
               </div>
