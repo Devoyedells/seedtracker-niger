@@ -1,26 +1,53 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, Navigate } from "react-router-dom";
 import { Eye, EyeOff, Leaf, Activity, Sprout, Network } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { AddressAutocomplete } from "@/components/AddressAutocomplete";
+import { useAuth } from "@/context/AuthContext";
+import { toast } from "sonner";
+import axios from "axios";
 
 export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const { register, user } = useAuth();
+  const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  if (user) return <Navigate to="/dashboard" replace />;
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
 
     const formData = new FormData(e.currentTarget);
-    const formValues = Object.fromEntries(formData.entries());
+    const formValues = Object.fromEntries(formData.entries()) as Record<
+      string,
+      string
+    >;
 
-    console.log("Form Values:", formValues);
-
-    setTimeout(() => {
+    try {
+      await register({
+        fullName: formValues.FullName,
+        email: formValues.Email,
+        password: formValues.Password,
+        actorType: formValues.ActorType,
+        registrationState: formValues.RegistrationState,
+        address: formValues.Address,
+        lat: formValues.Lat,
+        lng: formValues.Lng,
+      });
+      toast.success("Account created successfully!");
+      navigate("/dashboard");
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        toast.error(err.response?.data?.message || "Registration failed");
+      } else {
+        toast.error("Something went wrong");
+      }
+    } finally {
       setIsLoading(false);
-    }, 1500);
+    }
   };
 
   const StatCard = ({
