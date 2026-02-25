@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "motion/react";
 import { MapPin } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
@@ -8,20 +8,16 @@ import "leaflet/dist/leaflet.css";
 // Anonymized actor data for three highlighted states
 const actorData = [
   // ─── EKITI STATE (centre ~7.72°N, 5.31°E) ───────────────────────
-  // Producers
   { lat: 7.85, lng: 5.22, type: "producer" },
   { lat: 7.72, lng: 5.4, type: "producer" },
   { lat: 7.6, lng: 5.18, type: "input_provider" },
   { lat: 7.95, lng: 5.35, type: "offtaker" },
-  // Processors
   { lat: 7.78, lng: 5.28, type: "processor" },
   { lat: 7.55, lng: 5.45, type: "aggregator" },
-  // Dealers
   { lat: 7.74, lng: 5.32, type: "dealer" },
   { lat: 7.88, lng: 5.15, type: "dealer" },
   { lat: 7.65, lng: 5.5, type: "dealer" },
   { lat: 7.82, lng: 5.42, type: "dealer" },
-  // Farmers
   { lat: 7.7, lng: 5.2, type: "farmer" },
   { lat: 7.9, lng: 5.28, type: "farmer" },
   { lat: 7.58, lng: 5.38, type: "farmer" },
@@ -30,23 +26,19 @@ const actorData = [
   { lat: 7.62, lng: 5.25, type: "farmer" },
 
   // ─── NIGER STATE (centre ~10.0°N, 6.0°E) ────────────────────────
-  // Producers
   { lat: 10.32, lng: 5.72, type: "producer" },
   { lat: 9.85, lng: 6.18, type: "producer" },
   { lat: 10.55, lng: 6.3, type: "producer" },
   { lat: 9.7, lng: 5.9, type: "input_provider" },
   { lat: 10.2, lng: 6.5, type: "offtaker" },
-  // Processors
   { lat: 10.1, lng: 6.02, type: "processor" },
   { lat: 9.9, lng: 6.42, type: "aggregator" },
   { lat: 10.45, lng: 5.85, type: "processor" },
-  // Dealers
   { lat: 10.0, lng: 6.0, type: "dealer" },
   { lat: 10.28, lng: 6.22, type: "dealer" },
   { lat: 9.75, lng: 5.8, type: "dealer" },
   { lat: 10.52, lng: 6.1, type: "dealer" },
   { lat: 9.62, lng: 6.35, type: "dealer" },
-  // Farmers
   { lat: 10.15, lng: 5.95, type: "farmer" },
   { lat: 9.88, lng: 6.12, type: "farmer" },
   { lat: 10.4, lng: 6.4, type: "farmer" },
@@ -57,22 +49,18 @@ const actorData = [
   { lat: 10.05, lng: 5.62, type: "farmer" },
 
   // ─── ANAMBRA STATE (centre ~6.22°N, 7.07°E) ─────────────────────
-  // Producers
   { lat: 6.35, lng: 6.95, type: "producer" },
   { lat: 6.18, lng: 7.2, type: "producer" },
   { lat: 6.42, lng: 7.12, type: "input_provider" },
-  // Processors
   { lat: 6.25, lng: 7.05, type: "processor" },
   { lat: 6.1, lng: 7.18, type: "processor" },
   { lat: 6.38, lng: 6.98, type: "aggregator" },
-  // Dealers
   { lat: 6.22, lng: 7.1, type: "dealer" },
   { lat: 6.3, lng: 7.0, type: "dealer" },
   { lat: 6.15, lng: 7.25, type: "dealer" },
   { lat: 6.4, lng: 7.18, type: "dealer" },
   { lat: 6.08, lng: 6.95, type: "dealer" },
   { lat: 6.45, lng: 7.3, type: "offtaker" },
-  // Farmers
   { lat: 6.28, lng: 7.08, type: "farmer" },
   { lat: 6.12, lng: 7.02, type: "farmer" },
   { lat: 6.48, lng: 7.22, type: "farmer" },
@@ -130,7 +118,6 @@ const ACTOR_STYLES: Record<
   },
 };
 
-// State highlight polygons (simplified bounding boxes as rectangles)
 const STATE_BOUNDS: Record<
   string,
   { bounds: [[number, number], [number, number]]; name: string; color: string }
@@ -161,18 +148,62 @@ const STATE_BOUNDS: Record<
   },
 };
 
+// Sort actors so they reveal state-by-state (Ekiti, Niger, Anambra)
+// and within each state from the center outward
+function sortActorsByStateAndDistance(actors: any[]) {
+  const STATE_CENTERS: Record<string, { lat: number; lng: number }> = {
+    ekiti: { lat: 7.72, lng: 5.31 },
+    niger: { lat: 10.0, lng: 6.0 },
+    anambra: { lat: 6.22, lng: 7.07 },
+  };
+
+  function getStateName(actor: any) {
+    const lat = parseFloat(actor.lat);
+    const lng = parseFloat(actor.lng);
+    if (lat >= 7.45 && lat <= 8.05 && lng >= 4.9 && lng <= 5.65) return "ekiti";
+    if (lat >= 8.9 && lat <= 11.2 && lng >= 5.3 && lng <= 7.2) return "niger";
+    if (lat >= 5.9 && lat <= 6.6 && lng >= 6.75 && lng <= 7.55)
+      return "anambra";
+    return "ekiti";
+  }
+
+  function dist(a: any, center: { lat: number; lng: number }) {
+    return Math.sqrt(
+      Math.pow(parseFloat(a.lat) - center.lat, 2) +
+        Math.pow(parseFloat(a.lng) - center.lng, 2),
+    );
+  }
+
+  const ORDER = ["ekiti", "niger", "anambra"];
+  const groups: Record<string, any[]> = { ekiti: [], niger: [], anambra: [] };
+
+  actors.forEach((a) => {
+    const state = getStateName(a);
+    if (groups[state]) groups[state].push(a);
+  });
+
+  ORDER.forEach((state) => {
+    groups[state].sort(
+      (a, b) => dist(a, STATE_CENTERS[state]) - dist(b, STATE_CENTERS[state]),
+    );
+  });
+
+  return [...groups.ekiti, ...groups.niger, ...groups.anambra];
+}
+
 export function ActorMap() {
   const mapRef = useRef<HTMLDivElement>(null);
   const leafletMapRef = useRef<any>(null);
   const featureGroupRef = useRef<any>(null);
   const sectionRef = useRef(null);
-  const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
+  const isInView = useInView(sectionRef, { once: true, margin: "-80px" });
+  const animationTriggeredRef = useRef(false);
 
   const { data: actors } = useQuery({
     queryKey: ["public-map-actors"],
     queryFn: async () => {
       const res = await api.get("/users/public-data/actors");
-      const mapped = res.data.data || []; // Backend returns { data: [...] }
+      const mapped = res.data.data || [];
       localStorage.setItem("public_map_actors_cache", JSON.stringify(mapped));
       return mapped;
     },
@@ -182,48 +213,18 @@ export function ActorMap() {
         try {
           return JSON.parse(cached);
         } catch (e) {
-          /* ignore error */
+          /* ignore */
         }
       }
       return actorData;
     },
   });
 
+  // Initialize map (once)
   useEffect(() => {
-    let L: any;
-
     const initMap = async () => {
-      L = (await import("leaflet")).default;
-
-      if (!mapRef.current) return;
-
-      // If already initialized, just sync markers
-      if (leafletMapRef.current) {
-        if (featureGroupRef.current && actors) {
-          featureGroupRef.current.clearLayers();
-          actors.forEach((actor: any) => {
-            if (!actor.lat || !actor.lng) return;
-            const actorType = actor.actorType || actor.type || "others";
-            const style = ACTOR_STYLES[actorType] || ACTOR_STYLES.others;
-            const circle = L.circleMarker([actor.lat, actor.lng], {
-              radius: style?.radius || 6,
-              color: style?.color || "#555",
-              fillColor: style?.fillColor || "#999",
-              fillOpacity: 0.85,
-              weight: 1.5,
-            });
-            circle.bindPopup(
-              `<div style="font-family:sans-serif;font-size:13px;padding:4px 2px;">
-                <strong style="color:${style?.color || "#555"}">${style?.label || "Actor"}</strong>
-                <br/><span style="color:#555;font-size:12px;">Anonymized location</span>
-              </div>`,
-              { maxWidth: 220 },
-            );
-            featureGroupRef.current.addLayer(circle);
-          });
-        }
-        return;
-      }
+      const L = (await import("leaflet")).default;
+      if (!mapRef.current || leafletMapRef.current) return;
 
       const mapInstance = L.map(mapRef.current, {
         center: [8.5, 6.5],
@@ -237,18 +238,11 @@ export function ActorMap() {
 
       const osmLayer = L.tileLayer(
         "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-        {
-          attribution: "&copy; OpenStreetMap contributors",
-          maxZoom: 19,
-        },
+        { attribution: "&copy; OpenStreetMap contributors", maxZoom: 19 },
       );
-
       const satelliteLayer = L.tileLayer(
         "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-        {
-          attribution: "Tiles &copy; Esri",
-          maxZoom: 19,
-        },
+        { attribution: "Tiles &copy; Esri", maxZoom: 19 },
       );
 
       osmLayer.addTo(mapInstance);
@@ -272,43 +266,181 @@ export function ActorMap() {
           });
       });
 
-      const fg = L.featureGroup().addTo(mapInstance);
-      featureGroupRef.current = fg;
-
-      if (actors) {
-        actors.forEach((actor: any) => {
-          if (!actor.lat || !actor.lng) return;
-          const actorType = actor.actorType || actor.type || "others";
-          const style = ACTOR_STYLES[actorType] || ACTOR_STYLES.others;
-          const circle = L.circleMarker([actor.lat, actor.lng], {
-            radius: style?.radius || 6,
-            color: style?.color || "#555",
-            fillColor: style?.fillColor || "#999",
-            fillOpacity: 0.85,
-            weight: 1.5,
-          });
-          circle.bindPopup(
-            `<div style="font-family:sans-serif;font-size:13px;padding:4px 2px;">
-              <strong style="color:${style?.color || "#555"}">${style?.label || "Actor"}</strong>
-              <br/><span style="color:#555;font-size:12px;">Anonymized location</span>
-            </div>`,
-            { maxWidth: 220 },
-          );
-          fg.addLayer(circle);
-        });
-      }
+      featureGroupRef.current = L.featureGroup().addTo(mapInstance);
     };
 
     initMap();
 
     return () => {
-      // Don't remove map instance on re-render unless it's a cleanup
+      if (leafletMapRef.current) {
+        leafletMapRef.current.remove();
+        leafletMapRef.current = null;
+        animationTriggeredRef.current = false;
+      }
     };
+  }, []);
+
+  // Animate markers in when scrolled into view
+  useEffect(() => {
+    if (!isInView || !actors || animationTriggeredRef.current) return;
+    if (!leafletMapRef.current || !featureGroupRef.current) return;
+
+    animationTriggeredRef.current = true;
+
+    const runAnimation = async () => {
+      const L = (await import("leaflet")).default;
+      const fg = featureGroupRef.current;
+      fg.clearLayers();
+
+      const sorted = sortActorsByStateAndDistance(actors);
+
+      // Stagger delay: each marker reveals 30ms after the previous one
+      const STAGGER_MS = 35;
+      const PULSE_DURATION_MS = 600;
+
+      sorted.forEach((actor: any, i: number) => {
+        if (!actor.lat || !actor.lng) return;
+
+        setTimeout(() => {
+          const actorType = actor.actorType || actor.type || "others";
+          const style = ACTOR_STYLES[actorType] || {
+            color: "#555",
+            fillColor: "#999",
+            radius: 6,
+            label: "Actor",
+          };
+
+          // --- Pulse ring (grows & fades) ---
+          const pulse = L.circleMarker([actor.lat, actor.lng], {
+            radius: style.radius * 0.5,
+            color: style.fillColor,
+            fillColor: style.fillColor,
+            fillOpacity: 0.6,
+            weight: 0,
+            className: "map-pulse-ring",
+          }).addTo(leafletMapRef.current);
+
+          // Animate pulse using CSS custom animation via SVG path
+          const pulsePath = pulse.getElement() as SVGElement | null;
+          if (pulsePath) {
+            pulsePath.style.transition = `r ${PULSE_DURATION_MS}ms ease-out, opacity ${PULSE_DURATION_MS}ms ease-out`;
+            requestAnimationFrame(() => {
+              pulsePath.style.opacity = "0";
+            });
+          }
+
+          // Grow the pulse ring
+          let frame = 0;
+          const totalFrames = 20;
+          const maxRadius = style.radius * 4;
+          const grow = () => {
+            frame++;
+            const progress = frame / totalFrames;
+            const r =
+              style.radius * 0.5 + (maxRadius - style.radius * 0.5) * progress;
+            const opacity = 1 - progress;
+            pulse.setRadius(r);
+            pulse.setStyle({
+              fillOpacity: opacity * 0.5,
+              color: style.fillColor,
+              fillColor: style.fillColor,
+              weight: 0,
+            });
+            if (frame < totalFrames) {
+              requestAnimationFrame(grow);
+            } else {
+              pulse.remove();
+            }
+          };
+          requestAnimationFrame(grow);
+
+          // --- Main marker (scales in from 0 to full radius) ---
+          const circle = L.circleMarker([actor.lat, actor.lng], {
+            radius: 0,
+            color: style.color,
+            fillColor: style.fillColor,
+            fillOpacity: 0,
+            weight: 1.5,
+          }).addTo(fg);
+
+          circle.bindPopup(
+            `<div style="font-family:sans-serif;font-size:13px;padding:4px 2px;">
+              <strong style="color:${style.color}">${style.label}</strong>
+              <br/><span style="color:#555;font-size:12px;">Anonymized location</span>
+            </div>`,
+            { maxWidth: 220 },
+          );
+
+          // Grow from 0 to target radius over ~300ms with a slight overshoot (spring feel)
+          let mFrame = 0;
+          const mTotalFrames = 18;
+          const targetRadius = style.radius;
+          const growMarker = () => {
+            mFrame++;
+            const t = mFrame / mTotalFrames;
+            // Ease out with a tiny overshoot using a custom spring-like curve
+            const overshoot = 1 + 0.25 * Math.sin(t * Math.PI);
+            const r = targetRadius * Math.min(t * overshoot * 1.3, 1.05);
+            const opacity = Math.min(t * 2, 1);
+            circle.setRadius(r);
+            circle.setStyle({ fillOpacity: opacity * 0.85, weight: 1.5 });
+            if (mFrame < mTotalFrames) {
+              requestAnimationFrame(growMarker);
+            } else {
+              circle.setRadius(targetRadius);
+              circle.setStyle({ fillOpacity: 0.85 });
+            }
+          };
+          requestAnimationFrame(growMarker);
+        }, i * STAGGER_MS);
+      });
+    };
+
+    // Small delay after inView to let the map tile-render first
+    setTimeout(runAnimation, 300);
+  }, [isInView, actors]);
+
+  // Sync markers if actors data changes after animation (background fetch)
+  useEffect(() => {
+    if (animationTriggeredRef.current) return; // let animation handle it on first load
+    if (!leafletMapRef.current || !featureGroupRef.current || !actors) return;
+
+    const sync = async () => {
+      const L = (await import("leaflet")).default;
+      const fg = featureGroupRef.current;
+      fg.clearLayers();
+      actors.forEach((actor: any) => {
+        if (!actor.lat || !actor.lng) return;
+        const actorType = actor.actorType || actor.type || "others";
+        const style = ACTOR_STYLES[actorType] || {
+          color: "#555",
+          fillColor: "#999",
+          radius: 6,
+          label: "Actor",
+        };
+        const circle = L.circleMarker([actor.lat, actor.lng], {
+          radius: style.radius,
+          color: style.color,
+          fillColor: style.fillColor,
+          fillOpacity: 0.85,
+          weight: 1.5,
+        });
+        circle.bindPopup(
+          `<div style="font-family:sans-serif;font-size:13px;padding:4px 2px;">
+            <strong style="color:${style.color}">${style.label}</strong>
+            <br/><span style="color:#555;font-size:12px;">Anonymized location</span>
+          </div>`,
+          { maxWidth: 220 },
+        );
+        fg.addLayer(circle);
+      });
+    };
+    sync();
   }, [actors]);
 
   return (
     <section id="map" className="py-24 bg-white" ref={sectionRef}>
-      {/* Inject tooltip CSS */}
+      {/* Inject tooltip & pulse CSS */}
       <style>{`
         .state-label-tooltip {
           background: transparent !important;
