@@ -178,7 +178,7 @@ export function ActorRegistration() {
             initial={{ opacity: 0, x: 30 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="relative w-full max-w-full min-w-0 hidden md:block mt-10 lg:mt-0"
+            className="relative w-full max-w-full min-w-0 mt-10 lg:mt-0 mb-auto"
           >
             {/* Decorative Background Glow */}
             <div className="absolute -inset-2 sm:-inset-4 rounded-[40px] bg-gradient-to-br from-brand-green/20 to-brand-sun/20 blur-2xl" />
@@ -204,14 +204,6 @@ export function ActorRegistration() {
                   <br />
                   Roles Available
                 </div>
-              </div>
-
-              {/* Floating Shield */}
-              <div className="absolute top-8 left-8 rounded-full bg-white p-4 shadow-xl border border-gray-100 flex items-center gap-3">
-                <ShieldCheck className="h-6 w-6 text-blue-500" />
-                <span className="font-bold text-sm text-gray-900 pr-2">
-                  Fully Verified
-                </span>
               </div>
             </div>
           </motion.div>
