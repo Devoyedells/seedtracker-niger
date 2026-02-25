@@ -8,6 +8,8 @@ import {
   Truck,
   Store,
   Users,
+  Sprout,
+  Warehouse,
 } from "lucide-react";
 
 export function ValueChainMap() {
@@ -16,39 +18,39 @@ export function ValueChainMap() {
 
   const chainStages = [
     {
+      icon: Sprout,
+      title: "Input Provision",
+      actors: "420 Suppliers",
+      description: "Fertilizers, agrochemicals, and machinery.",
+      color: "bg-emerald-600",
+    },
+    {
       icon: Factory,
       title: "Production",
-      actors: "1,240 Registered",
-      description: "Breeders and foundation seed farms",
+      actors: "1,240 Farms",
+      description: "Breeders and foundation seed farms.",
       color: "bg-brand-green",
     },
     {
-      icon: Package,
-      title: "Processing",
-      actors: "680 Facilities",
-      description: "Cleaning, grading, and packaging",
-      color: "bg-amber-500",
+      icon: Warehouse,
+      title: "Aggregation",
+      actors: "310 Centres",
+      description: "Consolidating seeds for bulk processing.",
+      color: "bg-purple-500",
     },
     {
       icon: Truck,
-      title: "Distribution",
-      actors: "2,100 Hubs",
-      description: "Wholesalers and logistics providers",
+      title: "Dealers & Retail",
+      actors: "850 Outlets",
+      description: "Agro-dealers and distribution hubs.",
       color: "bg-blue-500",
     },
     {
-      icon: Store,
-      title: "Retail",
-      actors: "3,850 Outlets",
-      description: "Agro-dealers and rural sales points",
-      color: "bg-brand-sun",
-    },
-    {
       icon: Users,
-      title: "End Users",
-      actors: "2,630 Groups",
-      description: "Farmers and commercial cooperatives",
-      color: "bg-emerald-600",
+      title: "Offtakers & End Users",
+      actors: "680 Entities",
+      description: "Commercial buyers and farmers.",
+      color: "bg-brand-sun",
     },
   ];
 

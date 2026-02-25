@@ -10,16 +10,16 @@ const actorData = [
   // Producers
   { lat: 7.85, lng: 5.22, type: "producer" },
   { lat: 7.72, lng: 5.4, type: "producer" },
-  { lat: 7.6, lng: 5.18, type: "producer" },
-  { lat: 7.95, lng: 5.35, type: "producer" },
+  { lat: 7.6, lng: 5.18, type: "input_provider" },
+  { lat: 7.95, lng: 5.35, type: "offtaker" },
   // Processors
   { lat: 7.78, lng: 5.28, type: "processor" },
-  { lat: 7.55, lng: 5.45, type: "processor" },
-  // Distributors
-  { lat: 7.74, lng: 5.32, type: "distributor" },
-  { lat: 7.88, lng: 5.15, type: "distributor" },
-  { lat: 7.65, lng: 5.5, type: "distributor" },
-  { lat: 7.82, lng: 5.42, type: "distributor" },
+  { lat: 7.55, lng: 5.45, type: "aggregator" },
+  // Dealers
+  { lat: 7.74, lng: 5.32, type: "dealer" },
+  { lat: 7.88, lng: 5.15, type: "dealer" },
+  { lat: 7.65, lng: 5.5, type: "dealer" },
+  { lat: 7.82, lng: 5.42, type: "dealer" },
   // Farmers
   { lat: 7.7, lng: 5.2, type: "farmer" },
   { lat: 7.9, lng: 5.28, type: "farmer" },
@@ -33,18 +33,18 @@ const actorData = [
   { lat: 10.32, lng: 5.72, type: "producer" },
   { lat: 9.85, lng: 6.18, type: "producer" },
   { lat: 10.55, lng: 6.3, type: "producer" },
-  { lat: 9.7, lng: 5.9, type: "producer" },
-  { lat: 10.2, lng: 6.5, type: "producer" },
+  { lat: 9.7, lng: 5.9, type: "input_provider" },
+  { lat: 10.2, lng: 6.5, type: "offtaker" },
   // Processors
   { lat: 10.1, lng: 6.02, type: "processor" },
-  { lat: 9.9, lng: 6.42, type: "processor" },
+  { lat: 9.9, lng: 6.42, type: "aggregator" },
   { lat: 10.45, lng: 5.85, type: "processor" },
-  // Distributors
-  { lat: 10.0, lng: 6.0, type: "distributor" },
-  { lat: 10.28, lng: 6.22, type: "distributor" },
-  { lat: 9.75, lng: 5.8, type: "distributor" },
-  { lat: 10.52, lng: 6.1, type: "distributor" },
-  { lat: 9.62, lng: 6.35, type: "distributor" },
+  // Dealers
+  { lat: 10.0, lng: 6.0, type: "dealer" },
+  { lat: 10.28, lng: 6.22, type: "dealer" },
+  { lat: 9.75, lng: 5.8, type: "dealer" },
+  { lat: 10.52, lng: 6.1, type: "dealer" },
+  { lat: 9.62, lng: 6.35, type: "dealer" },
   // Farmers
   { lat: 10.15, lng: 5.95, type: "farmer" },
   { lat: 9.88, lng: 6.12, type: "farmer" },
@@ -59,18 +59,18 @@ const actorData = [
   // Producers
   { lat: 6.35, lng: 6.95, type: "producer" },
   { lat: 6.18, lng: 7.2, type: "producer" },
-  { lat: 6.42, lng: 7.12, type: "producer" },
+  { lat: 6.42, lng: 7.12, type: "input_provider" },
   // Processors
   { lat: 6.25, lng: 7.05, type: "processor" },
   { lat: 6.1, lng: 7.18, type: "processor" },
-  { lat: 6.38, lng: 6.98, type: "processor" },
-  // Distributors
-  { lat: 6.22, lng: 7.1, type: "distributor" },
-  { lat: 6.3, lng: 7.0, type: "distributor" },
-  { lat: 6.15, lng: 7.25, type: "distributor" },
-  { lat: 6.4, lng: 7.18, type: "distributor" },
-  { lat: 6.08, lng: 6.95, type: "distributor" },
-  { lat: 6.45, lng: 7.3, type: "distributor" },
+  { lat: 6.38, lng: 6.98, type: "aggregator" },
+  // Dealers
+  { lat: 6.22, lng: 7.1, type: "dealer" },
+  { lat: 6.3, lng: 7.0, type: "dealer" },
+  { lat: 6.15, lng: 7.25, type: "dealer" },
+  { lat: 6.4, lng: 7.18, type: "dealer" },
+  { lat: 6.08, lng: 6.95, type: "dealer" },
+  { lat: 6.45, lng: 7.3, type: "offtaker" },
   // Farmers
   { lat: 6.28, lng: 7.08, type: "farmer" },
   { lat: 6.12, lng: 7.02, type: "farmer" },
@@ -97,10 +97,10 @@ const ACTOR_STYLES: Record<
     label: "Processors & Warehouses",
     radius: 7,
   },
-  distributor: {
+  dealer: {
     color: "#005C35",
     fillColor: "#16a34a",
-    label: "Distributors & Retailers",
+    label: "Dealers & Retailers",
     radius: 7,
   },
   farmer: {
@@ -108,6 +108,24 @@ const ACTOR_STYLES: Record<
     fillColor: "#059669",
     label: "Farmers & Cooperatives",
     radius: 6,
+  },
+  input_provider: {
+    color: "#047857",
+    fillColor: "#10b981",
+    label: "Input Providers",
+    radius: 7,
+  },
+  aggregator: {
+    color: "#6b21a8",
+    fillColor: "#a855f7",
+    label: "Aggregators",
+    radius: 7,
+  },
+  offtaker: {
+    color: "#b91c1c",
+    fillColor: "#ef4444",
+    label: "Offtakers",
+    radius: 7,
   },
 };
 

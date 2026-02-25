@@ -41,7 +41,7 @@ export function FAQ() {
     {
       question: "What support is available for new users?",
       answer:
-        "We offer comprehensive onboarding support including video tutorials, user guides, and a dedicated helpline (+234 9 123 4567). Regional support staff are available across major agricultural zones to assist with registration and platform usage.",
+        "We offer comprehensive onboarding support including video tutorials, user guides, and a dedicated helpline (+234 0 000 0000). Regional support staff are available across major agricultural zones to assist with registration and platform usage.",
     },
   ];
 

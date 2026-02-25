@@ -98,7 +98,7 @@ export function ValueChainVisibility() {
           <div className="grid grid-cols-2 gap-x-6 gap-y-12 md:grid-cols-4">
             {[
               { value: "8,400", suffix: "+", label: "Total Actors" },
-              { value: "36", suffix: "", label: "States Connected" },
+              { value: "3", suffix: "", label: "States Connected" },
               { value: "12,500", suffix: "+", label: "Product Listings" },
               { value: "100", suffix: "%", label: "Transparency" },
             ].map((stat) => (

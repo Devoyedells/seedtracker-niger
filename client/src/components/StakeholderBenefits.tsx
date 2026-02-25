@@ -1,7 +1,14 @@
 import { motion, AnimatePresence } from "motion/react";
 import { useInView } from "motion/react";
 import { useRef, useState } from "react";
-import { Users, Building2, GraduationCap, CheckCircle2 } from "lucide-react";
+import {
+  Users,
+  Building2,
+  GraduationCap,
+  CheckCircle2,
+  Tractor,
+  Factory,
+} from "lucide-react";
 
 export function StakeholderBenefits() {
   const ref = useRef(null);
@@ -12,7 +19,7 @@ export function StakeholderBenefits() {
     {
       id: "producers",
       icon: Users,
-      title: "For Producers",
+      title: "Seed Producers",
       subtitle: "Breeders, Foundation & Multiplication Farms",
       description:
         "Elevate your seed business. Reach verified buyers directly, track your production metrics in real-time, and build a nationwide reputation for quality.",
@@ -28,21 +35,57 @@ export function StakeholderBenefits() {
       ],
     },
     {
-      id: "distributors",
+      id: "dealers",
       icon: Building2,
-      title: "Distributors & Retailers",
+      title: "Dealers & Retailers",
       subtitle: "Agro-dealers & Seed Shops",
       description:
         "Source verified, high-quality seeds at competitive prices. Coordinate logistics effortlessly and provide your customers with transparent origin tracking.",
-      color: "text-brand-earth",
-      bgColor: "bg-brand-earth/10",
-      cardGradient: "from-brand-earth/10 to-brand-earth/5",
-      accentColor: "bg-brand-earth",
+      color: "text-blue-500",
+      bgColor: "bg-blue-500/10",
+      cardGradient: "from-blue-500/10 to-blue-500/5",
+      accentColor: "bg-blue-500",
       benefits: [
         "Connect with verified seed suppliers",
         "Access to diverse product catalog",
         "Competitive pricing transparency",
         "Logistics and delivery coordination",
+      ],
+    },
+    {
+      id: "input_aggregators",
+      icon: Tractor,
+      title: "Inputs & Aggregation",
+      subtitle: "Input Providers & Aggregators",
+      description:
+        "Reach out directly to producers and farmers. Provide inputs securely and aggregate yields efficiently using our real-time visibility tools.",
+      color: "text-emerald-500",
+      bgColor: "bg-emerald-500/10",
+      cardGradient: "from-emerald-500/10 to-emerald-500/5",
+      accentColor: "bg-emerald-500",
+      benefits: [
+        "Targeted farmer outreach",
+        "Streamlined procurement",
+        "Logistics planning and aggregation",
+        "Quality assurance tracking",
+      ],
+    },
+    {
+      id: "offtakers",
+      icon: Factory,
+      title: "Offtakers",
+      subtitle: "Offtakers & Industrial Buyers",
+      description:
+        "Secure your supply chains. Discover verified seed producers and aggregators capable of fulfilling high-volume commercial needs consistently.",
+      color: "text-purple-500",
+      bgColor: "bg-purple-500/10",
+      cardGradient: "from-purple-500/10 to-purple-500/5",
+      accentColor: "bg-purple-500",
+      benefits: [
+        "Guaranteed supply chains",
+        "Verified actor sourcing",
+        "Bulk procurement tracking",
+        "Forward contracting opportunities",
       ],
     },
     {
