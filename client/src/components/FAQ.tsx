@@ -16,32 +16,32 @@ export function FAQ() {
     {
       question: "Who can register on the platform?",
       answer:
-        "Any individual or organization involved in Nigeria's seed value chain can register, including seed producers, processors, warehouses, distributors, retailers (agro-dealers), farmers, and cooperatives. Registration is free and open to all verified stakeholders.",
-    },
-    {
-      question: "How do I list my seed products on the marketplace?",
-      answer:
-        'After registering as an actor, log into your dashboard and click "Add Product Listing". Fill in details about variety, quantity, price, location, and upload certification documents if applicable. Your listing goes live immediately and is visible to all platform users.',
+        "Any individual or organization involved in Nigeria's seed value chain can register, including seed producers, processors, warehouses, distributors, retailers (agro-dealers), farmers, and cooperatives. Registration is free and open to all stakeholders in participating states.",
     },
     {
       question: "Is there a fee for using the platform?",
       answer:
-        "Registration and basic listing services are completely free. Premium features like featured listings, advanced analytics, and priority customer support are available through optional subscription plans starting from ₦5,000/month.",
+        "No, registration and creating your actor profile on the Seed Tracker NG platform are completely free.",
     },
     {
-      question: "How can I verify other actors on the platform?",
+      question: "How can others verify my actor profile?",
       answer:
-        "All registered actors display a verification badge once they submit valid identification and business documentation. You can view an actor's profile to see their verification status, ratings, transaction history, and contact information.",
+        "After registering, you receive a unique, scannable QR code on your dashboard. You can share this code with anyone. When someone scans it, they are taken directly to your public verified profile, showcasing your details, organization, and confirmed actor type.",
     },
     {
-      question: "Can I track seed availability across different states?",
+      question: "How do I find other seed value chain actors?",
       answer:
-        "Yes! Our platform provides real-time inventory tracking across all 3 states. Use the search and filter tools in the marketplace to find specific varieties by location, price range, and availability status.",
+        "Our platform provides a real-time geospatial map. You can use the Actor Map feature to explore and find other registered actors (such as producers, aggregators, or farmers) across participating states, rapidly filtering by actor type or specific state.",
     },
     {
-      question: "What support is available for new users?",
+      question: "Which states are currently supported?",
       answer:
-        "We offer comprehensive onboarding support including video tutorials, user guides, and a dedicated helpline (+234 0 000 0000). Regional support staff are available across major agricultural zones to assist with registration and platform usage.",
+        "Currently, our platform fully supports and maps actors across three key participating states: Ekiti, Niger, and Anambra. However, we have plans to expand to more states in the near future.",
+    },
+    {
+      question: "Is my personal data and exact location public?",
+      answer:
+        "No, your privacy is a high priority. On the public Actor Map, locations are slightly anonymized or approximated to protect your exact address. Sensitive contact details are only shared securely through your verified public profile which you control via your personalized QR Code.",
     },
   ];
 
