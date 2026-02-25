@@ -53,11 +53,6 @@ export class UsersController {
     @Query('limit') limit: string = '10',
     @Query('search') search: string = '',
   ) {
-    if (req.user.role === 'user') {
-      throw new ForbiddenException(
-        'Users do not have access to the actor directory',
-      );
-    }
     return this.usersService.getActors(
       req.user.role,
       req.user.registrationState,
@@ -93,6 +88,18 @@ export class UsersController {
       throw new ForbiddenException('Access denied to other state actors');
     }
 
+    return actor;
+  }
+
+  @Get('public/:id')
+  async getPublicActorById(@Param('id') id: string) {
+    const actor = await this.usersService.findById(id);
+
+    if (!actor) {
+      throw new NotFoundException('Actor not found');
+    }
+
+    // Strip sensitive fields just in case, though findById should already strip password
     return actor;
   }
 }

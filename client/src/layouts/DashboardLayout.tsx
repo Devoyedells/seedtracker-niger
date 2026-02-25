@@ -7,9 +7,10 @@ import {
   LogOut,
   Menu,
   X,
-  Sprout,
   ChevronRight,
   BookUser,
+  QrCode,
+  Sprout,
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { toast } from "sonner";
@@ -51,6 +52,8 @@ export default function DashboardLayout({
   const navItems = [
     { label: "Dashboard", icon: LayoutDashboard, path: "/dashboard" },
     { label: "Profile", icon: User, path: "/dashboard/profile" },
+    { label: "My QR Code", icon: QrCode, path: "/dashboard/qrcode" },
+    { label: "Actor Map", icon: Map, path: "/dashboard/map" },
   ];
 
   if (user?.role && user.role !== "user") {
