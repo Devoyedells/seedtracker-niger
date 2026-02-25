@@ -53,11 +53,6 @@ export class UsersController {
     @Query('limit') limit: string = '10',
     @Query('search') search: string = '',
   ) {
-    if (req.user.role === 'user') {
-      throw new ForbiddenException(
-        'Users do not have access to the actor directory',
-      );
-    }
     return this.usersService.getActors(
       req.user.role,
       req.user.registrationState,

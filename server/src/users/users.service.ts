@@ -95,6 +95,9 @@ export class UsersService {
   }> {
     const matchFilter: any = {};
 
+    if (userRole === 'user' && userState) {
+      matchFilter.registrationState = userState;
+    }
     if (userRole === 'ekadmin') matchFilter.registrationState = 'Ekiti';
     if (userRole === 'anadmin') matchFilter.registrationState = 'Anambra';
     if (userRole === 'ngadmin') matchFilter.registrationState = 'Niger';

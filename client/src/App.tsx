@@ -9,6 +9,7 @@ import DashboardPage from "@/pages/DashboardPage";
 import ProfilePage from "@/pages/ProfilePage";
 import ValueChainActorsPage from "@/pages/ValueChainActorsPage";
 import ActorDetailsPage from "@/pages/ActorDetailsPage";
+import ActorMapPage from "@/pages/ActorMapPage";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import DashboardLayout from "@/layouts/DashboardLayout";
 
@@ -59,6 +60,16 @@ export default function App() {
                 <ProtectedRoute>
                   <DashboardLayout>
                     <ActorDetailsPage />
+                  </DashboardLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/dashboard/map"
+              element={
+                <ProtectedRoute>
+                  <DashboardLayout>
+                    <ActorMapPage />
                   </DashboardLayout>
                 </ProtectedRoute>
               }
