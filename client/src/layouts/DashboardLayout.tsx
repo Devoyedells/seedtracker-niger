@@ -78,7 +78,7 @@ export default function DashboardLayout({
     // Outer shell: full viewport, no overflow — all scrolling handled inside
     <div
       className="flex h-screen overflow-hidden bg-[#f5f6f8]"
-      style={{ fontFamily: "'Inter', sans-serif" }}
+      style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
     >
       {/* ── Mobile Backdrop ──────────────────────────────────────── */}
       {sidebarOpen && (
