@@ -63,6 +63,16 @@ export class UsersController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Get('map-data')
+  async getMapData(@Request() req) {
+    const actors = await this.usersService.getMapActors(
+      req.user.role,
+      req.user.registrationState,
+      false,
+    );
+    return { data: actors };
+  }
+  @UseGuards(JwtAuthGuard)
   @Get('actors/:id')
   async getActorById(@Request() req, @Param('id') id: string) {
     if (req.user.role === 'user') {
@@ -101,5 +111,20 @@ export class UsersController {
 
     // Strip sensitive fields just in case, though findById should already strip password
     return actor;
+  }
+
+  @Get('public-data/stats')
+  async getPublicStats() {
+    return this.usersService.getStats('admin');
+  }
+
+  @Get('public-data/actors')
+  async getPublicActors() {
+    const actors = await this.usersService.getMapActors(
+      'admin',
+      undefined,
+      true,
+    );
+    return { data: actors };
   }
 }

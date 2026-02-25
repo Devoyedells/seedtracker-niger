@@ -92,33 +92,42 @@ export default function PublicActorPage() {
       <div className="bg-gray-50 flex flex-col items-center pt-32 pb-20 px-4 sm:px-6 min-h-screen">
         <div className="w-full max-w-2xl bg-white rounded-3xl border border-gray-200 shadow-xl overflow-hidden">
           {/* Header Banner */}
-          <div className="h-32 bg-gradient-to-r from-brand-green to-[#005C35]" />
+          <div className="h-36 bg-gradient-to-r from-brand-green to-[#005C35] relative">
+            {/* Decorative pattern */}
+            <div
+              className="absolute inset-0 opacity-10"
+              style={{
+                backgroundImage: `linear-gradient(#ffffff 1px, transparent 1px), linear-gradient(90deg, #ffffff 1px, transparent 1px)`,
+                backgroundSize: "32px 32px",
+              }}
+            />
+          </div>
+
+          {/* Avatar — centered, overlapping the banner bottom */}
+          <div className="flex justify-center -mt-14 relative z-10">
+            <div className="w-28 h-28 rounded-3xl bg-white p-2 shadow-lg">
+              <div className="w-full h-full bg-brand-green/10 rounded-2xl flex items-center justify-center text-brand-green font-black text-3xl">
+                {initials}
+              </div>
+            </div>
+          </div>
 
           <div className="px-6 sm:px-10 pb-10">
-            {/* Avatar & Name */}
-            <div className="flex flex-col sm:flex-row gap-6 items-start sm:items-end -mt-12 mb-8">
-              <div className="w-28 h-28 rounded-3xl bg-white p-2 shadow-lg z-10">
-                <div className="w-full h-full bg-brand-green/10 rounded-2xl flex items-center justify-center text-brand-green font-black text-3xl">
-                  {initials}
+            {/* Name & Badges — centered below avatar */}
+            <div className="text-center mt-4 mb-8">
+              <h1 className="text-2xl sm:text-3xl font-black text-gray-900 leading-tight mb-3">
+                {actor.fullName}
+              </h1>
+              <div className="flex flex-wrap items-center justify-center gap-3">
+                <div className="bg-brand-sun/15 text-[#B87D00] px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide flex items-center gap-1.5 border border-brand-sun/30">
+                  <BadgeCheck className="w-3.5 h-3.5" />
+                  Verified Actor
                 </div>
-              </div>
-              <div className="flex-1 pb-2">
-                <div className="flex items-center gap-2 mb-1">
-                  <h1 className="text-2xl sm:text-3xl font-black text-gray-900 leading-tight">
-                    {actor.fullName}
-                  </h1>
-                </div>
-                <div className="flex flex-wrap items-center gap-3">
-                  <div className="bg-brand-sun/15 text-[#B87D00] px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide flex items-center gap-1.5 border border-brand-sun/30">
-                    <BadgeCheck className="w-3.5 h-3.5" />
-                    Verified Actor
-                  </div>
-                  {actor.actorType && (
-                    <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-gray-100 text-gray-600 uppercase tracking-wider">
-                      {actorTypeLabel[actor.actorType] ?? actor.actorType}
-                    </span>
-                  )}
-                </div>
+                {actor.actorType && (
+                  <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-gray-100 text-gray-600 uppercase tracking-wider">
+                    {actorTypeLabel[actor.actorType] ?? actor.actorType}
+                  </span>
+                )}
               </div>
             </div>
 
@@ -220,12 +229,6 @@ export default function PublicActorPage() {
             </div>
           </div>
         </div>
-
-        {/* Footer info block */}
-        <p className="mt-8 text-center text-xs text-gray-400 max-w-sm">
-          This profile was accessed via a verified QR link from the National
-          Seed Tracker platform.
-        </p>
       </div>
     </LandingLayout>
   );

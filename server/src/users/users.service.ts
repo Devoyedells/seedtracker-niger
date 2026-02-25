@@ -131,4 +131,28 @@ export class UsersService {
       totalPages: Math.ceil(total / limit) || 1,
     };
   }
+
+  async getMapActors(
+    userRole: string,
+    userState?: string,
+    isPublic: boolean = false,
+  ): Promise<any[]> {
+    const matchFilter: any = {
+      lat: { $exists: true, $nin: [null, ''] },
+      lng: { $exists: true, $nin: [null, ''] },
+    };
+
+    if (userRole === 'user' && userState) {
+      matchFilter.registrationState = userState;
+    }
+    if (userRole === 'ekadmin') matchFilter.registrationState = 'Ekiti';
+    if (userRole === 'anadmin') matchFilter.registrationState = 'Anambra';
+    if (userRole === 'ngadmin') matchFilter.registrationState = 'Niger';
+
+    const projection = isPublic
+      ? 'lat lng actorType'
+      : 'lat lng actorType registrationState fullName';
+
+    return this.userModel.find(matchFilter).select(projection).exec();
+  }
 }
