@@ -82,9 +82,9 @@ export default function LoginPage() {
               <span className="text-brand-sun">Impact</span>
             </h1>
             <p className="text-xl text-white/60 leading-relaxed font-medium">
-              Welcome back to the node of Nigeria's seed success. Stay visible,
-              stay verified, and keep your business integrated with the nation's
-              agricultural progress.
+              Welcome back to the node of Nigeria&apos;s seed success. Stay
+              visible, stay verified, and keep your business integrated with the
+              nation's agricultural progress.
             </p>
           </div>
         </div>

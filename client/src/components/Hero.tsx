@@ -37,7 +37,7 @@ export function Hero() {
             >
               <Network className="w-4 h-4 text-brand-sun" />
               <span className="text-sm font-bold tracking-wide">
-                Farmer&apos; Information Management Platform
+                Seed Information Management Platform
               </span>
             </motion.div>
 
@@ -174,39 +174,96 @@ export function Hero() {
                 </div>
                 <div className="space-y-4">
                   <div className="flex gap-3 items-center">
-                    <div className="w-10 h-10 rounded-xl bg-blue-100 text-blue-600 flex justify-center items-center font-bold text-sm">
+                    <div className="w-8 h-8 rounded-xl bg-blue-100 text-blue-600 flex justify-center items-center font-bold text-xs">
                       P
                     </div>
                     <div className="flex-1">
                       <div className="flex justify-between items-center mb-1">
-                        <span className="text-xs font-bold text-gray-500 uppercase tracking-wide">
-                          Producers
+                        <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wide">
+                          Seed Producers
                         </span>
                         <span className="text-xs font-black text-gray-800">
                           1,240
                         </span>
                       </div>
-                      <div className="h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
+                      <div className="h-1 w-full bg-gray-100 rounded-full overflow-hidden">
                         <div className="h-full bg-blue-500 rounded-full w-[70%]" />
                       </div>
                     </div>
                   </div>
 
                   <div className="flex gap-3 items-center">
-                    <div className="w-10 h-10 rounded-xl bg-orange-100 text-orange-600 flex justify-center items-center font-bold text-sm">
+                    <div className="w-8 h-8 rounded-xl bg-orange-100 text-orange-600 flex justify-center items-center font-bold text-xs">
                       D
                     </div>
                     <div className="flex-1">
                       <div className="flex justify-between items-center mb-1">
-                        <span className="text-xs font-bold text-gray-500 uppercase tracking-wide">
-                          Distributors
+                        <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wide">
+                          Dealers
                         </span>
                         <span className="text-xs font-black text-gray-800">
                           850
                         </span>
                       </div>
-                      <div className="h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
+                      <div className="h-1 w-full bg-gray-100 rounded-full overflow-hidden">
                         <div className="h-full bg-orange-500 rounded-full w-[45%]" />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-3 items-center">
+                    <div className="w-8 h-8 rounded-xl bg-green-100 text-green-600 flex justify-center items-center font-bold text-xs">
+                      IP
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex justify-between items-center mb-1">
+                        <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wide">
+                          Input Providers
+                        </span>
+                        <span className="text-xs font-black text-gray-800">
+                          420
+                        </span>
+                      </div>
+                      <div className="h-1 w-full bg-gray-100 rounded-full overflow-hidden">
+                        <div className="h-full bg-green-500 rounded-full w-[25%]" />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-3 items-center">
+                    <div className="w-8 h-8 rounded-xl bg-purple-100 text-purple-600 flex justify-center items-center font-bold text-xs">
+                      A
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex justify-between items-center mb-1">
+                        <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wide">
+                          Aggregators
+                        </span>
+                        <span className="text-xs font-black text-gray-800">
+                          310
+                        </span>
+                      </div>
+                      <div className="h-1 w-full bg-gray-100 rounded-full overflow-hidden">
+                        <div className="h-full bg-purple-500 rounded-full w-[20%]" />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-3 items-center">
+                    <div className="w-8 h-8 rounded-xl bg-red-100 text-red-600 flex justify-center items-center font-bold text-xs">
+                      O
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex justify-between items-center mb-1">
+                        <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wide">
+                          Offtakers
+                        </span>
+                        <span className="text-xs font-black text-gray-800">
+                          180
+                        </span>
+                      </div>
+                      <div className="h-1 w-full bg-gray-100 rounded-full overflow-hidden">
+                        <div className="h-full bg-red-500 rounded-full w-[15%]" />
                       </div>
                     </div>
                   </div>

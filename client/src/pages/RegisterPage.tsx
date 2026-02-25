@@ -2,15 +2,22 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Eye, EyeOff, Leaf, Activity, Sprout, Network } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { AddressAutocomplete } from "@/components/AddressAutocomplete";
 
 export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
+
+    const formData = new FormData(e.currentTarget);
+    const formValues = Object.fromEntries(formData.entries());
+
+    console.log("Form Values:", formValues);
+
     setTimeout(() => {
       setIsLoading(false);
     }, 1500);
@@ -83,9 +90,9 @@ export default function RegisterPage() {
               <span className="text-brand-sun">Visibility</span>
             </h1>
             <p className="text-xl text-white/60 leading-relaxed font-medium">
-              Establish your presence in Nigeria's leading seed marketplace.
-              Join thousands of verified actors making their mark on national
-              food security.
+              Establish your presence in Nigeria&apos;s leading seed
+              marketplace. Join thousands of verified actors making their mark
+              on national food security.
             </p>
           </div>
         </div>
@@ -166,6 +173,7 @@ export default function RegisterPage() {
                 <div className="relative">
                   <input
                     id="FullName"
+                    name="FullName"
                     type="text"
                     placeholder="Enter your registered name"
                     className="w-full rounded-2xl border-2 border-brand-green/20 bg-gray-50 hover:bg-gray-100 hover:border-brand-green/40 focus:bg-white focus:border-brand-green focus:ring-4 focus:ring-brand-green/20 transition-all px-5 py-3.5 text-[15px] font-medium outline-none"
@@ -185,6 +193,7 @@ export default function RegisterPage() {
                 <div className="relative">
                   <input
                     id="Email"
+                    name="Email"
                     type="email"
                     placeholder="Enter official email"
                     className="w-full rounded-2xl border-2 border-brand-green/20 bg-gray-50 hover:bg-gray-100 hover:border-brand-green/40 focus:bg-white focus:border-brand-green focus:ring-4 focus:ring-brand-green/20 transition-all px-5 py-3.5 text-[15px] font-medium outline-none"
@@ -204,6 +213,7 @@ export default function RegisterPage() {
                 <div className="relative">
                   <select
                     id="ActorType"
+                    name="ActorType"
                     className="w-full appearance-none rounded-2xl border-2 border-brand-green/20 bg-gray-50 hover:bg-gray-100 hover:border-brand-green/40 focus:bg-white focus:border-brand-green focus:ring-4 focus:ring-brand-green/20 transition-all px-5 py-3.5 text-[15px] font-medium outline-none text-gray-600"
                     disabled={isLoading}
                     required
@@ -212,9 +222,13 @@ export default function RegisterPage() {
                       Choose type
                     </option>
                     <option value="producer">Seed Producer</option>
+                    <option value="input_provider">Input Provider</option>
+                    <option value="aggregator">Aggregator</option>
+                    <option value="dealer">Dealers & Retailers</option>
+                    <option value="offtaker">Offtaker</option>
                     <option value="processor">Processor & Warehouse</option>
-                    <option value="distributor">Distributor & Retailer</option>
                     <option value="farmer">Farmer or Cooperative</option>
+                    <option value="others">Others</option>
                   </select>
                 </div>
               </div>
@@ -227,15 +241,25 @@ export default function RegisterPage() {
                   Location State*
                 </label>
                 <div className="relative">
-                  <input
+                  <select
                     id="RegistrationState"
-                    type="text"
-                    placeholder="E.g. Niger State"
-                    className="w-full rounded-2xl border-2 border-brand-green/20 bg-gray-50 hover:bg-gray-100 hover:border-brand-green/40 focus:bg-white focus:border-brand-green focus:ring-4 focus:ring-brand-green/20 transition-all px-5 py-3.5 text-[15px] font-medium outline-none"
+                    name="RegistrationState"
+                    className="w-full appearance-none rounded-2xl border-2 border-brand-green/20 bg-gray-50 hover:bg-gray-100 hover:border-brand-green/40 focus:bg-white focus:border-brand-green focus:ring-4 focus:ring-brand-green/20 transition-all px-5 py-3.5 text-[15px] font-medium outline-none text-gray-600"
                     disabled={isLoading}
                     required
-                  />
+                  >
+                    <option value="" disabled selected>
+                      Select State
+                    </option>
+                    <option value="ekiti">Ekiti</option>
+                    <option value="anambra">Anambra</option>
+                    <option value="niger">Niger</option>
+                  </select>
                 </div>
+              </div>
+
+              <div className="sm:col-span-2">
+                <AddressAutocomplete isLoading={isLoading} />
               </div>
 
               <div className="sm:col-span-2">
@@ -248,6 +272,7 @@ export default function RegisterPage() {
                 <div className="relative">
                   <input
                     id="Password"
+                    name="Password"
                     type={showPassword ? "text" : "password"}
                     placeholder="Create a password"
                     className="w-full rounded-2xl border-2 border-brand-green/20 bg-gray-50 hover:bg-gray-100 hover:border-brand-green/40 focus:bg-white focus:border-brand-green focus:ring-4 focus:ring-brand-green/20 transition-all px-5 py-3.5 pr-12 text-[15px] font-medium outline-none"
@@ -260,36 +285,6 @@ export default function RegisterPage() {
                     onClick={() => setShowPassword(!showPassword)}
                   >
                     {showPassword ? (
-                      <Eye className="w-5 h-5" />
-                    ) : (
-                      <EyeOff className="w-5 h-5" />
-                    )}
-                  </button>
-                </div>
-              </div>
-
-              <div className="sm:col-span-2">
-                <label
-                  htmlFor="ConfirmPassword"
-                  className="text-[12px] font-bold text-gray-700 mb-1.5 block uppercase tracking-wider"
-                >
-                  Confirm Password*
-                </label>
-                <div className="relative">
-                  <input
-                    id="ConfirmPassword"
-                    type={showConfirmPassword ? "text" : "password"}
-                    placeholder="Re-enter your password"
-                    className="w-full rounded-2xl border-2 border-brand-green/20 bg-gray-50 hover:bg-gray-100 hover:border-brand-green/40 focus:bg-white focus:border-brand-green focus:ring-4 focus:ring-brand-green/20 transition-all px-5 py-3.5 pr-12 text-[15px] font-medium outline-none"
-                    required
-                    disabled={isLoading}
-                  />
-                  <button
-                    type="button"
-                    className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-brand-green transition-colors"
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  >
-                    {showConfirmPassword ? (
                       <Eye className="w-5 h-5" />
                     ) : (
                       <EyeOff className="w-5 h-5" />
