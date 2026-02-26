@@ -1,18 +1,86 @@
-import { motion } from "motion/react";
-import { useInView } from "motion/react";
-import { useRef } from "react";
+import { motion, useInView } from "motion/react";
+import { useRef, useEffect, useState } from "react";
 import { TrendingUp, Globe, Eye } from "lucide-react";
+
+// Counts up from 0 to `target` over `duration`ms with easeOutExpo, delayed by `delay`ms
+function useCountUp(
+  target: number,
+  duration: number,
+  delay: number,
+  active: boolean,
+) {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (!active) return;
+    let startTime: number | null = null;
+    let rafId: number;
+    const delayTimer = setTimeout(() => {
+      const step = (timestamp: number) => {
+        if (!startTime) startTime = timestamp;
+        const elapsed = timestamp - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        // easeOutExpo
+        const eased = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+        setCount(Math.floor(eased * target));
+        if (progress < 1) rafId = requestAnimationFrame(step);
+        else setCount(target);
+      };
+      rafId = requestAnimationFrame(step);
+    }, delay);
+
+    return () => {
+      clearTimeout(delayTimer);
+      cancelAnimationFrame(rafId);
+    };
+  }, [target, duration, delay, active]);
+
+  return count;
+}
 
 export function ValueChainVisibility() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+
+  // Individual stat counts (staggered 150ms apart after section enters view)
+  const totalActors = useCountUp(8400, 1800, 500, isInView);
+  const statesCount = useCountUp(3, 1000, 650, isInView);
+  const listings = useCountUp(12500, 2000, 800, isInView);
+  const transparency = useCountUp(100, 1400, 950, isInView);
+
+  const stats = [
+    {
+      count: totalActors,
+      formatted: totalActors.toLocaleString(),
+      suffix: "+",
+      label: "Total Actors",
+    },
+    {
+      count: statesCount,
+      formatted: String(statesCount),
+      suffix: "",
+      label: "States Connected",
+    },
+    {
+      count: listings,
+      formatted: listings.toLocaleString(),
+      suffix: "+",
+      label: "Product Listings",
+    },
+    {
+      count: transparency,
+      formatted: String(transparency),
+      suffix: "%",
+      label: "Transparency",
+    },
+  ];
 
   const pillars = [
     {
       icon: Eye,
       title: "Real-Time Visibility",
       description:
-        "Track seed movement from production to farmer’s field with live inventory data across all 3 states.",
+        "Track seed movement from production to farmer's field with live inventory data across all 3 states.",
     },
     {
       icon: TrendingUp,
@@ -33,6 +101,16 @@ export function ValueChainVisibility() {
       className="relative overflow-hidden bg-brand-green py-24 lg:py-32"
       ref={ref}
     >
+      <style>{`
+        @keyframes heartbeat {
+          0%   { transform: scale(1); }
+          14%  { transform: scale(1.18); }
+          28%  { transform: scale(1); }
+          42%  { transform: scale(1.12); }
+          56%  { transform: scale(1); }
+          100% { transform: scale(1); }
+        }
+      `}</style>
       {/* Plus Background Effects */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <div
@@ -75,7 +153,16 @@ export function ValueChainVisibility() {
               className="group relative overflow-hidden rounded-3xl bg-white/10 backdrop-blur-md p-8 sm:p-10 border border-white/20 shadow-2xl transition-all hover:-translate-y-2 hover:bg-white/15"
             >
               <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-              <div className="relative z-10 mb-8 flex h-14 w-14 items-center justify-center rounded-2xl bg-white/15 shadow-inner">
+              <div
+                className="relative z-10 mb-8 flex h-14 w-14 items-center justify-center rounded-2xl bg-white/15 shadow-inner"
+                style={
+                  isInView
+                    ? {
+                        animation: `heartbeat 2.2s ease-in-out ${index * 0.35}s infinite`,
+                      }
+                    : {}
+                }
+              >
                 <pillar.icon className="h-7 w-7 text-brand-sun" />
               </div>
               <h3 className="relative z-10 mb-4 text-2xl font-bold text-white">
@@ -96,15 +183,10 @@ export function ValueChainVisibility() {
           className="mx-auto max-w-[1000px] rounded-[40px] bg-white/5 p-10 border border-white/10 backdrop-blur-sm"
         >
           <div className="grid grid-cols-2 gap-x-6 gap-y-12 md:grid-cols-4">
-            {[
-              { value: "8,400", suffix: "+", label: "Total Actors" },
-              { value: "3", suffix: "", label: "States Connected" },
-              { value: "12,500", suffix: "+", label: "Product Listings" },
-              { value: "100", suffix: "%", label: "Transparency" },
-            ].map((stat) => (
+            {stats.map((stat) => (
               <div key={stat.label} className="text-center group">
                 <div className="mb-2 flex items-baseline justify-center gap-1 font-mono text-5xl font-black text-brand-sun tracking-tighter">
-                  {stat.value}
+                  {stat.formatted}
                   <span className="text-2xl">{stat.suffix}</span>
                 </div>
                 <div className="text-sm font-bold uppercase tracking-widest text-white/70">

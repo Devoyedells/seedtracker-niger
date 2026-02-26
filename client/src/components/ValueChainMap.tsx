@@ -60,6 +60,16 @@ export function ValueChainMap() {
       className="relative overflow-hidden bg-brand-green py-24 lg:py-32"
       ref={ref}
     >
+      <style>{`
+        @keyframes heartbeat {
+          0%   { transform: scale(1); }
+          14%  { transform: scale(1.18); }
+          28%  { transform: scale(1); }
+          42%  { transform: scale(1.12); }
+          56%  { transform: scale(1); }
+          100% { transform: scale(1); }
+        }
+      `}</style>
       {/* Plus Background Effects */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <div
@@ -107,6 +117,13 @@ export function ValueChainMap() {
 
                     <div
                       className={`w-14 h-14 ${stage.color} rounded-2xl flex items-center justify-center mb-5 shadow-lg relative z-10`}
+                      style={
+                        isInView
+                          ? {
+                              animation: `heartbeat 2.2s ease-in-out ${index * 0.3}s infinite`,
+                            }
+                          : {}
+                      }
                     >
                       <stage.icon className="w-7 h-7 text-white" />
                     </div>
@@ -151,6 +168,13 @@ export function ValueChainMap() {
                 <div className="flex items-center gap-5">
                   <div
                     className={`w-14 h-14 ${stage.color} rounded-2xl flex items-center justify-center flex-shrink-0 shadow-md`}
+                    style={
+                      isInView
+                        ? {
+                            animation: `heartbeat 2.2s ease-in-out ${index * 0.3}s infinite`,
+                          }
+                        : {}
+                    }
                   >
                     <stage.icon className="w-7 h-7 text-white" />
                   </div>

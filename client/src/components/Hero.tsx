@@ -66,20 +66,54 @@ export function Hero() {
       id="home"
       className="relative min-h-[90vh] flex items-center overflow-hidden bg-brand-green pt-24 lg:pt-32 pb-16"
     >
+      {/* Grid animation keyframes injected inline */}
+      <style>{`
+        @keyframes heroGridScroll {
+          0%   { background-position: 0px 0px; }
+          100% { background-position: 40px 40px; }
+        }
+        @keyframes heroRayPulse {
+          0%, 100% { opacity: 0.15; transform: translateX(-50%) scaleX(1); }
+          50%       { opacity: 0.35; transform: translateX(-50%) scaleX(1.8); }
+        }
+      `}</style>
+
       {/* Background Effects */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        {/* Grid Pattern */}
+        {/* Animated scrolling grid — moves diagonally for 3D conveyor feel */}
         <div
-          className="absolute inset-0 opacity-10"
+          className="absolute inset-0 opacity-[0.13]"
           style={{
             backgroundImage: `linear-gradient(#ffffff 1px, transparent 1px), linear-gradient(90deg, #ffffff 1px, transparent 1px)`,
             backgroundSize: "40px 40px",
+            animation: "heroGridScroll 2.4s linear infinite",
           }}
         />
-        {/* Radial Glow */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,#ffffff_0%,transparent_60%)] opacity-10" />
-        {/* Animated Light Ray */}
-        <div className="absolute left-1/3 top-0 h-full w-[2px] -translate-x-1/2 bg-gradient-to-b from-brand-sun/30 via-brand-sun/5 to-transparent blur-xl" />
+
+        {/* Perspective depth vignette — darkens edges to sell 3D depth */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background: `radial-gradient(ellipse 90% 70% at 50% 50%, transparent 40%, rgba(0,0,0,0.45) 100%)`,
+          }}
+        />
+
+        {/* Bright centre glow — creates a "light source above" illusion */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background: `radial-gradient(ellipse 60% 40% at 50% 0%, rgba(255,255,255,0.10) 0%, transparent 70%)`,
+          }}
+        />
+
+        {/* Pulsing vertical light ray */}
+        <div
+          className="absolute left-1/3 top-0 h-full w-[3px] bg-gradient-to-b from-brand-sun/50 via-brand-sun/10 to-transparent blur-2xl"
+          style={{
+            animation: "heroRayPulse 4s ease-in-out infinite",
+            transform: "translateX(-50%)",
+          }}
+        />
       </div>
 
       <div className="container relative z-10 mx-auto px-4 lg:px-8 max-w-[1280px]">
