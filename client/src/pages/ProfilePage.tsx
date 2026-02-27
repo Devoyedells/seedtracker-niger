@@ -19,6 +19,7 @@ import {
 import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import lgasData from "@/data/lgas.json";
 
 // ── Helpers ────────────────────────────────────────────────────────────
 const actorTypeLabel: Record<string, string> = {
@@ -90,6 +91,8 @@ export default function ProfilePage() {
     website: "",
     bio: "",
     organization: "",
+    registrationState: "",
+    lga: "",
     // Producer
     licenseNumber: "",
     yearsOfExperience: "",
@@ -116,6 +119,8 @@ export default function ProfilePage() {
       website: user.website ?? "",
       bio: user.bio ?? "",
       organization: user.organization ?? "",
+      registrationState: user.registrationState ?? "",
+      lga: user.lga ?? "",
       licenseNumber: user.licenseNumber ?? "",
       yearsOfExperience: user.yearsOfExperience?.toString() ?? "",
       seedVarieties: fromList(user.seedVarieties),
@@ -133,7 +138,11 @@ export default function ProfilePage() {
 
   const set =
     (key: string) =>
-    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+    (
+      e: React.ChangeEvent<
+        HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+      >,
+    ) =>
       setForm((f) => ({ ...f, [key]: e.target.value }));
 
   const handleSave = async () => {
@@ -145,6 +154,8 @@ export default function ProfilePage() {
         website: form.website,
         bio: form.bio,
         organization: form.organization,
+        registrationState: form.registrationState,
+        lga: form.lga,
       };
 
       const at = user?.actorType;
@@ -198,6 +209,8 @@ export default function ProfilePage() {
       website: user.website ?? "",
       bio: user.bio ?? "",
       organization: user.organization ?? "",
+      registrationState: user.registrationState ?? "",
+      lga: user.lga ?? "",
       licenseNumber: user.licenseNumber ?? "",
       yearsOfExperience: user.yearsOfExperience?.toString() ?? "",
       seedVarieties: fromList(user.seedVarieties),
@@ -321,9 +334,10 @@ export default function ProfilePage() {
                 </div>
                 <div>
                   <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">
-                    State
+                    Location
                   </p>
                   <p className="font-bold text-gray-800">
+                    {user.lga ? `${user.lga}, ` : ""}
                     {stateLabel[user.registrationState] ??
                       user.registrationState}
                   </p>
@@ -426,6 +440,51 @@ export default function ProfilePage() {
                   className={inputCls}
                   placeholder="Your company or cooperative name"
                 />
+              </div>
+              <div>
+                <label className={labelCls}>Location State</label>
+                <select
+                  value={form.registrationState}
+                  onChange={(e) =>
+                    setForm((f) => ({
+                      ...f,
+                      registrationState: e.target.value,
+                      lga: "",
+                    }))
+                  }
+                  disabled={!editing}
+                  className={inputCls}
+                >
+                  <option value="" disabled>
+                    Select State
+                  </option>
+                  <option value="Ekiti">Ekiti</option>
+                  <option value="Anambra">Anambra</option>
+                  <option value="Niger">Niger</option>
+                </select>
+              </div>
+              <div>
+                <label className={labelCls}>Local Government Area</label>
+                <select
+                  value={form.lga}
+                  onChange={set("lga")}
+                  disabled={!editing || !form.registrationState}
+                  className={inputCls}
+                >
+                  <option value="" disabled>
+                    {form.registrationState
+                      ? "Select LGA"
+                      : "Select State first"}
+                  </option>
+                  {form.registrationState &&
+                    lgasData[
+                      form.registrationState as keyof typeof lgasData
+                    ]?.map((lga) => (
+                      <option key={lga} value={lga}>
+                        {lga}
+                      </option>
+                    ))}
+                </select>
               </div>
               <div className="sm:col-span-2">
                 <label className={labelCls}>

@@ -30,6 +30,9 @@ export class User extends Document {
   registrationState: string;
 
   @Prop({ trim: true })
+  lga: string;
+
+  @Prop({ trim: true })
   address: string;
 
   @Prop()
@@ -98,6 +101,17 @@ export class User extends Document {
 
   @Prop([String])
   cropsGrown: string[];
+
+  // ─── Email Verification ─────────────────────────────────────────────
+
+  @Prop({ default: false })
+  isEmailVerified: boolean;
+
+  @Prop()
+  verificationCode: string;
+
+  @Prop()
+  verificationCodeSentAt: Date;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

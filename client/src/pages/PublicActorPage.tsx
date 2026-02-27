@@ -162,6 +162,7 @@ export default function PublicActorPage() {
                           Location
                         </p>
                         <p className="text-sm font-bold text-gray-900">
+                          {actor.lga ? `${actor.lga}, ` : ""}
                           {actor.registrationState}
                         </p>
                         {actor.address && (
