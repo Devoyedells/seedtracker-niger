@@ -150,8 +150,12 @@ export default function ValueChainActorsPage() {
                       </span>
                     )}
                     {actor.registrationState && (
-                      <span className="text-[11px] font-semibold text-gray-400 flex items-center gap-1">
-                        <MapPin className="w-3 h-3" /> {actor.registrationState}
+                      <span className="text-[11px] font-semibold text-gray-400 flex items-center gap-1 mt-1">
+                        <MapPin className="w-3 h-3" />
+                        <span className="truncate max-w-[120px]">
+                          {actor.lga ? `${actor.lga}, ` : ""}
+                          {actor.registrationState}
+                        </span>
                       </span>
                     )}
                   </div>

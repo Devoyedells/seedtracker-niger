@@ -16,6 +16,7 @@ import {
   Tractor,
   Warehouse,
   Sprout,
+  Users,
 } from "lucide-react";
 import api from "@/services/api";
 import { User } from "@/context/AuthContext";
@@ -179,8 +180,12 @@ export default function ActorDetailsPage() {
               <DetailRow icon={Globe} label="Website" value={actor.website} />
               <DetailRow
                 icon={MapPin}
-                label="State"
-                value={actor.registrationState}
+                label="Location"
+                value={
+                  actor.lga
+                    ? `${actor.lga}, ${actor.registrationState}`
+                    : actor.registrationState
+                }
               />
               <DetailRow icon={MapPin} label="Address" value={actor.address} />
               <DetailRow
@@ -321,8 +326,8 @@ export default function ActorDetailsPage() {
                     icon={Tractor}
                     label="Processing Capacity"
                     value={
-                      actor.processingCapacity
-                        ? `${actor.processingCapacity} MT/day`
+                      actor.processingCapacityMT
+                        ? `${actor.processingCapacityMT} MT/day`
                         : undefined
                     }
                   />
@@ -359,8 +364,8 @@ export default function ActorDetailsPage() {
                     icon={Users}
                     label="Cooperative Group Size"
                     value={
-                      actor.cooperativeGroupSize
-                        ? `${actor.cooperativeGroupSize} individuals`
+                      actor.farmerGroupSize
+                        ? `${actor.farmerGroupSize} individuals`
                         : undefined
                     }
                   />

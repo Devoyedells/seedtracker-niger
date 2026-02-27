@@ -15,6 +15,7 @@ export interface User {
   role: string;
   actorType?: string;
   registrationState?: string;
+  lga?: string;
   address?: string;
   lat?: string;
   lng?: string;
@@ -57,6 +58,7 @@ interface RegisterPayload {
   password: string;
   actorType?: string;
   registrationState?: string;
+  lga?: string;
   address?: string;
   lat?: string;
   lng?: string;

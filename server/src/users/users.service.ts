@@ -133,6 +133,7 @@ export class UsersService {
         { fullName: { $regex: search, $options: 'i' } },
         { email: { $regex: search, $options: 'i' } },
         { registrationState: { $regex: search, $options: 'i' } },
+        { lga: { $regex: search, $options: 'i' } },
       ];
     }
 

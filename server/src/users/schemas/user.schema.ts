@@ -30,6 +30,9 @@ export class User extends Document {
   registrationState: string;
 
   @Prop({ trim: true })
+  lga: string;
+
+  @Prop({ trim: true })
   address: string;
 
   @Prop()

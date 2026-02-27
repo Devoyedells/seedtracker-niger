@@ -25,6 +25,7 @@ interface Stats {
     email: string;
     actorType?: string;
     registrationState?: string;
+    lga?: string;
     createdAt?: string;
   }[];
 }
@@ -271,6 +272,7 @@ function RecentActors({ actors }: { actors: Stats["recentActors"] }) {
                   )}
                   {actor.registrationState && (
                     <span className="text-[10px] text-gray-400 font-medium">
+                      {actor.lga ? `${actor.lga}, ` : ""}
                       {stateLabel[actor.registrationState] ??
                         actor.registrationState}
                     </span>

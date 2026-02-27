@@ -7,10 +7,12 @@ import { useAuth } from "@/context/AuthContext";
 import { toast } from "sonner";
 import axios from "axios";
 import AuthLayout from "@/layouts/AuthLayout";
+import lgasData from "@/data/lgas.json";
 
 export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedState, setSelectedState] = useState("");
   const { register, user } = useAuth();
   const navigate = useNavigate();
 
@@ -33,6 +35,7 @@ export default function RegisterPage() {
         password: formValues.Password,
         actorType: formValues.ActorType,
         registrationState: formValues.RegistrationState,
+        lga: formValues.LGA,
         address: formValues.Address,
         lat: formValues.Lat,
         lng: formValues.Lng,
@@ -133,7 +136,7 @@ export default function RegisterPage() {
             </div>
           </div>
 
-          <div>
+          <div className="sm:col-span-2">
             <label
               htmlFor="ActorType"
               className="text-[12px] font-bold text-gray-700 mb-1.5 block uppercase tracking-wider"
@@ -174,16 +177,48 @@ export default function RegisterPage() {
               <select
                 id="RegistrationState"
                 name="RegistrationState"
+                value={selectedState}
+                onChange={(e) => setSelectedState(e.target.value)}
                 className="w-full appearance-none rounded-2xl border-2 border-brand-green/20 bg-gray-50 hover:bg-gray-100 hover:border-brand-green/40 focus:bg-white focus:border-brand-green focus:ring-4 focus:ring-brand-green/20 transition-all px-5 py-3.5 text-[15px] font-medium outline-none text-gray-600"
                 disabled={isLoading}
                 required
               >
-                <option value="" disabled selected>
+                <option value="" disabled>
                   Select State
                 </option>
                 <option value="Ekiti">Ekiti</option>
                 <option value="Anambra">Anambra</option>
                 <option value="Niger">Niger</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label
+              htmlFor="LGA"
+              className="text-[12px] font-bold text-gray-700 mb-1.5 block uppercase tracking-wider"
+            >
+              Local Government Area*
+            </label>
+            <div className="relative">
+              <select
+                id="LGA"
+                name="LGA"
+                className="w-full appearance-none rounded-2xl border-2 border-brand-green/20 bg-gray-50 hover:bg-gray-100 hover:border-brand-green/40 focus:bg-white focus:border-brand-green focus:ring-4 focus:ring-brand-green/20 transition-all px-5 py-3.5 text-[15px] font-medium outline-none text-gray-600 disabled:bg-gray-100 disabled:text-gray-400"
+                disabled={isLoading || !selectedState}
+                required
+              >
+                <option value="" disabled selected>
+                  {selectedState ? "Select LGA" : "Select a State first"}
+                </option>
+                {selectedState &&
+                  lgasData[selectedState as keyof typeof lgasData]?.map(
+                    (lga) => (
+                      <option key={lga} value={lga}>
+                        {lga}
+                      </option>
+                    ),
+                  )}
               </select>
             </div>
           </div>
