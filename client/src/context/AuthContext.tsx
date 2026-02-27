@@ -46,6 +46,11 @@ interface AuthResponse {
   user: User;
 }
 
+interface RegisterResponse {
+  message: string;
+  email: string;
+}
+
 interface RegisterPayload {
   fullName: string;
   email: string;
@@ -66,10 +71,12 @@ interface AuthContextType {
   user: User | null;
   loading: boolean;
   login: (payload: LoginPayload) => Promise<void>;
-  register: (payload: RegisterPayload) => Promise<void>;
+  register: (payload: RegisterPayload) => Promise<RegisterResponse>;
   logout: () => void;
   updateProfile: (data: Partial<User>) => Promise<void>;
   refreshUser: () => Promise<void>;
+  verifyEmail: (email: string, code: string) => Promise<void>;
+  resendVerification: (email: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -104,10 +111,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(data.user);
   };
 
-  const register = async (payload: RegisterPayload) => {
-    const { data } = await api.post<AuthResponse>("/auth/register", payload);
+  const register = async (
+    payload: RegisterPayload,
+  ): Promise<RegisterResponse> => {
+    const { data } = await api.post<RegisterResponse>(
+      "/auth/register",
+      payload,
+    );
+    return data;
+  };
+
+  const verifyEmail = async (email: string, code: string) => {
+    const { data } = await api.post<AuthResponse>("/auth/verify-email", {
+      email,
+      code,
+    });
     localStorage.setItem("token", data.access_token);
     setUser(data.user);
+  };
+
+  const resendVerification = async (email: string) => {
+    await api.post("/auth/resend-verification", { email });
   };
 
   const logout = () => {
@@ -130,6 +154,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         logout,
         updateProfile,
         refreshUser,
+        verifyEmail,
+        resendVerification,
       }}
     >
       {children}

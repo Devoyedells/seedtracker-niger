@@ -15,6 +15,32 @@ export class UsersService {
     return this.userModel.findOne({ email: email.toLowerCase() }).exec();
   }
 
+  async updateVerification(
+    id: string,
+    data: {
+      isEmailVerified?: boolean;
+      verificationCode?: string | undefined;
+      verificationCodeSentAt?: Date | undefined;
+    },
+  ): Promise<void> {
+    const setFields: Record<string, any> = {};
+    const unsetFields: Record<string, any> = {};
+
+    for (const [key, value] of Object.entries(data)) {
+      if (value === undefined) {
+        unsetFields[key] = '';
+      } else {
+        setFields[key] = value;
+      }
+    }
+
+    const update: Record<string, any> = {};
+    if (Object.keys(setFields).length) update.$set = setFields;
+    if (Object.keys(unsetFields).length) update.$unset = unsetFields;
+
+    await this.userModel.findByIdAndUpdate(id, update).exec();
+  }
+
   async findById(id: string): Promise<User | null> {
     return this.userModel.findById(id).select('-password').exec();
   }

@@ -98,6 +98,17 @@ export class User extends Document {
 
   @Prop([String])
   cropsGrown: string[];
+
+  // ─── Email Verification ─────────────────────────────────────────────
+
+  @Prop({ default: false })
+  isEmailVerified: boolean;
+
+  @Prop()
+  verificationCode: string;
+
+  @Prop()
+  verificationCodeSentAt: Date;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
