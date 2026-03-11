@@ -13,6 +13,7 @@ export interface User {
   fullName: string;
   email: string;
   role: string;
+  actorId?: string;
   actorType?: string;
   registrationState?: string;
   lga?: string;

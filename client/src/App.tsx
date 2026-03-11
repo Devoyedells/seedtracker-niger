@@ -10,9 +10,7 @@ import DashboardPage from "@/pages/DashboardPage";
 import ProfilePage from "@/pages/ProfilePage";
 import ValueChainActorsPage from "@/pages/ValueChainActorsPage";
 import ActorDetailsPage from "@/pages/ActorDetailsPage";
-import ActorMapPage from "@/pages/ActorMapPage";
-import QRCodePage from "@/pages/QRCodePage";
-import PublicActorPage from "@/pages/PublicActorPage";
+import ConnectionsPage from "@/pages/ConnectionsPage";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import DashboardLayout from "@/layouts/DashboardLayout";
 
@@ -28,7 +26,6 @@ export default function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/verify-email" element={<VerifyEmailPage />} />
-            <Route path="/actor/:id" element={<PublicActorPage />} />
             <Route
               path="/dashboard"
               element={
@@ -70,21 +67,11 @@ export default function App() {
               }
             />
             <Route
-              path="/dashboard/map"
+              path="/dashboard/connections"
               element={
                 <ProtectedRoute>
                   <DashboardLayout>
-                    <ActorMapPage />
-                  </DashboardLayout>
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/dashboard/qrcode"
-              element={
-                <ProtectedRoute>
-                  <DashboardLayout>
-                    <QRCodePage />
+                    <ConnectionsPage />
                   </DashboardLayout>
                 </ProtectedRoute>
               }

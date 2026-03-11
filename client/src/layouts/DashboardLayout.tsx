@@ -9,7 +9,6 @@ import {
   X,
   ChevronRight,
   BookUser,
-  QrCode,
   Sprout,
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
@@ -52,8 +51,7 @@ export default function DashboardLayout({
   const navItems = [
     { label: "Dashboard", icon: LayoutDashboard, path: "/dashboard" },
     { label: "Profile", icon: User, path: "/dashboard/profile" },
-    { label: "My QR Code", icon: QrCode, path: "/dashboard/qrcode" },
-    { label: "Actor Map", icon: Map, path: "/dashboard/map" },
+    { label: "Connections", icon: Map, path: "/dashboard/connections" },
   ];
 
   if (user?.role && user.role !== "user") {

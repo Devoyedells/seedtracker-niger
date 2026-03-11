@@ -44,13 +44,19 @@ export class AuthService {
     const hashedPassword = await bcrypt.hash(dto.password, 12);
     const verificationCode = this.generateCode();
 
-    await this.usersService.create({
+    const newUser = await this.usersService.create({
       ...dto,
       password: hashedPassword,
       isEmailVerified: false,
       verificationCode,
       verificationCodeSentAt: new Date(),
     });
+
+    // Generate and assign a unique actorId (e.g. EK-0001)
+    const actorId = await this.usersService.generateActorId(
+      dto.registrationState || '',
+    );
+    await this.usersService.updateById(newUser._id.toString(), { actorId });
 
     await this.mailService.sendVerificationCode(
       dto.email,
