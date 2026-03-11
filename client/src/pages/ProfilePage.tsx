@@ -15,7 +15,10 @@ import {
   Tractor,
   Warehouse,
   Sprout,
+  Download,
+  Copy,
 } from "lucide-react";
+import { QRCodeSVG } from "qrcode.react";
 import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -373,6 +376,71 @@ export default function ProfilePage() {
               </div>
             )}
           </div>
+
+          {/* QR Code Card */}
+          {user?.actorId && (
+            <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-5 flex flex-col items-center text-center">
+              <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">
+                My QR Code
+              </p>
+              <div className="bg-[#f5f6f8] p-5 rounded-2xl border border-gray-200 shadow-inner mb-3">
+                <QRCodeSVG
+                  id="user-qr-code"
+                  value={user.actorId}
+                  size={160}
+                  level="H"
+                  includeMargin={true}
+                  bgColor="#ffffff"
+                  fgColor="#004225"
+                />
+              </div>
+              <p className="text-xs font-bold text-gray-600 mb-0.5">
+                {user.actorId}
+              </p>
+              <p className="text-[11px] text-gray-400 font-medium mb-4">
+                Scan to view profile
+              </p>
+              <div className="flex items-center gap-2 w-full">
+                <button
+                  onClick={() => {
+                    const svg = document.getElementById("user-qr-code");
+                    if (!svg) return;
+                    const svgData = new XMLSerializer().serializeToString(svg);
+                    const canvas = document.createElement("canvas");
+                    const ctx = canvas.getContext("2d");
+                    const img = new Image();
+                    img.onload = () => {
+                      canvas.width = img.width;
+                      canvas.height = img.height;
+                      if (ctx) {
+                        ctx.fillStyle = "white";
+                        ctx.fillRect(0, 0, canvas.width, canvas.height);
+                        ctx.drawImage(img, 0, 0);
+                      }
+                      const pngFile = canvas.toDataURL("image/png");
+                      const downloadLink = document.createElement("a");
+                      downloadLink.download = `${user.fullName.replace(/\s+/g, "_")}_QR.png`;
+                      downloadLink.href = pngFile;
+                      downloadLink.click();
+                    };
+                    img.src = `data:image/svg+xml;base64,${btoa(svgData)}`;
+                  }}
+                  className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 bg-brand-green text-white text-xs font-bold rounded-xl hover:bg-[#00301b] transition-colors"
+                >
+                  <Download className="w-3.5 h-3.5" /> Download
+                </button>
+                <button
+                  onClick={() => {
+                    navigator.clipboard.writeText(user.actorId!);
+                    toast.success("Actor ID copied!");
+                  }}
+                  className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 bg-gray-50 text-gray-700 text-xs font-bold rounded-xl border border-gray-200 hover:bg-gray-100 transition-colors"
+                >
+                  <Copy className="w-3.5 h-3.5" /> Copy ID
+                </button>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* ── Right: Form ─────────────────────────────────────────────── */}

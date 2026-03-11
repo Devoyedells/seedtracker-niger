@@ -2,17 +2,50 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from './schemas/user.schema';
+import { CounterDoc, COUNTER_MODEL_NAME } from './schemas/counter.schema';
+
+const STATE_PREFIX: Record<string, string> = {
+  Ekiti: 'EK',
+  Anambra: 'AN',
+  Niger: 'NG',
+};
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectModel(User.name) private userModel: Model<User>) {}
+  constructor(
+    @InjectModel(User.name) private userModel: Model<User>,
+    @InjectModel(COUNTER_MODEL_NAME) private counterModel: Model<CounterDoc>,
+  ) {}
 
   async create(data: Partial<User>): Promise<User> {
     return this.userModel.create(data);
   }
 
+  /**
+   * Atomically generate the next actorId for the given state.
+   * Uses MongoDB findOneAndUpdate with $inc to prevent race conditions.
+   * Format: {PREFIX}-{zero-padded number} e.g. EK-0001
+   */
+  async generateActorId(registrationState: string): Promise<string> {
+    const prefix = STATE_PREFIX[registrationState] || 'XX';
+
+    const counter = await this.counterModel.findOneAndUpdate(
+      { _id: prefix },
+      { $inc: { seq: 1 } },
+      { new: true, upsert: true },
+    );
+
+    const num = counter.seq;
+    const padded = num.toString().padStart(4, '0');
+    return `${prefix}-${padded}`;
+  }
+
   async findByEmail(email: string): Promise<User | null> {
     return this.userModel.findOne({ email: email.toLowerCase() }).exec();
+  }
+
+  async findByActorId(actorId: string): Promise<User | null> {
+    return this.userModel.findOne({ actorId }).select('-password').exec();
   }
 
   async updateVerification(

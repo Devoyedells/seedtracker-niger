@@ -72,6 +72,17 @@ export class UsersController {
     );
     return { data: actors };
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('by-actor-id/:actorId')
+  async getByActorId(@Param('actorId') actorId: string) {
+    const actor = await this.usersService.findByActorId(actorId);
+    if (!actor) {
+      throw new NotFoundException('Actor not found');
+    }
+    return actor;
+  }
+
   @UseGuards(JwtAuthGuard)
   @Get('actors/:id')
   async getActorById(@Request() req, @Param('id') id: string) {
@@ -101,17 +112,6 @@ export class UsersController {
     return actor;
   }
 
-  @Get('public/:id')
-  async getPublicActorById(@Param('id') id: string) {
-    const actor = await this.usersService.findById(id);
-
-    if (!actor) {
-      throw new NotFoundException('Actor not found');
-    }
-
-    // Strip sensitive fields just in case, though findById should already strip password
-    return actor;
-  }
 
   @Get('public-data/stats')
   async getPublicStats() {

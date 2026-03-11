@@ -1,9 +1,11 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Map as MapIcon, Loader2 } from "lucide-react";
+import { Map as MapIcon, Loader2, ScanLine, X } from "lucide-react";
+import { Html5Qrcode } from "html5-qrcode";
 import "leaflet/dist/leaflet.css";
 import api from "@/services/api";
 import { User } from "@/context/AuthContext";
+import ActorProfileModal from "@/components/ActorProfileModal";
 
 const ACTOR_STYLES: Record<
   string,
@@ -89,13 +91,18 @@ const STATE_BOUNDS: Record<
   },
 };
 
-export default function ActorMapPage() {
+export default function ConnectionsPage() {
   const mapRef = useRef<HTMLDivElement>(null);
   const leafletMapRef = useRef<any>(null);
   const featureGroupRef = useRef<any>(null);
   const [mapReady, setMapReady] = useState(false);
   const [selectedState, setSelectedState] = useState("all");
   const [selectedType, setSelectedType] = useState("all");
+
+  // Scanner state
+  const [scannerOpen, setScannerOpen] = useState(false);
+  const [scannedActorId, setScannedActorId] = useState<string | null>(null);
+  const scannerRef = useRef<Html5Qrcode | null>(null);
 
   // Fetch a very large limit so we can plot all actors on the map in one go
   const { data: response, isLoading } = useQuery({
@@ -191,9 +198,7 @@ export default function ActorMapPage() {
   useEffect(() => {
     if (!mapReady || !leafletMapRef.current || !actors.length) return;
 
-    // Using simple L.circleMarker avoids React component overhead (massive performance gain for many markers)
     import("leaflet").then((L) => {
-      // Clear previous feature group if exists
       if (featureGroupRef.current) {
         leafletMapRef.current.removeLayer(featureGroupRef.current);
       }
@@ -206,7 +211,6 @@ export default function ActorMapPage() {
       actors.forEach((actor) => {
         if (!actor.lat || !actor.lng) return;
 
-        // Filtering Logic
         if (
           selectedState !== "all" &&
           actor.registrationState !== selectedState
@@ -243,7 +247,6 @@ export default function ActorMapPage() {
 
       featureGroup.addTo(leafletMapRef.current);
 
-      // Auto-fit bounds if we have actors (re-fit when filters change)
       if (addedCount > 0) {
         try {
           leafletMapRef.current.fitBounds(featureGroup.getBounds(), {
@@ -256,6 +259,72 @@ export default function ActorMapPage() {
       }
     });
   }, [actors, mapReady, selectedState, selectedType]);
+
+  // ── QR Scanner Logic ─────────────────────────────────────────────────
+  const stopScanner = useCallback(async () => {
+    if (scannerRef.current) {
+      try {
+        await scannerRef.current.stop();
+      } catch {
+        /* already stopped */
+      }
+      scannerRef.current.clear();
+      scannerRef.current = null;
+    }
+  }, []);
+
+  const openScanner = () => {
+    setScannerOpen(true);
+  };
+
+  const closeScanner = useCallback(async () => {
+    await stopScanner();
+    setScannerOpen(false);
+  }, [stopScanner]);
+
+  // Start camera when scanner dialog opens
+  useEffect(() => {
+    if (!scannerOpen) return;
+
+    let cancelled = false;
+
+    const startCamera = async () => {
+      // Small delay to ensure the DOM element is mounted
+      await new Promise((r) => setTimeout(r, 300));
+      if (cancelled) return;
+
+      const scanner = new Html5Qrcode("qr-reader");
+      scannerRef.current = scanner;
+
+      try {
+        await scanner.start(
+          { facingMode: "environment" },
+          { fps: 10, qrbox: { width: 250, height: 250 } },
+          async (decodedText) => {
+            // Validate the scanned text looks like an actorId (e.g. EK-0001)
+            const actorIdPattern = /^[A-Z]{2}-\d{4,}$/;
+            if (actorIdPattern.test(decodedText)) {
+              await stopScanner();
+              setScannerOpen(false);
+              setScannedActorId(decodedText);
+            }
+          },
+          () => {
+            /* ignore scan failures */
+          },
+        );
+      } catch (err) {
+        console.error("Camera error:", err);
+      }
+    };
+
+    startCamera();
+
+    return () => {
+      cancelled = true;
+      stopScanner();
+    };
+  }, [scannerOpen, stopScanner]);
 
   return (
     <div className="space-y-6 animate-in fade-in duration-500 h-full flex flex-col">
@@ -277,13 +346,16 @@ export default function ActorMapPage() {
           border-radius: 10px !important;
           box-shadow: 0 4px 16px rgba(0,0,0,0.12) !important;
         }
+        #qr-reader video {
+          border-radius: 16px !important;
+        }
       `}</style>
 
       {/* Header & Filters */}
       <div className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-100 shadow-sm flex-shrink-0 flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
           <h1 className="text-2xl font-black text-gray-900 tracking-tight flex items-center gap-2">
-            <MapIcon className="w-6 h-6 text-brand-green" /> Actor Map
+            <MapIcon className="w-6 h-6 text-brand-green" /> Connections
           </h1>
           <p className="text-gray-500 text-sm font-medium mt-1">
             Geospatial visualization of all registered value chain actors.
@@ -291,6 +363,15 @@ export default function ActorMapPage() {
         </div>
 
         <div className="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
+          {/* Scan QR Button */}
+          <button
+            onClick={openScanner}
+            className="w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-2.5 bg-brand-green text-white font-bold rounded-xl hover:bg-[#00301b] transition-colors shadow-lg shadow-brand-green/20 active:scale-95"
+          >
+            <ScanLine className="w-4 h-4" />
+            Scan QR
+          </button>
+
           <select
             value={selectedState}
             onChange={(e) => setSelectedState(e.target.value)}
@@ -348,6 +429,46 @@ export default function ActorMapPage() {
           ))}
         </div>
       </div>
+
+      {/* ── QR Scanner Modal ───────────────────────────────────── */}
+      {scannerOpen && (
+        <div
+          className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4"
+          onClick={closeScanner}
+        >
+          <div
+            className="relative w-full max-w-sm bg-white rounded-3xl p-6 shadow-2xl animate-in zoom-in-95 duration-200"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={closeScanner}
+              className="absolute top-4 right-4 z-20 p-2 rounded-xl bg-gray-100 hover:bg-gray-200 transition-colors"
+            >
+              <X className="w-5 h-5 text-gray-600" />
+            </button>
+
+            <h2 className="text-lg font-black text-gray-900 mb-1">
+              Scan QR Code
+            </h2>
+            <p className="text-sm text-gray-500 font-medium mb-5">
+              Point your camera at another actor's QR code.
+            </p>
+
+            <div
+              id="qr-reader"
+              className="w-full rounded-2xl overflow-hidden"
+            />
+          </div>
+        </div>
+      )}
+
+      {/* ── Actor Profile Modal ────────────────────────────────── */}
+      {scannedActorId && (
+        <ActorProfileModal
+          actorId={scannedActorId}
+          onClose={() => setScannedActorId(null)}
+        />
+      )}
     </div>
   );
 }
