@@ -8,6 +8,10 @@ import { Model, Types } from 'mongoose';
 import { ConfigService } from '@nestjs/config';
 import { Broadcast, BroadcastDocument } from './schemas/broadcast.schema';
 import { EmailQueue, EmailQueueDocument } from './schemas/email-queue.schema';
+import {
+  BroadcastRead,
+  BroadcastReadDocument,
+} from './schemas/broadcast-read.schema';
 import { User } from '../users/schemas/user.schema';
 import { CreateBroadcastDto } from './dto/create-broadcast.dto';
 import { MailerService } from '@nestjs-modules/mailer';
@@ -21,6 +25,8 @@ export class BroadcastService {
     private broadcastModel: Model<BroadcastDocument>,
     @InjectModel(EmailQueue.name)
     private emailQueueModel: Model<EmailQueueDocument>,
+    @InjectModel(BroadcastRead.name)
+    private broadcastReadModel: Model<BroadcastReadDocument>,
     @InjectModel(User.name) private userModel: Model<User>,
     private mailerService: MailerService,
     private configService: ConfigService,
@@ -291,5 +297,132 @@ export class BroadcastService {
   </div>
 </body>
 </html>`;
+  }
+
+  // ── Notification helpers ─────────────────────────────────────────────────
+
+  /** Build the same role-scoped filter used by findAll (without pagination). */
+  private async buildVisibilityFilter(
+    requesterId: string,
+    requesterRole: string,
+    requesterState: string | undefined,
+  ): Promise<Record<string, any>> {
+    const isAdmin = requesterRole === 'admin';
+    const isStateAdmin = STATE_ADMIN_ROLES.includes(requesterRole);
+
+    if (isAdmin) return {};
+
+    if (isStateAdmin) {
+      return {
+        $or: [
+          { senderState: requesterState },
+          { senderState: { $in: [null, undefined] } },
+        ],
+      };
+    }
+
+    // Regular user
+    const user = await this.userModel
+      .findById(requesterId)
+      .select('actorType registrationState')
+      .exec();
+    if (!user) throw new NotFoundException('User not found');
+
+    return {
+      $or: [
+        { senderState: { $exists: false }, targetType: 'all' },
+        {
+          senderState: { $exists: false },
+          targetType: 'actor_types',
+          targetActorTypes: user.actorType,
+        },
+        { senderState: user.registrationState, targetType: 'all' },
+        {
+          senderState: user.registrationState,
+          targetType: 'actor_types',
+          targetActorTypes: user.actorType,
+        },
+      ],
+    };
+  }
+
+  /** Mark a broadcast as read for a user (idempotent). */
+  async markAsRead(userId: string, broadcastId: string): Promise<void> {
+    await this.broadcastReadModel.updateOne(
+      {
+        userId: new Types.ObjectId(userId),
+        broadcastId: new Types.ObjectId(broadcastId),
+      },
+      { $setOnInsert: { readAt: new Date() } },
+      { upsert: true },
+    );
+  }
+
+  /** Return the last 20 unread broadcasts (for the notification dropdown). */
+  async getUnreadNotifications(
+    requesterId: string,
+    requesterRole: string,
+    requesterState: string | undefined,
+  ): Promise<
+    {
+      _id: string;
+      title: string;
+      senderName: string;
+      createdAt: Date;
+    }[]
+  > {
+    const visibilityFilter = await this.buildVisibilityFilter(
+      requesterId,
+      requesterRole,
+      requesterState,
+    );
+
+    // IDs of broadcasts this user has already read
+    const readRecords = await this.broadcastReadModel
+      .find({ userId: new Types.ObjectId(requesterId) })
+      .select('broadcastId')
+      .lean()
+      .exec();
+    const readIds = readRecords.map((r) => r.broadcastId);
+
+    const filter = {
+      ...visibilityFilter,
+      _id: { $nin: readIds },
+    };
+
+    const broadcasts = await this.broadcastModel
+      .find(filter)
+      .sort({ createdAt: -1 })
+      .limit(20)
+      .select('_id title senderName createdAt')
+      .lean()
+      .exec();
+
+    return broadcasts as any;
+  }
+
+  /** Return the count of unread broadcasts (for the badge number). */
+  async getUnreadCount(
+    requesterId: string,
+    requesterRole: string,
+    requesterState: string | undefined,
+  ): Promise<number> {
+    const visibilityFilter = await this.buildVisibilityFilter(
+      requesterId,
+      requesterRole,
+      requesterState,
+    );
+
+    const readRecords = await this.broadcastReadModel
+      .find({ userId: new Types.ObjectId(requesterId) })
+      .select('broadcastId')
+      .lean()
+      .exec();
+    const readIds = readRecords.map((r) => r.broadcastId);
+
+    return this.broadcastModel.countDocuments({
+      ...visibilityFilter,
+      _id: { $nin: readIds },
+    });
   }
 }

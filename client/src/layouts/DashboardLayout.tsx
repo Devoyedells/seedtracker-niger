@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { toast } from "sonner";
+import NotificationBell from "@/components/notifications/NotificationBell";
 
 const actorTypeLabel: Record<string, string> = {
   producer: "Seed Producer",
@@ -225,6 +226,9 @@ export default function DashboardLayout({
           </div>
 
           <div className="ml-auto flex items-center gap-3">
+            {/* Notification bell */}
+            <NotificationBell />
+
             {/* User chip */}
             <Link
               to="/dashboard/profile"
