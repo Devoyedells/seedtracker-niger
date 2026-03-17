@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import api from "@/services/api";
 import { useQuery } from "@tanstack/react-query";
+import DashboardCharts from "@/components/dashboard/DashboardCharts";
 
 // ── Types ──────────────────────────────────────────────────────────────
 interface Stats {
@@ -19,6 +20,10 @@ interface Stats {
   activeStates: number;
   actorTypeCounts: { _id: string; count: number }[];
   stateCounts: { _id: string; count: number }[];
+  monthlyGrowth: { month: string; count: number }[];
+  lgaCounts: { _id: string; count: number }[];
+  verifiedCount: number;
+  unverifiedCount: number;
   recentActors: {
     _id: string;
     fullName: string;
@@ -426,26 +431,19 @@ export default function DashboardPage() {
           <StatCard
             icon={BadgeCheck}
             label="Verified Members"
-            value={stats.totalActors}
-            sub="All registered"
+            value={stats.verifiedCount}
+            sub="Email verified"
             accentClass="bg-emerald-500"
             delay="180ms"
           />
         </div>
       )}
 
+      {/* ── Charts ── */}
+      {isAdmin && !loading && stats && <DashboardCharts stats={stats} />}
+
       {isAdmin && !loading && stats && (
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-          <div className="lg:col-span-2">
-            <ActorBreakdown
-              data={stats.actorTypeCounts}
-              total={stats.totalActors}
-            />
-          </div>
-          <div className="lg:col-span-3">
-            <RecentActors actors={stats.recentActors} />
-          </div>
-        </div>
+        <RecentActors actors={stats.recentActors} />
       )}
 
       {isAdmin && loading && (

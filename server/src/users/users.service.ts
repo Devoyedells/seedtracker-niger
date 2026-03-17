@@ -128,6 +128,61 @@ export class UsersService {
       .limit(5)
       .exec();
 
+    // Monthly growth — last 12 months
+    const twelveMonthsAgo = new Date();
+    twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth() - 11);
+    twelveMonthsAgo.setDate(1);
+    twelveMonthsAgo.setHours(0, 0, 0, 0);
+
+    const monthlyGrowthRaw = await this.userModel.aggregate([
+      { $match: { createdAt: { $gte: twelveMonthsAgo }, ...matchFilter } },
+      {
+        $group: {
+          _id: {
+            year: { $year: '$createdAt' },
+            month: { $month: '$createdAt' },
+          },
+          count: { $sum: 1 },
+        },
+      },
+      { $sort: { '_id.year': 1, '_id.month': 1 } },
+    ]);
+
+    const MONTH_NAMES = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
+    const monthlyGrowth = monthlyGrowthRaw.map((d) => ({
+      month: `${MONTH_NAMES[d._id.month - 1]} ${d._id.year}`,
+      count: d.count,
+    }));
+
+    // LGA breakdown — top 10
+    const lgaCounts = await this.userModel.aggregate([
+      {
+        $match: { lga: { $exists: true, $nin: [null, ''] }, ...matchFilter },
+      },
+      { $group: { _id: '$lga', count: { $sum: 1 } } },
+      { $sort: { count: -1 } },
+      { $limit: 10 },
+    ]);
+
+    // Verified vs Unverified
+    const verifiedCount = await this.userModel.countDocuments({
+      ...matchFilter,
+      isEmailVerified: true,
+    });
+
     const activeStates = stateCounts.length;
 
     return {
@@ -136,6 +191,10 @@ export class UsersService {
       actorTypeCounts,
       stateCounts,
       recentActors,
+      monthlyGrowth,
+      lgaCounts,
+      verifiedCount,
+      unverifiedCount: totalActors - verifiedCount,
     };
   }
 

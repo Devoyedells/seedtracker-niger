@@ -11,6 +11,7 @@ import ProfilePage from "@/pages/ProfilePage";
 import ValueChainActorsPage from "@/pages/ValueChainActorsPage";
 import ActorDetailsPage from "@/pages/ActorDetailsPage";
 import ConnectionsPage from "@/pages/ConnectionsPage";
+import BroadcastPage from "@/pages/BroadcastPage";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import DashboardLayout from "@/layouts/DashboardLayout";
 
@@ -72,6 +73,16 @@ export default function App() {
                 <ProtectedRoute>
                   <DashboardLayout>
                     <ConnectionsPage />
+                  </DashboardLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/dashboard/broadcast"
+              element={
+                <ProtectedRoute>
+                  <DashboardLayout>
+                    <BroadcastPage />
                   </DashboardLayout>
                 </ProtectedRoute>
               }
