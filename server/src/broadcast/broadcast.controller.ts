@@ -55,6 +55,34 @@ export class BroadcastController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Get('notifications/count')
+  async getUnreadCount(@Request() req) {
+    const count = await this.broadcastService.getUnreadCount(
+      req.user.sub,
+      req.user.role,
+      req.user.registrationState,
+    );
+    return { count };
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('notifications/recent')
+  async getUnreadNotifications(@Request() req) {
+    return this.broadcastService.getUnreadNotifications(
+      req.user.sub,
+      req.user.role,
+      req.user.registrationState,
+    );
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post(':id/read')
+  async markAsRead(@Request() req, @Param('id') id: string) {
+    await this.broadcastService.markAsRead(req.user.sub, id);
+    return { ok: true };
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   async findOne(@Request() req, @Param('id') id: string) {
     return this.broadcastService.findOne(
