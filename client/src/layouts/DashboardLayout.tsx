@@ -10,6 +10,7 @@ import {
   ChevronRight,
   BookUser,
   Sprout,
+  Megaphone,
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { toast } from "sonner";
@@ -52,10 +53,11 @@ export default function DashboardLayout({
     { label: "Dashboard", icon: LayoutDashboard, path: "/dashboard" },
     { label: "Profile", icon: User, path: "/dashboard/profile" },
     { label: "Connections", icon: Map, path: "/dashboard/connections" },
+    { label: "Broadcast", icon: Megaphone, path: "/dashboard/broadcast" },
   ];
 
   if (user?.role && user.role !== "user") {
-    navItems.push({
+    navItems.splice(3, 0, {
       label: "Directory",
       icon: BookUser,
       path: "/dashboard/actors",

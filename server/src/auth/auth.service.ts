@@ -104,7 +104,12 @@ export class AuthService {
       });
     }
 
-    const payload = { sub: user._id, email: user.email, role: user.role };
+    const payload = {
+      sub: user._id,
+      email: user.email,
+      role: user.role,
+      registrationState: user.registrationState ?? null,
+    };
     const userObj = user.toObject();
     delete userObj.password;
     userObj.id = userObj._id.toString();
@@ -146,7 +151,12 @@ export class AuthService {
       verificationCodeSentAt: undefined,
     });
 
-    const payload = { sub: user._id, email: user.email, role: user.role };
+    const payload = {
+      sub: user._id,
+      email: user.email,
+      role: user.role,
+      registrationState: user.registrationState ?? null,
+    };
     const userObj = user.toObject();
     delete userObj.password;
     userObj.id = userObj._id.toString();
