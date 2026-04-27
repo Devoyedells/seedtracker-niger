@@ -91,11 +91,9 @@ export default function DashboardLayout({
       )}
 
       {/* ── Sidebar ─────────────────────────────────────────────── */}
-      {/* On mobile: slides in as a fixed overlay (full viewport height)  */}
-      {/* On desktop: static column, flex child, full h-full height        */}
       <aside
         className={`
-          flex-shrink-0 flex flex-col w-[260px] bg-brand-green
+          flex-shrink-0 flex flex-col w-[268px] niger-weave bg-brand-green-ink
           fixed inset-y-0 left-0 z-40
           transition-transform duration-300 ease-in-out
           lg:relative lg:translate-x-0 lg:z-auto
@@ -104,29 +102,25 @@ export default function DashboardLayout({
       >
         {/* Background texture */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div
-            className="absolute inset-0 opacity-[0.06]"
-            style={{
-              backgroundImage: `linear-gradient(#ffffff 1px, transparent 1px), linear-gradient(90deg, #ffffff 1px, transparent 1px)`,
-              backgroundSize: "32px 32px",
-            }}
-          />
-          <div className="absolute bottom-0 right-0 w-56 h-56 bg-brand-sun/10 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 right-0 w-56 h-56 bg-brand-sun/15 rounded-full blur-3xl" />
           <div className="absolute top-24 -left-10 w-40 h-40 bg-white/5 rounded-full blur-2xl" />
         </div>
 
+        {/* Top gold rule */}
+        <div className="relative z-10 h-[3px] w-full bg-gradient-to-r from-brand-sun-bright via-brand-sun to-brand-sun-bright" />
+
         {/* Logo */}
-        <div className="relative z-10 flex items-center gap-3 px-6 pt-7 pb-6 flex-shrink-0">
-          <div className="relative w-10 h-10 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center flex-shrink-0">
-            <Sprout className="w-5 h-5 text-brand-sun" strokeWidth={2.5} />
+        <div className="relative z-10 flex items-center gap-3 px-6 pt-6 pb-5 flex-shrink-0">
+          <div className="relative w-11 h-11 rounded-xl bg-brand-sun/15 border border-brand-sun/40 flex items-center justify-center flex-shrink-0">
+            <Sprout className="w-5 h-5 text-brand-sun-bright" strokeWidth={2.5} />
             <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-brand-sun" />
           </div>
           <div className="min-w-0">
-            <div className="text-white font-black text-[14px] leading-none tracking-tight truncate">
-              Niger State
+            <div className="text-[10px] font-black uppercase tracking-[0.22em] text-brand-sun-bright">
+              ★ Power State
             </div>
-            <div className="text-brand-sun text-[10px] font-bold uppercase tracking-[0.18em] mt-1.5">
-              Seed Tracker
+            <div className="text-white font-black text-[15px] leading-tight tracking-tight truncate">
+              Niger Seed Tracker
             </div>
           </div>
           {/* Close btn — mobile only */}
@@ -139,13 +133,14 @@ export default function DashboardLayout({
         </div>
 
         {/* Nav section label */}
-        <div className="relative z-10 px-6 mb-2 flex-shrink-0">
-          <span className="text-white/30 text-[10px] font-black uppercase tracking-[0.2em]">
+        <div className="relative z-10 px-6 mb-2 flex-shrink-0 flex items-center gap-2">
+          <span className="w-1 h-1 rounded-full bg-brand-sun-bright" />
+          <span className="text-brand-sun-bright/80 text-[10px] font-black uppercase tracking-[0.2em]">
             Main Menu
           </span>
         </div>
 
-        {/* Nav links — grows to fill available space */}
+        {/* Nav links */}
         <nav className="relative z-10 flex-1 px-3 space-y-1 overflow-y-auto">
           {navItems.map(({ label, icon: Icon, path }) => {
             const active = location.pathname === path;
@@ -155,22 +150,26 @@ export default function DashboardLayout({
                 to={path}
                 onClick={() => setSidebarOpen(false)}
                 className={`
-                  group flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-bold
-                  transition-all duration-200
+                  group relative flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-bold
+                  transition-all duration-300
                   ${
                     active
-                      ? "bg-white/15 text-white shadow-inner"
-                      : "text-white/55 hover:bg-white/10 hover:text-white"
+                      ? "bg-brand-sun text-brand-green-ink shadow-lg shadow-brand-sun/20"
+                      : "text-white/65 hover:bg-white/10 hover:text-white"
                   }
                 `}
               >
+                {/* Active gold left rail */}
+                {active && (
+                  <span className="absolute -left-3 top-1/2 -translate-y-1/2 w-1.5 h-7 rounded-r-full bg-brand-sun-bright" />
+                )}
                 <Icon
-                  className={`w-[18px] h-[18px] flex-shrink-0 transition-colors
-                    ${active ? "text-brand-sun" : "group-hover:text-white/80"}`}
+                  className={`w-[18px] h-[18px] flex-shrink-0 transition-all duration-300
+                    ${active ? "text-brand-green-ink" : "group-hover:text-brand-sun-bright group-hover:scale-110"}`}
                 />
                 <span className="flex-1">{label}</span>
                 {active && (
-                  <ChevronRight className="w-3.5 h-3.5 text-white/40" />
+                  <ChevronRight className="w-3.5 h-3.5 text-brand-green-ink/60" />
                 )}
               </Link>
             );
@@ -178,27 +177,28 @@ export default function DashboardLayout({
         </nav>
 
         {/* User info + logout — pinned to bottom */}
-        <div className="relative z-10 px-3 pb-6 pt-3 space-y-1 flex-shrink-0 border-t border-white/10 mt-2">
+        <div className="relative z-10 px-3 pb-6 pt-3 space-y-1 flex-shrink-0 border-t border-brand-sun/20 mt-2">
           <Link
             to="/dashboard/profile"
             onClick={() => setSidebarOpen(false)}
             className="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-white/10 transition-all group"
           >
-            <div className="w-9 h-9 rounded-xl bg-brand-sun/20 border border-brand-sun/30 flex items-center justify-center text-brand-sun font-black text-sm flex-shrink-0">
+            <div className="relative w-9 h-9 rounded-xl bg-brand-sun/20 border border-brand-sun/40 flex items-center justify-center text-brand-sun-bright font-black text-sm flex-shrink-0">
               {initials}
+              <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-brand-sun-bright ring-2 ring-brand-green-ink" />
             </div>
             <div className="flex-1 min-w-0">
               <div className="text-white font-bold text-[13px] truncate leading-none">
                 {user?.fullName}
               </div>
-              <div className="text-white/40 text-[11px] font-medium mt-0.5 truncate">
+              <div className="text-brand-sun-bright/70 text-[10px] font-black uppercase tracking-[0.18em] mt-1 truncate">
                 {roleLabel}
               </div>
             </div>
           </Link>
           <button
             onClick={handleLogout}
-            className="w-full flex items-center gap-3 px-4 py-2.5 rounded-2xl text-white/50 hover:bg-red-500/15 hover:text-red-300 transition-all text-sm font-bold cursor-pointer"
+            className="w-full flex items-center gap-3 px-4 py-2.5 rounded-2xl text-white/55 hover:bg-red-500/15 hover:text-red-300 transition-all text-sm font-bold cursor-pointer"
           >
             <LogOut className="w-4 h-4" />
             Sign Out
@@ -210,42 +210,55 @@ export default function DashboardLayout({
       {/* Takes remaining width; scrolls independently of sidebar   */}
       <div className="flex-1 flex flex-col min-w-0 overflow-y-auto">
         {/* Topbar */}
-        <header className="sticky top-0 z-20 flex items-center gap-4 px-5 py-4 bg-white/90 backdrop-blur-xl border-b border-gray-100 shadow-sm flex-shrink-0">
-          {/* Hamburger — mobile only */}
-          <button
-            className="lg:hidden p-2 text-gray-500 hover:text-brand-green transition-colors rounded-xl hover:bg-brand-green/5"
-            onClick={() => setSidebarOpen(true)}
-          >
-            <Menu className="w-5 h-5" />
-          </button>
-
-          {/* Breadcrumb */}
-          <div className="flex items-center gap-2">
-            <span className="text-brand-green text-sm font-black hidden sm:inline">
-              Niger State Seed Tracker
-            </span>
-            <span className="text-brand-sun hidden sm:inline">/</span>
-            <span className="text-gray-900 text-sm font-black">
-              {currentPage}
+        <header className="sticky top-0 z-20 bg-white/95 backdrop-blur-xl border-b border-brand-green/10 shadow-[0_2px_18px_-12px_rgba(13,77,44,0.30)] flex-shrink-0">
+          {/* Government gold ribbon */}
+          <div className="bg-brand-green-ink h-[26px] flex items-center px-5 text-[10px] font-black uppercase tracking-[0.22em] text-brand-sun-bright">
+            <span className="w-1 h-1 rounded-full bg-brand-sun-bright mr-2" />
+            <span>Niger State · Power · Excellence · Harvest</span>
+            <span className="ml-auto hidden sm:inline opacity-70">
+              SeedTracker.NG / Niger
             </span>
           </div>
+          <div className="h-[2px] w-full bg-gradient-to-r from-transparent via-brand-sun to-transparent" />
 
-          <div className="ml-auto flex items-center gap-3">
-            {/* Notification bell */}
-            <NotificationBell />
-
-            {/* User chip */}
-            <Link
-              to="/dashboard/profile"
-              className="flex items-center gap-2.5 pl-1 pr-3 py-1 rounded-2xl hover:bg-gray-100 transition-all"
+          <div className="flex items-center gap-4 px-5 py-3.5">
+            {/* Hamburger — mobile only */}
+            <button
+              className="lg:hidden p-2 text-brand-green-ink hover:text-brand-green hover:bg-brand-soft transition-colors rounded-xl"
+              onClick={() => setSidebarOpen(true)}
             >
-              <div className="w-8 h-8 rounded-xl bg-brand-green flex items-center justify-center text-white font-black text-xs flex-shrink-0">
-                {initials}
-              </div>
-              <span className="text-gray-800 font-bold text-sm hidden sm:block">
-                {user?.fullName?.split(" ")[0]}
+              <Menu className="w-5 h-5" />
+            </button>
+
+            {/* Breadcrumb */}
+            <div className="flex items-center gap-2.5">
+              <span className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-brand-soft text-brand-green-ink text-[10px] font-black uppercase tracking-[0.2em]">
+                <span className="w-1 h-1 rounded-full bg-brand-sun" />
+                Niger
               </span>
-            </Link>
+              <span className="text-brand-sun hidden sm:inline">/</span>
+              <span className="text-brand-green-ink text-sm font-black">
+                {currentPage}
+              </span>
+            </div>
+
+            <div className="ml-auto flex items-center gap-3">
+              {/* Notification bell */}
+              <NotificationBell />
+
+              {/* User chip */}
+              <Link
+                to="/dashboard/profile"
+                className="flex items-center gap-2.5 pl-1 pr-3 py-1 rounded-2xl hover:bg-brand-soft transition-all group"
+              >
+                <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-brand-green to-brand-green-deep flex items-center justify-center text-brand-sun-bright font-black text-xs flex-shrink-0 shadow-md shadow-brand-green/20 group-hover:scale-105 transition-transform">
+                  {initials}
+                </div>
+                <span className="text-brand-green-ink font-bold text-sm hidden sm:block">
+                  {user?.fullName?.split(" ")[0]}
+                </span>
+              </Link>
+            </div>
           </div>
         </header>
 

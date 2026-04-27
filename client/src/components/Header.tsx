@@ -1,6 +1,13 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, LayoutDashboard, Sprout } from "lucide-react";
+import {
+  Menu,
+  X,
+  LayoutDashboard,
+  Sprout,
+  Phone,
+  ChevronDown,
+} from "lucide-react";
 import { Button } from "./ui/button";
 import { useAuth } from "@/context/AuthContext";
 
@@ -13,7 +20,7 @@ export function Header() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      setIsScrolled(window.scrollY > 12);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -22,184 +29,213 @@ export function Header() {
   const navLinks = [
     { label: "Home", href: "/" },
     { label: "Map", href: "/#map" },
-    { label: "Contact", href: "#" },
+    { label: "Value Chain", href: "/#value-chain-map" },
+    { label: "Stakeholders", href: "/#about" },
+    { label: "FAQ", href: "/#faq" },
   ];
 
-  // The header should be solid if scrolled OR if the mobile menu is open
-  const isSolidBg = isScrolled || isMobileMenuOpen;
+  // Always show the gold government ribbon at top
+  const isSolidBg = isScrolled || isMobileMenuOpen || !isHome;
 
   return (
     <header
       data-testid="site-header"
-      className={`fixed top-0 left-0 right-0 mx-auto max-w-[2000px] z-50 transition-all duration-300 ${
-        isSolidBg
-          ? "bg-white/95 backdrop-blur-md shadow-[0_2px_18px_-6px_rgba(13,77,44,0.15)] border-b border-brand-green/10"
-          : isHome
-            ? "bg-transparent"
-            : "bg-brand-green"
-      }`}
+      className="fixed top-0 left-0 right-0 mx-auto max-w-[2000px] z-50 transition-all duration-300"
     >
-      <div className="section-px py-4">
-        <div className="flex items-center justify-between">
-          {/* Logo */}
-          <Link
-            to="/"
-            data-testid="header-logo"
-            className="flex items-center gap-3 group"
-          >
-            <div
-              className={`relative w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 ${
-                isSolidBg
-                  ? "bg-brand-green shadow-md shadow-brand-green/20"
-                  : "bg-white/15 backdrop-blur-md border border-white/25"
-              }`}
+      {/* ── Top gold government ribbon (always visible) ───────── */}
+      <div className="bg-brand-green-ink text-brand-sun-bright">
+        <div className="section-px py-2 flex items-center justify-between gap-4 text-[11px] font-black uppercase tracking-[0.22em]">
+          <div className="flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-brand-sun-bright niger-pulse-ring" />
+            <span>Niger State · Government Initiative</span>
+          </div>
+          <div className="hidden md:flex items-center gap-4 opacity-90">
+            <a
+              href="tel:+2349123456"
+              className="flex items-center gap-1.5 hover:text-white transition-colors"
             >
-              <Sprout
-                className={`w-5 h-5 ${isSolidBg ? "text-brand-sun" : "text-brand-sun"}`}
-                strokeWidth={2.5}
-              />
-              {/* gold corner pip */}
-              <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-brand-sun ring-2 ring-white/80" />
-            </div>
-            <div>
-              <div
-                className={`font-black text-[15px] leading-none tracking-tight ${isSolidBg ? "text-brand-green" : "text-white"}`}
-              >
-                Niger State Seed Tracker
-              </div>
-              <div
-                className={`text-[10px] font-bold mt-1 uppercase tracking-[0.18em] ${isSolidBg ? "text-brand-sun-deep" : "text-brand-sun"}`}
-              >
-                Power · Excellence · Harvest
-              </div>
-            </div>
-          </Link>
+              <Phone className="w-3 h-3" />
+              +234 9 123 4567
+            </a>
+            <span className="w-px h-3 bg-brand-sun-bright/40" />
+            <span>Power · Excellence · Harvest</span>
+          </div>
+        </div>
+        <div className="h-[2px] w-full bg-gradient-to-r from-transparent via-brand-sun to-transparent" />
+      </div>
 
-          {/* Desktop Navigation */}
-          <nav
-            data-testid="desktop-nav"
-            className="hidden lg:flex items-center gap-7"
-          >
-            {navLinks.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                className={`relative transition-colors font-semibold text-[14px] tracking-wide group ${
+      {/* ── Main bar ───────────────────────────────────────────── */}
+      <div
+        className={`transition-all duration-300 ${
+          isSolidBg
+            ? "bg-white/95 backdrop-blur-md shadow-[0_4px_24px_-12px_rgba(13,77,44,0.25)] border-b border-brand-green/10"
+            : "bg-transparent"
+        }`}
+      >
+        <div className="section-px py-3.5">
+          <div className="flex items-center justify-between gap-6">
+            {/* Logo */}
+            <Link
+              to="/"
+              data-testid="header-logo"
+              className="flex items-center gap-3 group shrink-0"
+            >
+              <div
+                className={`relative w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-300 group-hover:scale-105 ${
                   isSolidBg
-                    ? "text-gray-700 hover:text-brand-green"
-                    : "text-white/85 hover:text-white"
+                    ? "bg-gradient-to-br from-brand-green to-brand-green-deep shadow-md shadow-brand-green/25"
+                    : "bg-white/10 border border-brand-sun/30 backdrop-blur-md"
                 }`}
               >
-                {link.label}
-                <span
-                  className={`absolute -bottom-1 left-0 h-[2px] w-0 group-hover:w-full transition-all duration-300 rounded-full ${
-                    isSolidBg ? "bg-brand-sun" : "bg-brand-sun"
-                  }`}
+                <Sprout
+                  className="w-5 h-5 text-brand-sun-bright"
+                  strokeWidth={2.5}
                 />
-              </a>
-            ))}
-          </nav>
+                <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-brand-sun ring-2 ring-white/80" />
+                {/* small gold corner accent */}
+                <span className="absolute top-0 left-0 w-2 h-[2px] bg-brand-sun-bright rounded-r-full" />
+                <span className="absolute top-0 left-0 w-[2px] h-2 bg-brand-sun-bright rounded-b-full" />
+              </div>
+              <div className="leading-tight">
+                <div
+                  className={`font-black text-[15px] tracking-tight ${isSolidBg ? "text-brand-green-ink" : "text-white"}`}
+                >
+                  Niger State Seed Tracker
+                </div>
+                <div
+                  className={`text-[10px] font-black mt-1 uppercase tracking-[0.22em] ${isSolidBg ? "text-brand-sun-deep" : "text-brand-sun-bright"}`}
+                >
+                  ★ Power State Edition
+                </div>
+              </div>
+            </Link>
 
-          {/* Desktop CTA Buttons */}
-          <div className="hidden lg:flex items-center gap-3">
-            {user ? (
-              <Link to="/dashboard" data-testid="nav-dashboard">
-                <Button className="bg-brand-sun hover:bg-brand-sun-deep text-white font-bold transition-all shadow-md shadow-brand-sun/30 flex items-center gap-2 rounded-full px-5">
-                  <LayoutDashboard className="w-4 h-4" /> Go to Dashboard
-                </Button>
-              </Link>
-            ) : (
-              <>
-                <Link to="/login" data-testid="nav-login">
-                  <Button
-                    variant="ghost"
-                    className={`rounded-full font-semibold ${
-                      isSolidBg
-                        ? "text-brand-green hover:text-brand-green-deep hover:bg-brand-soft"
-                        : "text-white hover:text-white hover:bg-white/15"
-                    }`}
-                  >
-                    Log In
-                  </Button>
-                </Link>
-                <Link to="/register" data-testid="nav-register">
-                  <Button className="bg-brand-sun hover:bg-brand-sun-deep text-white font-bold transition-all shadow-md shadow-brand-sun/30 rounded-full px-5">
-                    Get Started
-                  </Button>
-                </Link>
-              </>
-            )}
-          </div>
-
-          {/* Mobile Menu Button */}
-          <button
-            data-testid="mobile-menu-toggle"
-            className={`lg:hidden transition-colors p-2 rounded-xl ${
-              isSolidBg
-                ? "text-brand-green hover:bg-brand-soft"
-                : "text-white hover:bg-white/10"
-            }`}
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            {isMobileMenuOpen ? (
-              <X className="w-6 h-6" />
-            ) : (
-              <Menu className="w-6 h-6" />
-            )}
-          </button>
-        </div>
-
-        {/* Mobile Menu Content */}
-        {isMobileMenuOpen && (
-          <div className="lg:hidden mt-4 pt-2 pb-6 border-t border-brand-green/10 h-[100vh]">
-            <nav className="flex flex-col gap-1 mt-2">
+            {/* Desktop Navigation */}
+            <nav
+              data-testid="desktop-nav"
+              className="hidden lg:flex items-center gap-1"
+            >
               {navLinks.map((link) => (
                 <a
                   key={link.label}
                   href={link.href}
-                  className="text-gray-800 hover:text-brand-green hover:bg-brand-soft transition-colors font-semibold px-4 py-4 rounded-xl text-lg"
-                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={`relative px-4 py-2 transition-colors font-bold text-[13px] tracking-wide rounded-full group ${
+                    isSolidBg
+                      ? "text-brand-green-ink hover:text-brand-green hover:bg-brand-soft"
+                      : "text-white/85 hover:text-white hover:bg-white/10"
+                  }`}
                 >
                   {link.label}
+                  <span
+                    className={`absolute left-1/2 -translate-x-1/2 -bottom-0.5 h-[2px] w-0 group-hover:w-6 transition-all duration-300 rounded-full bg-brand-sun`}
+                  />
                 </a>
               ))}
-              <div className="flex flex-col gap-4 mt-6 px-4">
-                {user ? (
-                  <Link
-                    to="/dashboard"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    <Button className="w-full bg-brand-sun hover:bg-brand-sun-deep text-white h-14 text-lg font-bold rounded-2xl shadow-md transition-all flex items-center justify-center gap-2">
-                      <LayoutDashboard className="w-5 h-5" /> Go to Dashboard
+            </nav>
+
+            {/* Desktop CTA Buttons */}
+            <div className="hidden lg:flex items-center gap-2.5 shrink-0">
+              {user ? (
+                <Link to="/dashboard" data-testid="nav-dashboard">
+                  <Button className="niger-btn-gold h-11 px-5 text-white font-black tracking-wide rounded-full text-[13px] uppercase border-0 hover:scale-[1.02] transition-transform">
+                    <LayoutDashboard className="w-4 h-4" /> Dashboard
+                  </Button>
+                </Link>
+              ) : (
+                <>
+                  <Link to="/login" data-testid="nav-login">
+                    <Button
+                      variant="ghost"
+                      className={`h-11 px-5 rounded-full font-bold text-[13px] uppercase tracking-wide ${
+                        isSolidBg
+                          ? "text-brand-green-ink hover:text-brand-green hover:bg-brand-soft"
+                          : "text-white hover:bg-white/10"
+                      }`}
+                    >
+                      Log In
                     </Button>
                   </Link>
-                ) : (
-                  <>
-                    <Link
-                      to="/login"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                    >
-                      <Button
-                        variant="outline"
-                        className="w-full text-brand-green border-2 border-brand-green hover:bg-brand-soft h-14 text-lg font-semibold rounded-2xl"
-                      >
-                        Log In
-                      </Button>
-                    </Link>
-                    <Link
-                      to="/register"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                    >
-                      <Button className="w-full bg-brand-sun hover:bg-brand-sun-deep text-white h-14 text-lg font-bold rounded-2xl shadow-md transition-all">
-                        Get Started
-                      </Button>
-                    </Link>
-                  </>
-                )}
-              </div>
-            </nav>
+                  <Link to="/register" data-testid="nav-register">
+                    <Button className="niger-btn-gold h-11 px-5 text-white font-black tracking-wide rounded-full text-[13px] uppercase border-0 hover:scale-[1.02] transition-transform">
+                      Register
+                      <ChevronDown className="w-3 h-3 -rotate-90" />
+                    </Button>
+                  </Link>
+                </>
+              )}
+            </div>
+
+            {/* Mobile Menu Button */}
+            <button
+              data-testid="mobile-menu-toggle"
+              className={`lg:hidden transition-colors p-2 rounded-xl ${
+                isSolidBg
+                  ? "text-brand-green-ink hover:bg-brand-soft"
+                  : "text-white hover:bg-white/10"
+              }`}
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            >
+              {isMobileMenuOpen ? (
+                <X className="w-6 h-6" />
+              ) : (
+                <Menu className="w-6 h-6" />
+              )}
+            </button>
           </div>
-        )}
+
+          {/* Mobile Menu Content */}
+          {isMobileMenuOpen && (
+            <div className="lg:hidden mt-4 pt-4 pb-6 border-t border-brand-green/10 h-[100vh] niger-slide-up">
+              <nav className="flex flex-col gap-1 mt-2">
+                {navLinks.map((link) => (
+                  <a
+                    key={link.label}
+                    href={link.href}
+                    className="text-brand-green-ink hover:text-brand-green hover:bg-brand-soft transition-colors font-bold px-4 py-3.5 rounded-xl text-[15px] flex items-center justify-between"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    {link.label}
+                    <span className="w-1.5 h-1.5 rounded-full bg-brand-sun opacity-0 group-hover:opacity-100" />
+                  </a>
+                ))}
+                <div className="flex flex-col gap-3 mt-6 px-2">
+                  {user ? (
+                    <Link
+                      to="/dashboard"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      <Button className="niger-btn-gold w-full h-14 text-base font-black uppercase tracking-wider rounded-2xl shadow-lg flex items-center justify-center gap-2 text-white border-0">
+                        <LayoutDashboard className="w-5 h-5" /> Go to Dashboard
+                      </Button>
+                    </Link>
+                  ) : (
+                    <>
+                      <Link
+                        to="/login"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        <Button
+                          variant="outline"
+                          className="w-full h-14 text-brand-green border-2 border-brand-green hover:bg-brand-soft text-base font-bold rounded-2xl uppercase tracking-wider"
+                        >
+                          Log In
+                        </Button>
+                      </Link>
+                      <Link
+                        to="/register"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        <Button className="niger-btn-gold w-full h-14 text-base font-black uppercase tracking-wider rounded-2xl text-white border-0">
+                          Register Now
+                        </Button>
+                      </Link>
+                    </>
+                  )}
+                </div>
+              </nav>
+            </div>
+          )}
+        </div>
       </div>
     </header>
   );

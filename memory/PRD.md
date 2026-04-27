@@ -1,60 +1,106 @@
 # Niger State Seed Tracker — Visual Refresh PRD
 
 ## Original Problem Statement
-Apply a visual refresh to the Niger State edition of the Seed Tracker platform (https://github.com/Devoyedells/seedtracker-niger) so it does not look identical to the general Nigerian version. Tailwind CSS only. Do NOT modify server, API logic, auth logic, services/api.ts, package.json, or .env files. Backend keys (registrationState, stateCounts) must remain unchanged. Keep existing motion/animations.
+Apply a strong, distinct visual identity to the Niger State edition of Seed Tracker so it does not look like a recolored Nigerian version. Tailwind CSS only. Do NOT modify server, API logic, auth logic, services/api.ts, package.json, or .env files. Backend keys (registrationState, stateCounts) preserved. Use existing motion library (no new deps).
 
-## Architecture (existing, untouched)
-- **Frontend**: Vite + React 18 + TypeScript + Tailwind CSS v4 (in `/app/client`)
-- **Backend**: Node/Express server in `/app/server` (NOT modified)
-- **API client**: `/app/client/src/services/api.ts` (NOT modified)
-- **Auth**: `/app/client/src/context/AuthContext.tsx` (NOT modified)
+## Architecture (untouched)
+- Vite + React 18 + TS + Tailwind v4 in `/app/client`
+- Server in `/app/server` — NOT modified
+- API client `services/api.ts`, AuthContext — NOT modified
 
-## Visual System Implemented
-- **Primary palette** (`theme.css`):
-  - `--color-brand-green`: #0d4d2c (deep Niger State green)
-  - `--color-brand-green-deep`: #083820 (hover/press)
-  - `--color-brand-soft`: #e7f1e8 (soft green BG)
-  - `--color-brand-mist`: #f4f9f4 (very light wash)
-  - `--color-brand-sun`: #b98a2e (warm honey gold — premium, not bright)
-  - `--color-brand-sun-deep`: #8f681f (gold hover/press)
-  - `--color-brand-cream`: #fbf6e7 (warm cream)
-- **Typography**: Montserrat (kept), heading letter-spacing tightened, gold ::selection.
-- **Signature elements**: `niger-rule` (3px gold gradient divider used on hero, sections, auth panel), Sprout-icon logo with gold pip, "Niger State Edition" pill badge.
+## Niger State Design System (in theme.css)
+### Tokens
+- `brand-green` #0d4d2c · `brand-green-deep` #083820 · `brand-green-ink` #052716
+- `brand-soft` #e7f1e8 · `brand-mist` #f4f9f4
+- `brand-sun` #b98a2e · `brand-sun-deep` #8f681f · `brand-sun-bright` #d6b25a
+- `brand-cream` #fbf6e7
 
-## What's Been Implemented (2026-01)
-### Branding refresh
-- Header: "Niger State Seed Tracker" with gold tagline "Power · Excellence · Harvest"
-- Footer: Niger State Office contact block (Minna), gold rule top border
-- Sidebar logo: "Niger State / Seed Tracker"
-- AuthLayout: Niger State Edition badge, gold rule, Niger-themed hero copy
-- Verify-email toast / hero copy updated to Niger State
+### Custom utility classes
+- `niger-rule`, `niger-rule-wide` — gold heading dividers
+- `niger-ticket` — chamfered ticket-style card clip-path
+- `niger-clip-tl` — chamfered top-left corner
+- `niger-slant-top`, `niger-slant-bottom` — diagonal section dividers
+- `niger-grain-light`, `niger-grain-dark` — subtle agricultural grain pattern
+- `niger-weave` — premium woven hero/sidebar background
+- `niger-emblem-ring` — gold ring used around icons
+- `niger-btn-primary`, `niger-btn-gold` — premium pressable buttons (gold linear gradient)
+- `niger-stat-card` — dashboard stat with gold left rail + grain
+- `niger-seal` — conic-gradient stamp/seal effect
+- `niger-lift`, `niger-lift-gold` — card hover lift
 
-### Page-level refresh
-- **Hero**: New "Powering Niger State's Seed Harvest" headline with gold underline, animated Niger State Edition pill, gold CTA, gold "Niger Listings" floating card.
-- **Dashboard**: Welcome banner now uses brand-green gradient with "Niger State Edition" watermark; user empty state references Niger State; cards use new shadow + brand-green/8 borders.
-- **ActorRegistration**: Soft-green gradient section, gold "Join Niger State" badge, gold-accent registration cards, gold "Niger State Roles Available" floating stat.
-- **ValueChainMap / ValueChainVisibility / StakeholderBenefits / FAQ**: All updated to Niger-state copy + niger-rule + gold pills.
-- **ActorMap & ConnectionsPage**: Niger State boundary now drawn in warm gold (#b98a2e); Niger appears first in state filters.
-- **FAQ content**: Rewritten to position the Niger State edition while clarifying the platform serves Niger, Anambra, Ekiti.
+### Animations (no new deps)
+- `niger-shimmer` (gold sweep)
+- `niger-float`, `niger-float-slow` (subtle Y bob)
+- `niger-pulse-ring` (gold pulse)
+- `niger-spin-slow` (24s emblem text rotation)
+- `niger-slide-up`, `niger-fade-in` (entrance)
+- `niger-marquee` (LGA name strip)
+- `niger-stamp-in` (stamped reveal)
+- `niger-grain-drift` (drifting bg)
+- All animations respect `prefers-reduced-motion`.
 
-### Component polish
-- **StatCard / breakdown / recent actors**: Brand-green/8 borders, deeper soft shadows, soft-green bg icon wells, gold hover linking to brand-sun.
-- **Buttons**: Primary CTA shifted to gold `bg-brand-sun → hover:bg-brand-sun-deep` with gold-tinted shadow; auth submit kept brand-green.
-- **Badges/pills**: Niger State Edition pill, gold-tinted pills with `bg-brand-sun/15 border border-brand-sun/30`.
+## Implemented Visual Refresh (2026-01)
+### New components
+- **`components/NigerEmblem.tsx`** — Animated SVG state seal with rotating gold-text ring ("NIGER STATE · POWER · EXCELLENCE · HARVEST"), 24 tick marks, deep-green inner stamp ("NIGER STATE · EST · 1976"), and gold pulse ring.
+
+### Hero (full restructure)
+- 12-column asymmetric layout: 7-col headline cluster + 5-col Niger emblem
+- Massive split-line headline ("The Power State's [SEED] Network. *rooted in Niger.*")
+- Gold marker-highlighted "Seed" word, italic gold tagline
+- Niger weave background, animated vertical light beam, radial vignette
+- Floating glass stat badges anchored around the emblem (live data only)
+- 4-column government-plaque stat strip (live counts: total actors, states, types, LGAs)
+- Bottom Niger LGA marquee strip (Bida, Minna, Suleja, Kontagora, Lapai, Borgu, Mokwa…)
+- Diagonal SVG hand-off into next section
+
+### Header
+- Top gold government ribbon: "Niger State · Government Initiative" with phone & "Power · Excellence · Harvest"
+- Always visible (not just on scroll) — gives every page the official-portal feel
+- Logo with corner-rule accents + animated gold pip
+- Five-link nav with sliding gold underline on hover
+- Gold-gradient `niger-btn-gold` CTA buttons
+
+### Footer
+- Diagonal SVG entry from page above
+- Niger emblem on left + 3-col nav (Platform / Resources / Niger State)
+- Animated drifting grain background + double gold rule top
+- Contact strip (Niger State Office, Helpline, Email) with hover gold-fill icons
+- Bottom row pill badge "★ NIGER STATE" + dotted hover underline
+
+### ActorRegistration (full restructure)
+- New ticket-style cards (`niger-ticket` clip-path) with:
+  - Gold left rail peeking behind
+  - "NO. 0X" green ribbon ribbon in top-right
+  - Dotted "perforation" line at bottom
+  - Card hover lift + icon rotate
+- Right column: Niger State Pledge stamp card with gold corner accents, "EST · 1976", verified-checklist, "Activate My Niger Profile" CTA, and verification footer
+
+### DashboardLayout
+- Sidebar: niger-weave background, gold top rule, sun-icon pip on logo, gold left-rail for active nav items, gold-gradient active state
+- Topbar: government gold ribbon + gold rule + breadcrumb pill, gradient avatar chip
+
+### DashboardPage
+- Welcome banner: niger-weave + gold corner accents, gold "★ Niger State Edition" pill, white sparkle accent
+- Stat cards now use `niger-stat-card` (gold left rail, hover lift, "NS · 01/02..." mono corner mark)
+
+### Other pages
+- Login/Register: brand-sun stat cards, gold "Niger State Edition" pill, gold rule above heading
+- ConnectionsPage / ActorMap: Niger State boundary now drawn in warm gold; Niger appears first in filter
+- All "Nigeria" copy → "Niger State" / "Power State" copy
 
 ## What was NOT touched (per instructions)
-- `/app/server/**` (backend)
+- `/app/server/**`
 - `/app/client/src/services/api.ts`
-- `/app/client/src/context/AuthContext.tsx` (auth logic)
+- `/app/client/src/context/AuthContext.tsx`
 - `/app/client/package.json`, `.env`, `vite.config.ts`
-- Backend field labels: `registrationState`, `stateCounts`, `actorTypeCounts`, etc.
+- Backend identifiers: `registrationState`, `stateCounts`, `actorTypeCounts`
 
 ## Verification
 - ESLint: ✅ no issues
-- `yarn build`: ✅ built in 12.49s (no errors)
-- Dev preview screenshots: ✅ landing & login confirmed
+- `yarn build`: ✅ 6.97s, no errors
+- Live dev preview screenshots: landing (top + below-fold + footer), login — all confirmed Niger State distinct identity
 
-## Backlog / Next Action Items
-- P1: Run testing agent against the backend once API keys/env are configured (out of scope here).
-- P2: Optional — replace remaining stock testimonial avatars (`/assets/images/testimonial-user-*.jpg`) with Niger State agriculture photography.
-- P2: Optional — add a 12-LGA mini-map widget to the Dashboard welcome banner for extra Niger State flavor.
+## Backlog
+- P2: Add a small Niger LGA heat-map widget to dashboard welcome banner
+- P2: Replace stock testimonial avatars with Niger State agriculture photography
+- P2: Extract palette to design-tokens file for future Anambra / Ekiti per-state themes

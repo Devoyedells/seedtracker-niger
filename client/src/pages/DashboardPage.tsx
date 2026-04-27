@@ -96,37 +96,37 @@ function StatCard({
   return (
     <div
       data-testid={`stat-card-${label.replace(/\s+/g, "-").toLowerCase()}`}
-      className="group relative bg-white rounded-3xl p-6 border border-brand-green/8 shadow-[0_4px_18px_-8px_rgba(13,77,44,0.10)] hover:shadow-[0_18px_36px_-12px_rgba(13,77,44,0.20)] hover:-translate-y-1 transition-all duration-300 overflow-hidden"
+      className="niger-stat-card group p-6 niger-slide-up"
       style={{ animationDelay: delay }}
     >
-      {/* Gradient glow */}
+      {/* Background glow */}
       <div
-        className={`absolute -top-6 -right-6 w-28 h-28 rounded-full opacity-[0.10] blur-2xl ${accentClass}`}
+        className={`absolute -top-6 -right-6 w-28 h-28 rounded-full opacity-[0.10] blur-2xl ${accentClass} group-hover:opacity-[0.18] transition-opacity duration-500`}
       />
 
       <div className="relative z-10 flex items-start justify-between">
         <div>
-          <p className="text-[11px] font-black uppercase tracking-[0.18em] text-gray-400 mb-2">
+          <p className="text-[10px] font-black uppercase tracking-[0.22em] text-brand-sun-deep mb-2">
             {label}
           </p>
-          <p className="text-4xl font-black text-gray-900 tracking-tight leading-none mb-1">
+          <p className="text-4xl font-black text-brand-green-ink tracking-tight leading-none mb-1">
             {value}
           </p>
           {sub && (
-            <p className="text-xs font-bold text-gray-400 mt-1.5">{sub}</p>
+            <p className="text-xs font-bold text-gray-400 mt-2">{sub}</p>
           )}
         </div>
         <div
-          className={`p-3.5 rounded-2xl ${accentClass} bg-opacity-15 flex-shrink-0 shadow-inner`}
+          className={`p-3.5 rounded-2xl ${accentClass} bg-opacity-15 flex-shrink-0 shadow-inner ring-1 ring-white/30 group-hover:rotate-[-6deg] transition-transform duration-500`}
         >
           <Icon className="w-5 h-5 text-white" />
         </div>
       </div>
 
-      {/* Bottom bar accent */}
-      <div
-        className={`absolute bottom-0 left-0 h-[3px] w-full ${accentClass} opacity-60 group-hover:opacity-100 transition-opacity`}
-      />
+      {/* Bottom corner mark */}
+      <div className="absolute bottom-3 right-3 text-[9px] font-mono font-black text-brand-sun-deep/40 tracking-widest">
+        NS · 0{(delay && parseInt(delay)) ? Math.floor(parseInt(delay) / 60) + 1 : 1}
+      </div>
     </div>
   );
 }
@@ -326,33 +326,31 @@ export default function DashboardPage() {
   return (
     <div
       data-testid="dashboard-page"
-      className="space-y-6 animate-in fade-in duration-500"
+      className="space-y-6 niger-fade-in"
     >
-      {/* Welcome Banner */}
-      <div className="relative bg-gradient-to-br from-brand-green via-brand-green to-brand-green-deep rounded-3xl p-7 overflow-hidden shadow-xl shadow-brand-green/20">
-        {/* Grid texture */}
-        <div
-          className="absolute inset-0 opacity-[0.07]"
-          style={{
-            backgroundImage: `linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)`,
-            backgroundSize: "28px 28px",
-          }}
-        />
-        <div className="absolute right-0 top-0 w-64 h-full">
-          <div className="absolute top-0 right-0 w-48 h-48 bg-brand-sun/25 rounded-full blur-3xl" />
+      {/* Welcome Banner — government plaque style */}
+      <div className="relative niger-weave rounded-[28px] p-7 sm:p-9 overflow-hidden shadow-2xl shadow-brand-green/25">
+        {/* Gold corner accents */}
+        <span className="absolute top-4 left-4 w-7 h-[3px] bg-brand-sun-bright rounded-r-full" />
+        <span className="absolute top-4 left-4 w-[3px] h-7 bg-brand-sun-bright rounded-b-full" />
+        <span className="absolute bottom-4 right-4 w-7 h-[3px] bg-brand-sun-bright rounded-l-full" />
+        <span className="absolute bottom-4 right-4 w-[3px] h-7 bg-brand-sun-bright rounded-t-full" />
+
+        <div className="absolute right-0 top-0 w-72 h-full">
+          <div className="absolute top-0 right-0 w-56 h-56 bg-brand-sun/25 rounded-full blur-3xl" />
           <div className="absolute bottom-0 right-8 w-32 h-32 bg-white/5 rounded-full blur-2xl" />
         </div>
 
-        {/* Niger State watermark */}
-        <div className="absolute top-6 right-6 hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand-sun/15 border border-brand-sun/30 backdrop-blur-sm">
-          <span className="w-1.5 h-1.5 rounded-full bg-brand-sun" />
-          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-brand-sun">
-            Niger State Edition
+        {/* Niger State watermark badge */}
+        <div className="absolute top-6 right-6 hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand-sun text-brand-green-ink shadow-md shadow-brand-sun/30">
+          <span className="w-1.5 h-1.5 rounded-full bg-brand-green-ink" />
+          <span className="text-[10px] font-black uppercase tracking-[0.22em]">
+            ★ Niger State Edition
           </span>
         </div>
 
         <div className="relative z-10">
-          <p className="text-brand-sun text-sm font-bold mb-1">
+          <p className="text-brand-sun-bright text-[11px] font-black uppercase tracking-[0.22em] mb-2">
             {new Date().toLocaleDateString("en-NG", {
               weekday: "long",
               year: "numeric",
@@ -360,20 +358,20 @@ export default function DashboardPage() {
               day: "numeric",
             })}
           </p>
-          <h1 className="text-white text-3xl font-black tracking-tight mb-2">
-            {greeting}, {firstName} 👋
+          <h1 className="text-white text-3xl sm:text-4xl font-black tracking-tight mb-2 leading-tight">
+            {greeting}, {firstName}
+            <span className="text-brand-sun-bright"> ✦</span>
           </h1>
           <div className="niger-rule mb-4" />
-          <p className="text-white/65 text-sm font-medium max-w-md leading-relaxed">
-            Here's an overview of Niger State's seed value chain network.
-            Stay updated on actor activity and registrations across the Power
-            State.
+          <p className="text-white/70 text-sm sm:text-[15px] font-medium max-w-md leading-relaxed">
+            Welcome to the Niger State Seed Tracker control room. Here&apos;s a
+            live overview of the Power-State value chain network.
           </p>
 
           {(user?.actorType || user?.role === "admin") && (
-            <div className="mt-5 inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 backdrop-blur-sm">
-              <BadgeCheck className="w-3.5 h-3.5 text-brand-sun" />
-              <span className="text-white text-xs font-bold">
+            <div className="mt-5 inline-flex items-center gap-2 bg-white/10 border border-brand-sun/30 rounded-full px-4 py-1.5 backdrop-blur-sm">
+              <BadgeCheck className="w-3.5 h-3.5 text-brand-sun-bright" />
+              <span className="text-white text-xs font-bold tracking-wide">
                 {user?.role === "admin"
                   ? "Platform Administrator"
                   : `Registered as ${actorTypeLabel[user!.actorType!] ?? user!.actorType}`}

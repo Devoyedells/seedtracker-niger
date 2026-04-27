@@ -1,8 +1,9 @@
 import { motion } from "motion/react";
-import { ArrowRight, Network } from "lucide-react";
+import { ArrowRight, Sparkles, ShieldCheck, MapPin } from "lucide-react";
 import { Button } from "./ui/button";
 import { useQuery } from "@tanstack/react-query";
 import api from "@/services/api";
+import { NigerEmblem } from "./NigerEmblem";
 
 export function Hero() {
   const { data: stats } = useQuery({
@@ -18,7 +19,7 @@ export function Hero() {
         try {
           return JSON.parse(cached);
         } catch (e) {
-          /* ignore error */
+          /* ignore */
         }
       }
       return {
@@ -35,413 +36,317 @@ export function Hero() {
     },
   });
 
-  const getActorCount = (type: string, fallback: number) => {
-    if (!stats || !stats.actorTypeCounts) return fallback;
-    const found = stats.actorTypeCounts.find((a: any) => a._id === type);
-    return found ? found.count : 0; // Use actual zero if not found in real data, but we use hardcoded mapping in UI
-  };
+  // Live derived numbers (no hardcoded fakes — fall back gracefully when 0)
+  const totalActors: number = stats?.totalActors ?? 0;
+  const totalStates: number = stats?.stateCounts?.length ?? 0;
+  const totalTypes: number = stats?.actorTypeCounts?.length ?? 0;
+  const formatActors = (n: number) =>
+    n >= 1000 ? `${(n / 1000).toFixed(1)}k` : `${n}`;
 
-  const calculateWidth = (count: number, max: number) => {
-    return `${Math.max(5, Math.min(100, (count / max) * 100))}%`;
-  };
-
-  const producerCount = getActorCount("producer", 1240);
-  const dealerCount = getActorCount("dealer", 850);
-  const providerCount = getActorCount("input_provider", 420);
-  const aggregatorCount = getActorCount("aggregator", 310);
-  const offtakerCount = getActorCount("offtaker", 180);
-
-  // We find the max actor count dynamically so the bars scale well
-  const maxCount = Math.max(
-    producerCount,
-    dealerCount,
-    providerCount,
-    aggregatorCount,
-    offtakerCount,
-    1,
-  );
+  // Marquee chips — partner regions
+  const marqueeItems = [
+    "Niger State · Power State",
+    "Bida Emirate",
+    "Minna Capital",
+    "Suleja",
+    "Kontagora",
+    "Lapai",
+    "Borgu",
+    "Mokwa",
+    "Anambra · Partner",
+    "Ekiti · Partner",
+  ];
 
   return (
     <section
       id="home"
-      className="relative min-h-[90vh] flex items-center overflow-hidden bg-brand-green pt-24 lg:pt-32 pb-16"
+      data-testid="hero-section"
+      className="relative overflow-hidden text-white"
     >
-      {/* Grid animation keyframes injected inline */}
+      {/* Inline keyframes (preserve existing motion style) */}
       <style>{`
-        @keyframes heroGridScroll {
-          0%   { background-position: 0px 0px; }
-          100% { background-position: 40px 40px; }
-        }
-        @keyframes heroRayPulse {
-          0%, 100% { opacity: 0.15; transform: translateX(-50%) scaleX(1); }
-          50%       { opacity: 0.35; transform: translateX(-50%) scaleX(1.8); }
+        @keyframes heroBeam {
+          0%, 100% { opacity: 0.20; transform: translate(-50%, 0) scaleY(1); }
+          50%      { opacity: 0.45; transform: translate(-50%, 0) scaleY(1.4); }
         }
       `}</style>
 
-      {/* Background Effects */}
-      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        {/* Animated scrolling grid — moves diagonally for 3D conveyor feel */}
-        <div
-          className="absolute inset-0 opacity-[0.13]"
-          style={{
-            backgroundImage: `linear-gradient(#ffffff 1px, transparent 1px), linear-gradient(90deg, #ffffff 1px, transparent 1px)`,
-            backgroundSize: "40px 40px",
-            animation: "heroGridScroll 2.4s linear infinite",
-          }}
-        />
+      {/* ── Main hero ────────────────────────────────────────────── */}
+      <div className="relative niger-weave pt-32 pb-32 lg:pt-40 lg:pb-44">
+        {/* Background depth & beams */}
+        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+          <div
+            className="absolute inset-0"
+            style={{
+              background: `radial-gradient(ellipse 80% 60% at 50% 30%, rgba(214,178,90,0.12) 0%, transparent 70%)`,
+            }}
+          />
+          <div
+            className="absolute inset-0"
+            style={{
+              background: `radial-gradient(ellipse 100% 80% at 50% 100%, rgba(0,0,0,0.55) 0%, transparent 60%)`,
+            }}
+          />
+          {/* Vertical light beam */}
+          <div
+            className="absolute left-1/2 top-0 h-full w-[2px] bg-gradient-to-b from-brand-sun-bright via-brand-sun/40 to-transparent blur-[6px]"
+            style={{ animation: "heroBeam 4s ease-in-out infinite" }}
+          />
+        </div>
 
-        {/* Perspective depth vignette — darkens edges to sell 3D depth */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background: `radial-gradient(ellipse 90% 70% at 50% 50%, transparent 40%, rgba(0,0,0,0.45) 100%)`,
-          }}
-        />
-
-        {/* Bright centre glow — creates a "light source above" illusion */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background: `radial-gradient(ellipse 60% 40% at 50% 0%, rgba(255,255,255,0.10) 0%, transparent 70%)`,
-          }}
-        />
-
-        {/* Pulsing vertical light ray */}
-        <div
-          className="absolute left-1/3 top-0 h-full w-[3px] bg-gradient-to-b from-brand-sun/50 via-brand-sun/10 to-transparent blur-2xl"
-          style={{
-            animation: "heroRayPulse 4s ease-in-out infinite",
-            transform: "translateX(-50%)",
-          }}
-        />
-      </div>
-
-      <div className="container relative z-10 mx-auto px-4 lg:px-8 max-w-[1280px]">
-        <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-8">
-          {/* Left Content */}
-          <div className="flex-1 w-full text-center lg:text-left z-20">
-            {/* Niger State Badge */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              data-testid="hero-state-badge"
-              className="inline-flex items-center gap-2 bg-brand-sun/15 backdrop-blur-md px-4 py-2 rounded-full text-white mb-8 border border-brand-sun/40 shadow-lg shadow-brand-sun/10"
+        <div className="relative z-10 section-px max-w-[1320px] mx-auto">
+          {/* ── Centered eyebrow ─────────────────────────────────── */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="flex justify-center mb-7"
+          >
+            <div
+              data-testid="hero-eyebrow"
+              className="relative inline-flex items-center gap-3 pl-2 pr-5 py-2 rounded-full border border-brand-sun/40 bg-brand-green-ink/70 backdrop-blur-md"
             >
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-sun opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-sun" />
-              </span>
-              <span className="text-[11px] font-black tracking-[0.2em] uppercase text-brand-sun">
+              <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-sun text-brand-green-ink text-[10px] font-black uppercase tracking-[0.22em] shadow-md shadow-brand-sun/30">
+                <Sparkles className="w-3 h-3" />
                 Niger State Edition
               </span>
-              <span className="h-3 w-px bg-white/30" />
-              <span className="text-xs font-bold tracking-wide text-white/90">
-                Seed Information Platform
+              <span className="text-[11px] font-bold tracking-wide text-white/85">
+                Official seed value chain platform
               </span>
-            </motion.div>
+            </div>
+          </motion.div>
 
-            {/* Main Headline */}
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.1 }}
-              data-testid="hero-headline"
-              className="mb-6 text-5xl font-black leading-[1.05] text-white md:text-6xl lg:text-7xl tracking-tight"
-            >
-              Powering <br className="hidden sm:block" />
-              Niger State&apos;s <br className="hidden sm:block" />
-              <span className="relative inline-block">
-                <span className="text-brand-sun">Seed Harvest</span>
-                <span className="absolute -bottom-2 left-0 h-1 w-full bg-gradient-to-r from-brand-sun via-brand-sun/70 to-transparent rounded-full" />
-              </span>
-            </motion.h1>
-
-            {/* Subheadline */}
-            <motion.p
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="mb-10 max-w-2xl text-lg text-white/80 md:text-xl lg:mx-0 leading-relaxed font-medium"
-            >
-              Register as a Niger State value chain actor, list your products,
-              connect with stakeholders across the Power State, and join the
-              wider seed marketplace covering Niger, Anambra and Ekiti.
-            </motion.p>
-
-            {/* CTA Buttons */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              className="mb-12 flex flex-col items-center gap-4 sm:flex-row lg:justify-start"
-            >
-              <Button
-                size="lg"
-                data-testid="hero-cta-register"
-                className="w-full shrink-0 bg-brand-sun text-white px-8 py-7 font-bold text-base hover:bg-brand-sun-deep sm:w-auto rounded-full shadow-2xl shadow-brand-sun/30 transition-all hover:-translate-y-0.5"
+          {/* ── Headline + Emblem split ──────────────────────────── */}
+          <div className="grid lg:grid-cols-12 gap-10 lg:gap-6 items-center">
+            {/* Left: Headline cluster */}
+            <div className="lg:col-span-7 text-center lg:text-left lg:pr-4">
+              <motion.h1
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.1 }}
+                data-testid="hero-headline"
+                className="font-black leading-[0.96] text-white text-[44px] sm:text-[56px] lg:text-[78px] tracking-[-0.025em]"
               >
-                Register as Niger Actor
-                <ArrowRight className="w-5 h-5 ml-2" />
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                data-testid="hero-cta-explore"
-                className="w-full shrink-0 border-2 border-white/30 bg-white/5 text-white hover:bg-white hover:text-brand-green sm:w-auto rounded-full px-8 py-7 font-bold text-base transition-all"
-              >
-                Explore Platform
-              </Button>
-            </motion.div>
-
-            {/* Social Proof */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1, delay: 0.5 }}
-              className="flex flex-col items-center gap-4 sm:flex-row lg:justify-start"
-            >
-              <div className="flex -space-x-3">
-                {[1, 2, 3, 4].map((i) => (
-                  <img
-                    key={i}
-                    src={`/assets/images/testimonial-user-${i}.jpg`}
-                    alt={`User ${i}`}
-                    className="h-10 w-10 rounded-full border-2 border-brand-green bg-white object-cover"
-                  />
-                ))}
-              </div>
-              <p className="text-sm font-medium text-white/80">
-                <span className="font-bold text-brand-sun">
-                  {stats?.totalActors >= 1000
-                    ? `${(stats.totalActors / 1000).toFixed(1)}k+`
-                    : stats?.totalActors}
-                </span>{" "}
-                actors integrated · 3-state network
-              </p>
-            </motion.div>
-          </div>
-
-          {/* Right Content - Abstract Dashboard Visuals */}
-          <div className="relative flex-1 w-full mt-12 lg:mt-0 py-10 lg:py-0">
-            <div className="relative mx-auto h-[400px] sm:h-[480px] lg:h-[550px] w-full max-w-[340px] sm:max-w-[450px] lg:max-w-[500px]">
-              {/* Nationwide Reach Card */}
-              <motion.div
-                animate={{ y: ["0px", "-15px", "0px"] }}
-                transition={{
-                  duration: 4,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-                className="absolute right-0 sm:right-0 lg:-right-8 top-0 lg:top-4 z-20 w-[180px] sm:w-[240px] lg:w-[260px] rounded-2xl sm:rounded-3xl bg-white p-4 sm:p-6 shadow-2xl border border-gray-100"
-              >
-                <div className="mb-3 sm:mb-4 flex flex-col gap-1">
-                  <p className="text-[10px] sm:text-xs uppercase tracking-widest text-brand-sun-deep font-bold">
-                    Network Reach
-                  </p>
-                  <h3 className="text-xl sm:text-3xl font-black text-brand-green leading-tight">
-                    {stats?.stateCounts ? stats.stateCounts.length : 3} states
-                  </h3>
-                </div>
-                <div className="flex items-center gap-2 mt-4">
-                  <div className="inline-flex items-center gap-1 rounded-full bg-brand-sun/15 px-3 py-1 text-xs font-black text-brand-sun-deep border border-brand-sun/30">
-                    <span className="text-[10px]">★</span>Niger · Anambra · Ekiti
-                  </div>
-                </div>
-                {/* Simulated Graph */}
-                <div className="mt-5 flex items-end gap-1 h-12">
-                  {[40, 60, 45, 80, 55, 90, 100].map((h, i) => (
-                    <div
-                      key={i}
-                      className="flex-1 bg-brand-green/20 rounded-t-sm"
-                      style={{ height: `${h}%` }}
-                    >
-                      {i === 6 && (
-                        <div className="w-full h-full bg-brand-green rounded-t-sm" />
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
-
-              {/* Verified Actors Card */}
-              <motion.div
-                animate={{ y: ["0px", "15px", "0px"] }}
-                transition={{
-                  duration: 4.5,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-                className="absolute -left-2 sm:left-0 lg:-left-12 top-24 sm:top-28 lg:top-40 z-10 w-[200px] sm:w-[260px] lg:w-[300px] rounded-[24px] sm:rounded-[32px] bg-white p-4 sm:p-6 lg:p-8 shadow-2xl border border-gray-100"
-              >
-                <div className="mb-4 sm:mb-6 flex items-center justify-between">
-                  <h4 className="text-lg sm:text-xl font-black text-brand-green">
-                    Key Actors
-                  </h4>
-                  <div className="flex items-center justify-center p-2 rounded-xl bg-brand-soft text-brand-green">
-                    <Network className="w-4 h-4" />
-                  </div>
-                </div>
-                <div className="space-y-4">
-                  <div className="flex gap-3 items-center">
-                    <div className="w-8 h-8 rounded-xl bg-blue-100 text-blue-600 flex justify-center items-center font-bold text-xs">
-                      P
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex justify-between items-center mb-1">
-                        <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wide">
-                          Seed Producers
-                        </span>
-                        <span className="text-xs font-black text-gray-800">
-                          {producerCount.toLocaleString()}
-                        </span>
-                      </div>
-                      <div className="h-1 w-full bg-gray-100 rounded-full overflow-hidden">
-                        <div
-                          className="h-full bg-blue-500 rounded-full"
-                          style={{
-                            width: calculateWidth(producerCount, maxCount),
-                          }}
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex gap-3 items-center">
-                    <div className="w-8 h-8 rounded-xl bg-orange-100 text-orange-600 flex justify-center items-center font-bold text-xs">
-                      D
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex justify-between items-center mb-1">
-                        <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wide">
-                          Dealers
-                        </span>
-                        <span className="text-xs font-black text-gray-800">
-                          {dealerCount.toLocaleString()}
-                        </span>
-                      </div>
-                      <div className="h-1 w-full bg-gray-100 rounded-full overflow-hidden">
-                        <div
-                          className="h-full bg-orange-500 rounded-full"
-                          style={{
-                            width: calculateWidth(dealerCount, maxCount),
-                          }}
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex gap-3 items-center">
-                    <div className="w-8 h-8 rounded-xl bg-green-100 text-green-600 flex justify-center items-center font-bold text-xs">
-                      IP
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex justify-between items-center mb-1">
-                        <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wide">
-                          Input Providers
-                        </span>
-                        <span className="text-xs font-black text-gray-800">
-                          {providerCount.toLocaleString()}
-                        </span>
-                      </div>
-                      <div className="h-1 w-full bg-gray-100 rounded-full overflow-hidden">
-                        <div
-                          className="h-full bg-green-500 rounded-full"
-                          style={{
-                            width: calculateWidth(providerCount, maxCount),
-                          }}
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex gap-3 items-center">
-                    <div className="w-8 h-8 rounded-xl bg-purple-100 text-purple-600 flex justify-center items-center font-bold text-xs">
-                      A
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex justify-between items-center mb-1">
-                        <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wide">
-                          Aggregators
-                        </span>
-                        <span className="text-xs font-black text-gray-800">
-                          {aggregatorCount.toLocaleString()}
-                        </span>
-                      </div>
-                      <div className="h-1 w-full bg-gray-100 rounded-full overflow-hidden">
-                        <div
-                          className="h-full bg-purple-500 rounded-full"
-                          style={{
-                            width: calculateWidth(aggregatorCount, maxCount),
-                          }}
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex gap-3 items-center">
-                    <div className="w-8 h-8 rounded-xl bg-red-100 text-red-600 flex justify-center items-center font-bold text-xs">
-                      O
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex justify-between items-center mb-1">
-                        <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wide">
-                          Offtakers
-                        </span>
-                        <span className="text-xs font-black text-gray-800">
-                          {offtakerCount.toLocaleString()}
-                        </span>
-                      </div>
-                      <div className="h-1 w-full bg-gray-100 rounded-full overflow-hidden">
-                        <div
-                          className="h-full bg-red-500 rounded-full"
-                          style={{
-                            width: calculateWidth(offtakerCount, maxCount),
-                          }}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-
-              {/* Seed Varieties Card */}
-              <motion.div
-                animate={{
-                  x: ["0px", "6px", "0px"],
-                  y: ["0px", "-8px", "0px"],
-                  rotate: [-2, 0, -2],
-                }}
-                transition={{
-                  duration: 5.5,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-                className="absolute right-0 sm:-right-4 lg:-right-12 bottom-0 sm:bottom-4 lg:bottom-12 z-30 w-[170px] sm:w-[220px] lg:w-[260px] transform rounded-2xl sm:rounded-3xl bg-brand-sun p-4 sm:p-6 lg:p-8 text-white shadow-2xl shadow-brand-sun/40"
-              >
-                <div className="mb-3 sm:mb-4 flex items-center justify-between">
-                  <span className="text-base sm:text-lg font-black tracking-tight">
-                    Niger Listings
+                <span className="block">The Power State&apos;s</span>
+                <span className="block">
+                  <span className="relative inline-block mr-2">
+                    <span className="absolute -inset-x-2 -inset-y-1 bg-brand-sun -rotate-1 -z-10" />
+                    <span className="relative text-brand-green-ink px-1">
+                      Seed
+                    </span>
                   </span>
-                  <div className="flex -space-x-2">
-                    <div className="h-5 w-5 sm:h-6 sm:w-6 rounded-full bg-white/30 border border-white/60"></div>
-                    <div className="h-5 w-5 sm:h-6 sm:w-6 rounded-full bg-white/50 border border-white/60"></div>
+                  Network.
+                </span>
+                <span className="block text-brand-sun-bright italic font-light text-[34px] sm:text-[42px] lg:text-[56px] mt-3">
+                  rooted in Niger.
+                </span>
+              </motion.h1>
+
+              <motion.div
+                initial={{ opacity: 0, scaleX: 0 }}
+                animate={{ opacity: 1, scaleX: 1 }}
+                transition={{ duration: 0.9, delay: 0.4 }}
+                style={{ transformOrigin: "left" }}
+                className="hidden lg:block niger-rule-wide mt-8 max-w-[320px]"
+              />
+
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.3 }}
+                className="mt-7 max-w-xl mx-auto lg:mx-0 text-[16px] sm:text-lg text-white/75 leading-relaxed font-medium"
+              >
+                Niger State&apos;s official seed information platform —
+                connecting producers, dealers, aggregators and farmers across
+                25 LGAs. Part of a 3-state network (Niger · Anambra · Ekiti)
+                helping the Power State lead Nigeria&apos;s harvest.
+              </motion.p>
+
+              {/* CTA group */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.45 }}
+                className="mt-9 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
+              >
+                <Button
+                  size="lg"
+                  data-testid="hero-cta-register"
+                  className="niger-btn-gold relative h-14 px-8 text-white font-black tracking-wide rounded-full text-[15px] uppercase border-0 hover:scale-[1.02] transition-transform"
+                >
+                  Register as Niger Actor
+                  <ArrowRight className="w-5 h-5 ml-1.5" />
+                </Button>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  data-testid="hero-cta-explore"
+                  className="h-14 px-7 rounded-full border-2 border-brand-sun/40 bg-white/5 text-white hover:bg-brand-sun hover:text-brand-green-ink hover:border-brand-sun font-bold tracking-wide text-[15px] uppercase backdrop-blur-md transition-all"
+                >
+                  <ShieldCheck className="w-4 h-4 mr-1" />
+                  View Power-State Map
+                </Button>
+              </motion.div>
+            </div>
+
+            {/* Right: Emblem + floating data badges */}
+            <div className="lg:col-span-5 flex justify-center lg:justify-end relative">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.85, rotate: -6 }}
+                animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                transition={{ duration: 1.1, delay: 0.25, ease: [0.2, 0.8, 0.2, 1] }}
+                className="relative niger-float-slow"
+              >
+                {/* Outer glow */}
+                <div className="absolute -inset-10 rounded-full bg-brand-sun/15 blur-3xl pointer-events-none" />
+                <NigerEmblem size={300} />
+              </motion.div>
+
+              {/* Floating stat — top */}
+              <motion.div
+                initial={{ opacity: 0, x: -30, y: -10 }}
+                animate={{ opacity: 1, x: 0, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.7 }}
+                className="absolute top-2 left-0 lg:left-[-20px] hidden md:flex items-center gap-3 px-4 py-3 rounded-2xl bg-white/95 text-brand-green-ink shadow-2xl shadow-brand-green/30 niger-float backdrop-blur-md border border-brand-sun/30"
+                data-testid="hero-stat-actors"
+              >
+                <div className="w-10 h-10 rounded-xl bg-brand-soft flex items-center justify-center">
+                  <ShieldCheck className="w-5 h-5 text-brand-green" />
+                </div>
+                <div>
+                  <div className="text-[10px] uppercase font-black tracking-widest text-brand-sun-deep">
+                    Verified Actors
+                  </div>
+                  <div className="text-xl font-black leading-none mt-0.5">
+                    {formatActors(totalActors)}
+                    <span className="text-brand-sun-deep">+</span>
                   </div>
                 </div>
-                <div className="mb-4 sm:mb-6">
-                  <div className="flex items-baseline gap-2">
-                    <p className="font-mono text-3xl sm:text-4xl font-black text-white">
-                      14.5k<span className="text-lg sm:text-xl">+</span>
-                    </p>
+              </motion.div>
+
+              {/* Floating stat — bottom */}
+              <motion.div
+                initial={{ opacity: 0, x: 30, y: 10 }}
+                animate={{ opacity: 1, x: 0, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.9 }}
+                className="absolute bottom-4 right-0 lg:right-[-30px] hidden md:flex items-center gap-3 px-4 py-3 rounded-2xl bg-brand-green-ink text-white shadow-2xl shadow-brand-green/30 niger-float-slow backdrop-blur-md border border-brand-sun/30"
+                data-testid="hero-stat-states"
+                style={{ animationDelay: "1.2s" }}
+              >
+                <div className="w-10 h-10 rounded-xl bg-brand-sun/20 border border-brand-sun/40 flex items-center justify-center">
+                  <MapPin className="w-5 h-5 text-brand-sun" />
+                </div>
+                <div>
+                  <div className="text-[10px] uppercase font-black tracking-widest text-brand-sun-bright">
+                    Network Coverage
                   </div>
-                  <p className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-white/85 mt-1">
-                    Certified Seeds
-                  </p>
+                  <div className="text-xl font-black leading-none mt-0.5">
+                    {totalStates || 3}
+                    <span className="text-base font-bold text-white/70 ml-1">
+                      states
+                    </span>
+                  </div>
                 </div>
               </motion.div>
             </div>
           </div>
+
+          {/* ── Stat strip — gold-bordered government plaque ──────── */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.55 }}
+            data-testid="hero-stat-strip"
+            className="relative mt-16 lg:mt-24 mx-auto max-w-5xl"
+          >
+            <div className="absolute -inset-px rounded-3xl bg-gradient-to-r from-brand-sun/40 via-brand-sun-bright/60 to-brand-sun/40" />
+            <div className="relative grid grid-cols-2 sm:grid-cols-4 gap-px rounded-3xl overflow-hidden bg-brand-green-ink/95 backdrop-blur-md">
+              {[
+                {
+                  label: "Niger State Actors",
+                  value: formatActors(totalActors),
+                  suffix: "+",
+                  hint: "Live registrations",
+                },
+                {
+                  label: "Network States",
+                  value: totalStates || 3,
+                  suffix: "",
+                  hint: "Niger · Anambra · Ekiti",
+                },
+                {
+                  label: "Actor Types",
+                  value: totalTypes || 8,
+                  suffix: "",
+                  hint: "Value-chain roles",
+                },
+                {
+                  label: "LGAs Mapped",
+                  value: 25,
+                  suffix: "",
+                  hint: "All Niger LGAs",
+                },
+              ].map((s, i) => (
+                <div
+                  key={s.label}
+                  className="relative p-5 sm:p-6 bg-brand-green-ink hover:bg-brand-green-deep transition-colors group"
+                >
+                  {/* hover gold corner */}
+                  <span className="absolute top-3 right-3 w-1.5 h-1.5 rounded-full bg-brand-sun opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <div className="text-[10px] font-black uppercase tracking-[0.18em] text-brand-sun-bright mb-2">
+                    {s.label}
+                  </div>
+                  <div className="font-black text-3xl sm:text-4xl text-white tracking-tight leading-none">
+                    {s.value}
+                    <span className="text-brand-sun-bright">{s.suffix}</span>
+                  </div>
+                  <div className="text-[11px] text-white/55 font-semibold mt-2">
+                    {s.hint}
+                  </div>
+                  {/* index ribbon */}
+                  <div className="absolute bottom-3 right-3 text-[10px] font-mono font-bold text-white/25">
+                    0{i + 1}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </motion.div>
         </div>
+
+        {/* ── Bottom marquee — Niger LGAs/regions ──────────────────── */}
+        <div className="relative z-10 mt-12 overflow-hidden border-y border-brand-sun/20 bg-brand-green-ink/40 backdrop-blur-sm">
+          <div className="niger-marquee flex whitespace-nowrap py-3">
+            {[...marqueeItems, ...marqueeItems].map((item, i) => (
+              <span
+                key={i}
+                className="flex items-center gap-3 px-6 text-[12px] font-black uppercase tracking-[0.22em] text-brand-sun-bright/80"
+              >
+                <span className="w-1 h-1 rounded-full bg-brand-sun-bright/60" />
+                {item}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Diagonal hand-off into next section */}
+      <div className="relative -mt-px">
+        <svg
+          viewBox="0 0 1440 80"
+          preserveAspectRatio="none"
+          className="block w-full h-[60px] md:h-[80px]"
+        >
+          <path
+            d="M0,0 L1440,40 L1440,80 L0,80 Z"
+            fill="white"
+          />
+          <path
+            d="M0,0 L1440,40"
+            stroke="#b98a2e"
+            strokeWidth="2"
+            fill="none"
+          />
+        </svg>
       </div>
     </section>
   );

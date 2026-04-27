@@ -81,24 +81,16 @@
 }
 
 @theme inline {
-  /* ──────────────────────────────────────────────────────────────
-     NIGER STATE PALETTE
-     - Deep green:        primary brand color
-     - Soft green:        backgrounds & subtle surfaces
-     - Mist green:        very light wash for sections
-     - Warm gold:         premium accent (honey gold, not bright)
-     - Deep gold:         hover / pressed gold
-     - Cream:             warm off-white tied to gold
-     - Earth:             secondary contrast (terracotta)
-     ────────────────────────────────────────────────────────────── */
-  --color-brand-green: #0d4d2c;       /* Deep Niger State green */
-  --color-brand-green-deep: #083820;  /* Deeper hover/press green */
-  --color-brand-soft: #e7f1e8;        /* Soft green background */
-  --color-brand-mist: #f4f9f4;        /* Very light green wash */
-  --color-brand-sun: #b98a2e;         /* Warm honey gold (premium) */
-  --color-brand-sun-deep: #8f681f;    /* Deeper gold for hover */
-  --color-brand-cream: #fbf6e7;       /* Warm cream */
-  --color-brand-earth: #b85d19;       /* Warm terracotta (kept) */
+  --color-brand-green: #0d4d2c;
+  --color-brand-green-deep: #083820;
+  --color-brand-green-ink: #052716;
+  --color-brand-soft: #e7f1e8;
+  --color-brand-mist: #f4f9f4;
+  --color-brand-sun: #b98a2e;
+  --color-brand-sun-deep: #8f681f;
+  --color-brand-sun-bright: #d6b25a;
+  --color-brand-cream: #fbf6e7;
+  --color-brand-earth: #b85d19;
 
   --text-4xl: 2rem;
   --text-4xl--line-height: 2.5rem;
@@ -162,90 +154,290 @@
   html {
     font-size: var(--font-size);
     font-family: var(--font-family);
+    scroll-behavior: smooth;
   }
 
-  /* Selection in Niger State warm gold */
   ::selection {
-    background-color: rgba(185, 138, 46, 0.25);
+    background-color: rgba(185, 138, 46, 0.28);
     color: #0d4d2c;
   }
 
-  h1 {
-    font-size: var(--text-2xl);
-    font-weight: var(--font-weight-medium);
-    line-height: 1.5;
-    letter-spacing: -0.01em;
+  h1, h2, h3, h4 {
+    letter-spacing: -0.012em;
   }
 
-  h2 {
-    font-size: var(--text-xl);
-    font-weight: var(--font-weight-medium);
-    line-height: 1.5;
-    letter-spacing: -0.01em;
-  }
+  h1 { font-size: var(--text-2xl); font-weight: var(--font-weight-medium); line-height: 1.5; }
+  h2 { font-size: var(--text-xl); font-weight: var(--font-weight-medium); line-height: 1.5; }
+  h3 { font-size: var(--text-lg); font-weight: var(--font-weight-medium); line-height: 1.5; }
+  h4 { font-size: var(--text-base); font-weight: var(--font-weight-medium); line-height: 1.5; }
+  label, button { font-size: var(--text-base); font-weight: var(--font-weight-medium); line-height: 1.5; }
+  input { font-size: var(--text-base); font-weight: var(--font-weight-normal); line-height: 1.5; }
 
-  h3 {
-    font-size: var(--text-lg);
-    font-weight: var(--font-weight-medium);
-    line-height: 1.5;
-  }
+  .section-px { padding-left: 20px; padding-right: 20px; }
+  @media (min-width: 768px)  { .section-px { padding-left: 40px;  padding-right: 40px; } }
+  @media (min-width: 1024px) { .section-px { padding-left: 80px;  padding-right: 80px; } }
+  @media (min-width: 1280px) { .section-px { padding-left: 150px; padding-right: 150px; } }
+}
 
-  h4 {
-    font-size: var(--text-base);
-    font-weight: var(--font-weight-medium);
-    line-height: 1.5;
-  }
+/* ──────────────────────────────────────────────────────────────
+   NIGER STATE — DESIGN PRIMITIVES
+   These utilities give the platform a distinct identity that is
+   clearly different from the generic Nigerian seed-tracker look.
+   ────────────────────────────────────────────────────────────── */
+@layer utilities {
 
-  label {
-    font-size: var(--text-base);
-    font-weight: var(--font-weight-medium);
-    line-height: 1.5;
-  }
-
-  button {
-    font-size: var(--text-base);
-    font-weight: var(--font-weight-medium);
-    line-height: 1.5;
-  }
-
-  input {
-    font-size: var(--text-base);
-    font-weight: var(--font-weight-normal);
-    line-height: 1.5;
-  }
-
-  /* Responsive horizontal padding for homepage sections */
-  .section-px {
-    padding-left: 20px;
-    padding-right: 20px;
-  }
-
-  @media (min-width: 768px) {
-    .section-px {
-      padding-left: 40px;
-      padding-right: 40px;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .section-px {
-      padding-left: 80px;
-      padding-right: 80px;
-    }
-  }
-
-  @media (min-width: 1280px) {
-    .section-px {
-      padding-left: 150px;
-      padding-right: 150px;
-    }
-  }
-
-  /* Niger State signature accent — thin gold rule used for headings/dividers */
+  /* Premium gold rule — used as a heading divider */
   .niger-rule {
     height: 3px;
     width: 56px;
     border-radius: 999px;
-    background: linear-gradient(90deg, #b98a2e 0%, #d6b25a 100%);
+    background: linear-gradient(90deg, #b98a2e 0%, #d6b25a 50%, transparent 100%);
+  }
+  .niger-rule-wide {
+    height: 4px;
+    width: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, transparent 0%, #b98a2e 20%, #d6b25a 50%, #b98a2e 80%, transparent 100%);
+  }
+
+  /* Ticket / passport card — chamfered top corners + full gold rule */
+  .niger-ticket {
+    --tl-cut: 22px;
+    --tr-cut: 22px;
+    clip-path: polygon(
+      0 var(--tl-cut),
+      var(--tl-cut) 0,
+      calc(100% - var(--tr-cut)) 0,
+      100% var(--tr-cut),
+      100% 100%,
+      0 100%
+    );
+  }
+
+  /* Asymmetric premium card — top-left chamfered, others rounded via container */
+  .niger-clip-tl {
+    clip-path: polygon(
+      24px 0,
+      100% 0,
+      100% 100%,
+      0 100%,
+      0 24px
+    );
+  }
+
+  /* Diagonal section divider (used at top of sections for premium feel) */
+  .niger-slant-top {
+    clip-path: polygon(0 4%, 100% 0, 100% 100%, 0 100%);
+  }
+  .niger-slant-bottom {
+    clip-path: polygon(0 0, 100% 0, 100% 96%, 0 100%);
+  }
+
+  /* Dotted Niger pattern — subtle agricultural-grain feel */
+  .niger-grain-light {
+    background-image:
+      radial-gradient(circle at 1px 1px, rgba(13,77,44,0.10) 1px, transparent 0),
+      radial-gradient(circle at 13px 13px, rgba(185,138,46,0.08) 1px, transparent 0);
+    background-size: 24px 24px, 24px 24px;
+  }
+  .niger-grain-dark {
+    background-image:
+      radial-gradient(circle at 1px 1px, rgba(255,255,255,0.10) 1px, transparent 0),
+      radial-gradient(circle at 13px 13px, rgba(214,178,90,0.10) 1px, transparent 0);
+    background-size: 24px 24px, 24px 24px;
+  }
+
+  /* Premium woven background — for hero backdrop */
+  .niger-weave {
+    background-color: #0d4d2c;
+    background-image:
+      linear-gradient(135deg, rgba(255,255,255,0.04) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.04) 50%, rgba(255,255,255,0.04) 75%, transparent 75%, transparent),
+      linear-gradient(45deg, rgba(214,178,90,0.05) 25%, transparent 25%, transparent 50%, rgba(214,178,90,0.05) 50%, rgba(214,178,90,0.05) 75%, transparent 75%, transparent);
+    background-size: 28px 28px, 28px 28px;
+    background-position: 0 0, 14px 14px;
+  }
+
+  /* Niger emblem ring — used around icons & seals */
+  .niger-emblem-ring {
+    background:
+      radial-gradient(circle at center, transparent 64%, rgba(185,138,46,0.4) 65%, rgba(185,138,46,0.0) 70%),
+      radial-gradient(circle at center, transparent 78%, rgba(13,77,44,0.55) 79%, rgba(13,77,44,0) 82%);
+  }
+
+  /* Premium button — split gold/green pressable */
+  .niger-btn-primary {
+    background: linear-gradient(95deg, #0d4d2c 0%, #0d4d2c 55%, #0d4d2c 55%);
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.06) inset,
+      0 -2px 0 rgba(0,0,0,0.20) inset,
+      0 10px 24px -10px rgba(13,77,44,0.45);
+  }
+  .niger-btn-primary:hover {
+    background: linear-gradient(95deg, #083820 0%, #0d4d2c 55%);
+  }
+  .niger-btn-gold {
+    background: linear-gradient(95deg, #b98a2e 0%, #d6b25a 100%);
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.30) inset,
+      0 -2px 0 rgba(0,0,0,0.15) inset,
+      0 10px 24px -10px rgba(185,138,46,0.55);
+  }
+  .niger-btn-gold:hover {
+    background: linear-gradient(95deg, #8f681f 0%, #b98a2e 100%);
+  }
+
+  /* Card lift on hover — keep subtle */
+  .niger-lift {
+    transition: transform 320ms cubic-bezier(.2,.8,.2,1), box-shadow 320ms cubic-bezier(.2,.8,.2,1), border-color 320ms;
+  }
+  .niger-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 22px 48px -18px rgba(13,77,44,0.30);
+  }
+  .niger-lift-gold:hover {
+    transform: translateY(-4px);
+    border-color: rgba(185,138,46,0.55);
+    box-shadow: 0 22px 48px -18px rgba(185,138,46,0.40);
+  }
+
+  /* Stat card — gold left rail + grain backdrop */
+  .niger-stat-card {
+    position: relative;
+    background: #ffffff;
+    border: 1px solid rgba(13,77,44,0.10);
+    border-radius: 22px;
+    overflow: hidden;
+    transition: transform 320ms cubic-bezier(.2,.8,.2,1), box-shadow 320ms cubic-bezier(.2,.8,.2,1);
+  }
+  .niger-stat-card::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 4px;
+    background: linear-gradient(180deg, #b98a2e 0%, #d6b25a 50%, #b98a2e 100%);
+  }
+  .niger-stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 22px 44px -18px rgba(13,77,44,0.25);
+  }
+
+  /* Stamp / seal effect — used on hero emblem */
+  .niger-seal {
+    background:
+      conic-gradient(from 0deg at 50% 50%,
+        #b98a2e 0deg, #d6b25a 12deg, #b98a2e 24deg,
+        #d6b25a 36deg, #b98a2e 48deg, #d6b25a 60deg,
+        #b98a2e 72deg, #d6b25a 84deg, #b98a2e 96deg,
+        #d6b25a 108deg, #b98a2e 120deg, #d6b25a 132deg,
+        #b98a2e 144deg, #d6b25a 156deg, #b98a2e 168deg,
+        #d6b25a 180deg, #b98a2e 192deg, #d6b25a 204deg,
+        #b98a2e 216deg, #d6b25a 228deg, #b98a2e 240deg,
+        #d6b25a 252deg, #b98a2e 264deg, #d6b25a 276deg,
+        #b98a2e 288deg, #d6b25a 300deg, #b98a2e 312deg,
+        #d6b25a 324deg, #b98a2e 336deg, #d6b25a 348deg,
+        #b98a2e 360deg);
+  }
+
+  /* ── ANIMATIONS ─────────────────────────────────────────── */
+
+  @keyframes niger-shimmer {
+    0%   { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+  .niger-shimmer {
+    background-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(214,178,90,0.0) 30%,
+      rgba(214,178,90,0.6) 50%,
+      rgba(214,178,90,0.0) 70%,
+      transparent 100%
+    );
+    background-size: 200% 100%;
+    animation: niger-shimmer 3.5s linear infinite;
+  }
+
+  @keyframes niger-float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50%      { transform: translateY(-10px) rotate(-1deg); }
+  }
+  .niger-float {
+    animation: niger-float 5.5s ease-in-out infinite;
+  }
+  .niger-float-slow {
+    animation: niger-float 8s ease-in-out infinite;
+  }
+
+  @keyframes niger-pulse-ring {
+    0%   { transform: scale(1);    opacity: 0.6; }
+    80%  { transform: scale(1.7);  opacity: 0; }
+    100% { transform: scale(1.7);  opacity: 0; }
+  }
+  .niger-pulse-ring {
+    animation: niger-pulse-ring 2.4s cubic-bezier(.2,.8,.2,1) infinite;
+  }
+
+  @keyframes niger-spin-slow {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+  .niger-spin-slow {
+    animation: niger-spin-slow 24s linear infinite;
+  }
+
+  @keyframes niger-slide-up {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .niger-slide-up {
+    animation: niger-slide-up 700ms cubic-bezier(.2,.8,.2,1) both;
+  }
+
+  @keyframes niger-fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  .niger-fade-in { animation: niger-fade-in 800ms ease-out both; }
+
+  @keyframes niger-marquee {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  .niger-marquee {
+    animation: niger-marquee 40s linear infinite;
+    will-change: transform;
+  }
+
+  @keyframes niger-stamp-in {
+    0%   { opacity: 0; transform: scale(1.6) rotate(-8deg); filter: blur(4px); }
+    60%  { opacity: 1; transform: scale(0.96) rotate(2deg); filter: blur(0); }
+    100% { opacity: 1; transform: scale(1) rotate(0deg);   filter: blur(0); }
+  }
+  .niger-stamp-in {
+    animation: niger-stamp-in 900ms cubic-bezier(.2,.8,.2,1) both;
+  }
+
+  @keyframes niger-grain-drift {
+    from { background-position: 0 0, 0 0; }
+    to   { background-position: 24px 24px, -24px 24px; }
+  }
+  .niger-grain-drift {
+    animation: niger-grain-drift 18s linear infinite;
+  }
+
+  /* Pause animation when user prefers reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .niger-shimmer,
+    .niger-float,
+    .niger-float-slow,
+    .niger-pulse-ring,
+    .niger-spin-slow,
+    .niger-slide-up,
+    .niger-fade-in,
+    .niger-marquee,
+    .niger-stamp-in,
+    .niger-grain-drift {
+      animation: none !important;
+    }
   }
 }
