@@ -14,48 +14,48 @@ export function FAQ() {
 
   const faqs = [
     {
-      question: "Who can register on the platform?",
+      question: "Who can register on the Niger State Seed Tracker?",
       answer:
-        "Any individual or organization involved in Nigeria's seed value chain can register, including seed producers, processors, warehouses, distributors, retailers (agro-dealers), farmers, and cooperatives. Registration is free and open to all stakeholders in participating states.",
+        "Any individual or organization involved in the seed value chain across Niger, Anambra and Ekiti can register, including seed producers, processors, warehouses, distributors, retailers (agro-dealers), farmers, and cooperatives. This Niger State edition specifically champions actors operating across the Power State. Registration is free and open to all participating-state stakeholders.",
     },
     {
       question: "Is there a fee for using the platform?",
       answer:
-        "No, registration and creating your actor profile on the Seed Tracker NG platform are completely free.",
+        "No, registration and creating your actor profile on the Niger State Seed Tracker are completely free.",
     },
     {
       question: "How can others verify my actor profile?",
       answer:
-        "After registering, you receive a unique, scannable QR code on your dashboard. You can share this code with anyone. When someone scans it, they are taken directly to your public verified profile, showcasing your details, organization, and confirmed actor type.",
+        "After registering, you receive a unique, scannable QR code on your dashboard. You can share this code with anyone in Niger State or beyond. When someone scans it, they are taken directly to your public verified profile, showcasing your details, organization, and confirmed actor type.",
     },
     {
       question: "How do I find other seed value chain actors?",
       answer:
-        "Our platform provides a real-time geospatial map. You can use the Actor Map feature to explore and find other registered actors (such as producers, aggregators, or farmers) across participating states, rapidly filtering by actor type or specific state.",
+        "Our platform provides a real-time geospatial map. You can use the Actor Map feature to explore and find other registered actors (such as producers, aggregators, or farmers) across Niger State and partner states, rapidly filtering by actor type or specific LGA.",
     },
     {
       question: "Which states are currently supported?",
       answer:
-        "Currently, our platform fully supports and maps actors across three key participating states: Ekiti, Niger, and Anambra. However, we have plans to expand to more states in the near future.",
+        "The platform supports three participating states: Niger (the focus of this edition), Anambra, and Ekiti. The Niger State edition emphasizes Power-State actors while still giving you visibility into the wider 3-state network.",
     },
     {
       question: "Is my personal data and exact location public?",
       answer:
-        "No, your privacy is a high priority. On the public Actor Map, locations are slightly anonymized or approximated to protect your exact address. Sensitive contact details are only shared securely through your verified public profile which you control via your personalized QR Code.",
+        "No, your privacy is a high priority. On the public Actor Map, locations are slightly anonymized or approximated to protect your exact address. Sensitive contact details are only shared securely through your verified public profile, which you control via your personalized QR Code.",
     },
   ];
 
   return (
     <section
-      className="relative overflow-hidden bg-gray-50 py-20 lg:py-32"
+      className="relative overflow-hidden bg-gradient-to-b from-white via-brand-mist to-brand-soft/30 py-20 lg:py-32"
       ref={ref}
     >
       {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-[0.03]">
+      <div className="absolute inset-0 opacity-[0.04]">
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
-            backgroundImage: `radial-gradient(circle at 1px 1px, #008751 1px, transparent 0)`,
+            backgroundImage: `radial-gradient(circle at 1px 1px, #0d4d2c 1px, transparent 0)`,
             backgroundSize: "40px 40px",
           }}
         />
@@ -69,15 +69,17 @@ export function FAQ() {
           transition={{ duration: 0.6 }}
           className="mx-auto mb-16 max-w-3xl text-center"
         >
-          <span className="mb-4 inline-block rounded-full bg-brand-green/10 px-4 py-2 text-sm font-bold text-brand-green">
+          <span className="mb-4 inline-flex items-center gap-2 rounded-full bg-brand-sun/15 border border-brand-sun/30 px-4 py-2 text-sm font-black text-brand-sun-deep tracking-wide">
+            <span className="w-1.5 h-1.5 rounded-full bg-brand-sun" />
             Help & Guidance
           </span>
-          <h2 className="mb-6 text-3xl font-extrabold text-gray-900 md:text-4xl lg:text-5xl tracking-tight">
+          <h2 className="mb-4 text-3xl font-black text-gray-900 md:text-4xl lg:text-5xl tracking-tight">
             Frequently Asked Questions
           </h2>
+          <div className="niger-rule mx-auto mb-6" />
           <p className="text-lg text-gray-600">
-            Everything you need to know about Nigeria&apos;s seed value chain
-            platform
+            Everything you need to know about Niger State&apos;s seed value
+            chain platform
           </p>
         </motion.div>
 
@@ -90,18 +92,25 @@ export function FAQ() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.4, delay: index * 0.05 }}
-                className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition-all duration-300 hover:shadow-md"
+                className="overflow-hidden rounded-2xl border border-brand-green/10 bg-white shadow-[0_4px_18px_-8px_rgba(13,77,44,0.10)] transition-all duration-300 hover:shadow-[0_18px_36px_-12px_rgba(13,77,44,0.15)] hover:border-brand-sun/40"
               >
                 <button
                   onClick={() => toggleFaq(index)}
-                  className="flex w-full items-center justify-between gap-4 p-6 text-left transition-colors duration-200 hover:bg-gray-50"
+                  data-testid={`faq-toggle-${index}`}
+                  className="flex w-full items-center justify-between gap-4 p-6 text-left transition-colors duration-200 hover:bg-brand-mist"
                 >
                   <div className="flex items-center gap-4">
                     {/* Icon */}
-                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand-green/10 text-brand-green">
+                    <div
+                      className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl transition-colors duration-300 ${
+                        openIndex === index
+                          ? "bg-brand-green text-brand-sun shadow-md shadow-brand-green/20"
+                          : "bg-brand-soft text-brand-green"
+                      }`}
+                    >
                       <HelpCircle className="h-6 w-6" />
                     </div>
-                    <h3 className="text-lg font-semibold text-gray-900 pr-4">
+                    <h3 className="text-lg font-bold text-gray-900 pr-4">
                       {faq.question}
                     </h3>
                   </div>
@@ -110,8 +119,8 @@ export function FAQ() {
                   <div
                     className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-all duration-300 ${
                       openIndex === index
-                        ? "bg-brand-green text-white rotate-180"
-                        : "bg-gray-100 text-gray-400"
+                        ? "bg-brand-sun text-white rotate-180 shadow-md shadow-brand-sun/30"
+                        : "bg-brand-soft text-brand-green"
                     }`}
                   >
                     <ChevronDown className="h-5 w-5" />
@@ -127,7 +136,7 @@ export function FAQ() {
                       exit={{ height: 0, opacity: 0 }}
                       transition={{ duration: 0.3, ease: "easeInOut" }}
                     >
-                      <div className="border-t border-gray-100 bg-gray-50 px-6 py-5">
+                      <div className="border-t border-brand-green/10 bg-brand-mist px-6 py-5">
                         <div className="ml-16">
                           <p className="text-gray-600 leading-relaxed text-base">
                             {faq.answer}

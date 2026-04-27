@@ -128,7 +128,7 @@ const STATE_BOUNDS: Record<
       [8.05, 5.65],
     ],
     name: "Ekiti State",
-    color: "#004225",
+    color: "#0d4d2c",
   },
   niger: {
     bounds: [
@@ -136,7 +136,7 @@ const STATE_BOUNDS: Record<
       [11.2, 7.2],
     ],
     name: "Niger State",
-    color: "#004225",
+    color: "#b98a2e",
   },
   anambra: {
     bounds: [
@@ -144,7 +144,7 @@ const STATE_BOUNDS: Record<
       [6.6, 7.55],
     ],
     name: "Anambra State",
-    color: "#004225",
+    color: "#0d4d2c",
   },
 };
 
@@ -439,7 +439,7 @@ export function ActorMap() {
   }, [actors]);
 
   return (
-    <section id="map" className="py-24 bg-white" ref={sectionRef}>
+    <section id="map" className="py-24 bg-gradient-to-b from-white via-brand-mist to-white" ref={sectionRef}>
       {/* Inject tooltip & pulse CSS */}
       <style>{`
         .state-label-tooltip {
@@ -448,7 +448,7 @@ export function ActorMap() {
           box-shadow: none !important;
           font-size: 11px !important;
           font-weight: 700 !important;
-          color: #004225 !important;
+          color: #0d4d2c !important;
           letter-spacing: 0.05em !important;
           text-transform: uppercase !important;
           padding: 0 !important;
@@ -467,18 +467,19 @@ export function ActorMap() {
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <div className="inline-flex items-center gap-2 bg-[#004225]/10 px-4 py-2 rounded-full text-[#004225] mb-4">
+          <div className="inline-flex items-center gap-2 bg-brand-sun/15 border border-brand-sun/30 px-4 py-2 rounded-full text-brand-sun-deep mb-4">
             <MapPin className="w-4 h-4" />
-            <span className="text-sm font-medium">
-              Geospatial Actor Mapping
+            <span className="text-sm font-black tracking-wide">
+              Niger State Geospatial Mapping
             </span>
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+          <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-4 tracking-tight">
             Value Chain Actors by State
           </h2>
+          <div className="niger-rule mx-auto mb-5" />
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Anonymized map of registered actors across Ekiti, Niger and Anambra
-            States <br /> Explore actor density and distribution by type
+            Anonymized map of registered actors across Niger, Anambra and Ekiti
+            <br /> Explore Niger State density and partner-state distribution by type
           </p>
         </motion.div>
       </div>
@@ -512,7 +513,7 @@ export function ActorMap() {
           ))}
           <div className="ml-auto flex items-center gap-2">
             <span
-              className="inline-block w-6 h-3 rounded border-2 border-dashed border-[#004225]"
+              className="inline-block w-6 h-3 rounded border-2 border-dashed border-[#0d4d2c]"
               style={{ backgroundColor: "rgba(0,66,37,0.07)" }}
             />
             <span className="text-sm text-gray-500">

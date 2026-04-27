@@ -98,7 +98,7 @@ export function ProductMarketplace() {
             Available Seed Products
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Browse real-time listings from verified suppliers across Nigeria
+            Browse real-time listings from verified suppliers across Niger State and partner states
           </p>
         </motion.div>
 

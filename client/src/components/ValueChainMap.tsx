@@ -88,14 +88,16 @@ export function ValueChainMap() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <span className="mb-4 inline-block rounded-full bg-white/10 px-4 py-2 text-sm font-bold text-white border border-white/20 backdrop-blur-md">
-            Ecosystem Connectivity
+          <span className="mb-4 inline-flex items-center gap-2 rounded-full bg-brand-sun/15 px-4 py-2 text-sm font-black text-brand-sun border border-brand-sun/40 backdrop-blur-md tracking-wide">
+            <span className="w-1.5 h-1.5 rounded-full bg-brand-sun" />
+            Niger Ecosystem Connectivity
           </span>
-          <h2 className="mb-6 text-4xl font-extrabold leading-tight text-white md:text-5xl lg:text-5xl tracking-tight">
+          <h2 className="mb-4 text-4xl font-black leading-tight text-white md:text-5xl lg:text-5xl tracking-tight">
             Seed Value Chain Mapping
           </h2>
+          <div className="niger-rule mx-auto mb-6" />
           <p className="text-lg md:text-xl text-white/80 max-w-3xl mx-auto font-medium">
-            End-to-end visibility across all stages of Nigeria&apos;s seed
+            End-to-end visibility across every stage of Niger State&apos;s seed
             ecosystem
           </p>
         </motion.div>

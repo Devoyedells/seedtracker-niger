@@ -95,17 +95,18 @@ function StatCard({
 }: StatCardProps) {
   return (
     <div
-      className="group relative bg-white rounded-3xl p-6 border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden"
+      data-testid={`stat-card-${label.replace(/\s+/g, "-").toLowerCase()}`}
+      className="group relative bg-white rounded-3xl p-6 border border-brand-green/8 shadow-[0_4px_18px_-8px_rgba(13,77,44,0.10)] hover:shadow-[0_18px_36px_-12px_rgba(13,77,44,0.20)] hover:-translate-y-1 transition-all duration-300 overflow-hidden"
       style={{ animationDelay: delay }}
     >
       {/* Gradient glow */}
       <div
-        className={`absolute -top-6 -right-6 w-28 h-28 rounded-full opacity-[0.08] blur-2xl ${accentClass}`}
+        className={`absolute -top-6 -right-6 w-28 h-28 rounded-full opacity-[0.10] blur-2xl ${accentClass}`}
       />
 
       <div className="relative z-10 flex items-start justify-between">
         <div>
-          <p className="text-[11px] font-black uppercase tracking-[0.15em] text-gray-400 mb-2">
+          <p className="text-[11px] font-black uppercase tracking-[0.18em] text-gray-400 mb-2">
             {label}
           </p>
           <p className="text-4xl font-black text-gray-900 tracking-tight leading-none mb-1">
@@ -116,7 +117,7 @@ function StatCard({
           )}
         </div>
         <div
-          className={`p-3.5 rounded-2xl ${accentClass} bg-opacity-15 flex-shrink-0`}
+          className={`p-3.5 rounded-2xl ${accentClass} bg-opacity-15 flex-shrink-0 shadow-inner`}
         >
           <Icon className="w-5 h-5 text-white" />
         </div>
@@ -124,7 +125,7 @@ function StatCard({
 
       {/* Bottom bar accent */}
       <div
-        className={`absolute bottom-0 left-0 h-[3px] w-full ${accentClass} opacity-50 group-hover:opacity-100 transition-opacity`}
+        className={`absolute bottom-0 left-0 h-[3px] w-full ${accentClass} opacity-60 group-hover:opacity-100 transition-opacity`}
       />
     </div>
   );
@@ -150,17 +151,21 @@ function ActorBreakdown({
   ];
 
   return (
-    <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-6">
+    <div className="bg-white rounded-3xl border border-brand-green/8 shadow-[0_4px_18px_-8px_rgba(13,77,44,0.08)] p-6">
       <div className="flex items-center justify-between mb-5">
-        <div>
-          <h2 className="text-base font-black text-gray-900">
-            Actor Breakdown
-          </h2>
-          <p className="text-xs text-gray-400 font-medium">
-            By type across all states
-          </p>
+        <div className="flex items-start gap-3">
+          <div className="w-9 h-9 rounded-xl bg-brand-soft flex items-center justify-center mt-0.5">
+            <TrendingUp className="w-4 h-4 text-brand-green" />
+          </div>
+          <div>
+            <h2 className="text-base font-black text-gray-900">
+              Actor Breakdown
+            </h2>
+            <p className="text-xs text-gray-500 font-medium">
+              Niger State and partner-state actor mix
+            </p>
+          </div>
         </div>
-        <TrendingUp className="w-4 h-4 text-gray-300" />
       </div>
 
       {total === 0 ? (
@@ -213,19 +218,20 @@ function ActorBreakdown({
 // ── Recent Actors Table ────────────────────────────────────────────────
 function RecentActors({ actors }: { actors: Stats["recentActors"] }) {
   return (
-    <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-6">
+    <div className="bg-white rounded-3xl border border-brand-green/8 shadow-[0_4px_18px_-8px_rgba(13,77,44,0.08)] p-6">
       <div className="flex items-center justify-between mb-5">
         <div>
           <h2 className="text-base font-black text-gray-900">
             Recent Registrations
           </h2>
-          <p className="text-xs text-gray-400 font-medium">
-            Latest actors who joined
+          <p className="text-xs text-gray-500 font-medium">
+            Latest actors who joined the network
           </p>
         </div>
         <Link
           to="/dashboard/actors"
-          className="flex items-center gap-1 text-xs font-black text-brand-green hover:underline underline-offset-4"
+          data-testid="view-all-actors-link"
+          className="flex items-center gap-1 text-xs font-black text-brand-green hover:text-brand-sun-deep hover:underline underline-offset-4 transition-colors"
         >
           View All <ArrowRight className="w-3 h-3" />
         </Link>
@@ -318,9 +324,12 @@ export default function DashboardPage() {
   const firstName = user?.fullName?.split(" ")[0];
 
   return (
-    <div className="space-y-6 animate-in fade-in duration-500">
+    <div
+      data-testid="dashboard-page"
+      className="space-y-6 animate-in fade-in duration-500"
+    >
       {/* Welcome Banner */}
-      <div className="relative bg-brand-green rounded-3xl p-7 overflow-hidden">
+      <div className="relative bg-gradient-to-br from-brand-green via-brand-green to-brand-green-deep rounded-3xl p-7 overflow-hidden shadow-xl shadow-brand-green/20">
         {/* Grid texture */}
         <div
           className="absolute inset-0 opacity-[0.07]"
@@ -330,8 +339,16 @@ export default function DashboardPage() {
           }}
         />
         <div className="absolute right-0 top-0 w-64 h-full">
-          <div className="absolute top-0 right-0 w-48 h-48 bg-brand-sun/20 rounded-full blur-3xl" />
+          <div className="absolute top-0 right-0 w-48 h-48 bg-brand-sun/25 rounded-full blur-3xl" />
           <div className="absolute bottom-0 right-8 w-32 h-32 bg-white/5 rounded-full blur-2xl" />
+        </div>
+
+        {/* Niger State watermark */}
+        <div className="absolute top-6 right-6 hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand-sun/15 border border-brand-sun/30 backdrop-blur-sm">
+          <span className="w-1.5 h-1.5 rounded-full bg-brand-sun" />
+          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-brand-sun">
+            Niger State Edition
+          </span>
         </div>
 
         <div className="relative z-10">
@@ -343,16 +360,18 @@ export default function DashboardPage() {
               day: "numeric",
             })}
           </p>
-          <h1 className="text-white text-3xl font-black tracking-tight mb-1">
-            {greeting}, {firstName}! 👋
+          <h1 className="text-white text-3xl font-black tracking-tight mb-2">
+            {greeting}, {firstName} 👋
           </h1>
-          <p className="text-white/60 text-sm font-medium max-w-md">
-            Here's an overview of Nigeria's seed value chain network. Stay
-            updated on actor activity and registrations.
+          <div className="niger-rule mb-4" />
+          <p className="text-white/65 text-sm font-medium max-w-md leading-relaxed">
+            Here's an overview of Niger State's seed value chain network.
+            Stay updated on actor activity and registrations across the Power
+            State.
           </p>
 
           {(user?.actorType || user?.role === "admin") && (
-            <div className="mt-4 inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 backdrop-blur-sm">
+            <div className="mt-5 inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 backdrop-blur-sm">
               <BadgeCheck className="w-3.5 h-3.5 text-brand-sun" />
               <span className="text-white text-xs font-bold">
                 {user?.role === "admin"
@@ -366,20 +385,22 @@ export default function DashboardPage() {
 
       {/* ── Normal User View ── */}
       {!isAdmin && (
-        <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 text-center max-w-2xl mx-auto mt-6">
-          <div className="w-16 h-16 bg-brand-green/10 text-brand-green rounded-full flex items-center justify-center mx-auto mb-4">
+        <div className="bg-white rounded-3xl border border-brand-green/10 shadow-sm p-8 text-center max-w-2xl mx-auto mt-6 relative overflow-hidden">
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-brand-sun via-brand-sun-deep to-brand-sun" />
+          <div className="w-16 h-16 bg-brand-soft text-brand-green rounded-2xl flex items-center justify-center mx-auto mb-4 ring-4 ring-brand-soft/50">
             <Sprout className="w-8 h-8" />
           </div>
           <h2 className="text-xl font-black text-gray-900 mb-2">
-            Welcome to your Dashboard
+            Welcome to your Niger State Dashboard
           </h2>
-          <p className="text-gray-500 mb-6 text-sm">
-            Keep your profile information up to date to ensure you remain
-            visible within the Nigerian Seed Value Chain network.
+          <p className="text-gray-500 mb-6 text-sm leading-relaxed">
+            Keep your profile information up to date to stay visible within the
+            Niger State Seed Value Chain network.
           </p>
           <Link
             to="/dashboard/profile"
-            className="inline-flex items-center gap-2 bg-brand-green hover:bg-brand-green/90 text-white font-bold py-2.5 px-6 rounded-xl transition-all shadow-sm"
+            data-testid="manage-profile-cta"
+            className="inline-flex items-center gap-2 bg-brand-green hover:bg-brand-green-deep text-white font-bold py-3 px-6 rounded-2xl transition-all shadow-md shadow-brand-green/20 hover:-translate-y-0.5"
           >
             <User className="w-4 h-4" />
             Manage My Profile

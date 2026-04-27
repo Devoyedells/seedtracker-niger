@@ -39,7 +39,7 @@ export interface ChartStats {
 
 // ── Palette ────────────────────────────────────────────────────────────
 const DONUT_COLORS = [
-  "#004225",
+  "#0d4d2c",
   "#f5a623",
   "#6b4226",
   "#34d399",
@@ -145,7 +145,7 @@ function CustomTooltip({ active, payload, label }: any) {
         <p
           key={i}
           className="text-sm font-black"
-          style={{ color: p.color ?? p.fill ?? "#004225" }}
+          style={{ color: p.color ?? p.fill ?? "#0d4d2c" }}
         >
           {p.name ? `${p.name}: ` : ""}
           {p.value}
@@ -162,7 +162,7 @@ function MonthlyGrowthChart({ data }: { data: MonthlyPoint[] }) {
       title="Registration Trend"
       subtitle="New members over the last 12 months"
       icon={TrendingUp}
-      accent="#004225"
+      accent="#0d4d2c"
     >
       <ResponsiveContainer width="100%" height="100%" minHeight={220}>
         <AreaChart
@@ -171,8 +171,8 @@ function MonthlyGrowthChart({ data }: { data: MonthlyPoint[] }) {
         >
           <defs>
             <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#004225" stopOpacity={0.35} />
-              <stop offset="85%" stopColor="#004225" stopOpacity={0.02} />
+              <stop offset="0%" stopColor="#0d4d2c" stopOpacity={0.35} />
+              <stop offset="85%" stopColor="#0d4d2c" stopOpacity={0.02} />
             </linearGradient>
             <filter id="areaGlow">
               <feGaussianBlur stdDeviation="3" result="coloredBlur" />
@@ -205,13 +205,13 @@ function MonthlyGrowthChart({ data }: { data: MonthlyPoint[] }) {
             type="monotone"
             dataKey="count"
             name="New Members"
-            stroke="#004225"
+            stroke="#0d4d2c"
             strokeWidth={2.5}
             fill="url(#areaGrad)"
-            dot={{ r: 3.5, fill: "#004225", stroke: "#fff", strokeWidth: 2 }}
+            dot={{ r: 3.5, fill: "#0d4d2c", stroke: "#fff", strokeWidth: 2 }}
             activeDot={{
               r: 5.5,
-              fill: "#004225",
+              fill: "#0d4d2c",
               stroke: "#fff",
               strokeWidth: 2,
               filter: "url(#areaGlow)",
@@ -378,7 +378,7 @@ function StateDistributionBar({ data }: { data: CountBucket[] }) {
       title="Members by State"
       subtitle="Platform-wide state distribution"
       icon={BarChart3}
-      accent="#004225"
+      accent="#0d4d2c"
     >
       <ResponsiveContainer width="100%" height={220}>
         <BarChart
@@ -387,7 +387,7 @@ function StateDistributionBar({ data }: { data: CountBucket[] }) {
         >
           <defs>
             <linearGradient id="barGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#004225" stopOpacity={1} />
+              <stop offset="0%" stopColor="#0d4d2c" stopOpacity={1} />
               <stop offset="100%" stopColor="#1a7a4a" stopOpacity={0.7} />
             </linearGradient>
             <filter id="barShadow">
@@ -533,7 +533,7 @@ function VerificationDonut({
     { name: "Verified", value: verified },
     { name: "Unverified", value: unverified },
   ];
-  const COLORS = ["#004225", "#e5e7eb"];
+  const COLORS = ["#0d4d2c", "#e5e7eb"];
 
   return (
     <ChartCard
@@ -548,7 +548,7 @@ function VerificationDonut({
             className="absolute inset-x-2 bottom-0 h-3 rounded-full blur-lg opacity-25"
             style={{
               background:
-                "radial-gradient(ellipse, #004225 0%, transparent 70%)",
+                "radial-gradient(ellipse, #0d4d2c 0%, transparent 70%)",
             }}
           />
           <ResponsiveContainer width={120} height={120}>
@@ -596,7 +596,7 @@ function VerificationDonut({
 
         <div className="flex-1 space-y-3">
           {[
-            { label: "Verified", value: verified, color: "#004225" },
+            { label: "Verified", value: verified, color: "#0d4d2c" },
             { label: "Unverified", value: unverified, color: "#e5e7eb" },
           ].map(({ label, value, color }) => (
             <div key={label}>
@@ -661,7 +661,7 @@ export default function DashboardCharts({ stats }: { stats: ChartStats }) {
               title="Registration Trend"
               subtitle="No data yet"
               icon={TrendingUp}
-              accent="#004225"
+              accent="#0d4d2c"
             >
               <EmptyChart height={220} />
             </ChartCard>

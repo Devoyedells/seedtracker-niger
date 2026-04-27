@@ -26,7 +26,7 @@ const defaultStatCards: StatCardProps[] = [
     title: "Seed Varieties",
     value: "14.5k+",
     detail: "Active",
-    colorClass: "bg-[#22c55e]",
+    colorClass: "bg-brand-sun",
     animationDelay: "0s",
   },
   {
@@ -34,15 +34,15 @@ const defaultStatCards: StatCardProps[] = [
     title: "Verified Actors",
     value: "10k+",
     detail: "Integrated",
-    colorClass: "bg-[#fbbf24]",
+    colorClass: "bg-brand-sun",
     animationDelay: "0.2s",
   },
   {
     icon: <Activity className="w-6 h-6" />,
-    title: "Platform Reach",
-    value: "3 states",
-    detail: "Coverage",
-    colorClass: "bg-[#3b82f6]",
+    title: "Niger Coverage",
+    value: "25 LGAs",
+    detail: "Mapped",
+    colorClass: "bg-brand-sun",
     animationDelay: "0.4s",
   },
 ];
@@ -110,17 +110,32 @@ export default function AuthLayout({
 
         {/* Content Top */}
         <div className="relative z-10 w-full mb-12">
-          <Link to="/" className="flex items-center gap-2 text-white mb-12">
+          <Link to="/" className="flex items-center gap-3 text-white mb-12 group">
+            <div className="relative w-11 h-11 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center">
+              <Sprout className="w-5 h-5 text-brand-sun" strokeWidth={2.5} />
+              <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-brand-sun" />
+            </div>
             <div>
-              <div className="font-bold text-xl">Seed Tracker NG</div>
+              <div className="font-black text-[16px] leading-none tracking-tight">
+                Niger State Seed Tracker
+              </div>
+              <div className="text-[10px] font-bold mt-1.5 uppercase tracking-[0.18em] text-brand-sun">
+                Power · Excellence · Harvest
+              </div>
             </div>
           </Link>
 
           <div className="max-w-lg">
-            <h1 className="text-6xl font-black leading-[1.1] text-white mb-6 tracking-tighter">
+            <span className="inline-flex items-center gap-2 mb-5 px-3 py-1.5 rounded-full bg-brand-sun/15 border border-brand-sun/40">
+              <span className="w-1.5 h-1.5 rounded-full bg-brand-sun" />
+              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-brand-sun">
+                Niger State Edition
+              </span>
+            </span>
+            <h1 className="text-6xl font-black leading-[1.05] text-white mb-6 tracking-tight">
               {heroTitle}
             </h1>
-            <p className="text-xl text-white/60 leading-relaxed font-medium">
+            <p className="text-xl text-white/65 leading-relaxed font-medium">
               {heroDescription}
             </p>
           </div>
@@ -135,12 +150,12 @@ export default function AuthLayout({
 
         {/* Footer credit */}
         <div className="relative z-10 w-full flex justify-between items-center text-white/40 text-xs font-bold mt-12">
-          <span>© {new Date().getFullYear()} Seed Tracker NG</span>
+          <span>© {new Date().getFullYear()} Niger State Seed Tracker</span>
           <div className="flex gap-4">
-            <Link to="#" className="hover:text-white transition-colors">
+            <Link to="#" className="hover:text-brand-sun transition-colors">
               Privacy
             </Link>
-            <Link to="#" className="hover:text-white transition-colors">
+            <Link to="#" className="hover:text-brand-sun transition-colors">
               Terms
             </Link>
           </div>
@@ -151,9 +166,9 @@ export default function AuthLayout({
       <div
         className="relative flex w-full lg:w-[55%] items-center justify-center p-8 sm:p-12 overflow-y-auto bg-white"
         style={{
-          backgroundImage: `radial-gradient(at 0% 0%, rgba(0, 135, 81, 0.05) 0px, transparent 50%), 
-                            radial-gradient(at 100% 100%, rgba(209, 255, 0, 0.08) 0px, transparent 50%),
-                            radial-gradient(at 100% 0%, rgba(0, 135, 81, 0.03) 0px, transparent 50%)`,
+          backgroundImage: `radial-gradient(at 0% 0%, rgba(13, 77, 44, 0.06) 0px, transparent 50%), 
+                            radial-gradient(at 100% 100%, rgba(185, 138, 46, 0.10) 0px, transparent 50%),
+                            radial-gradient(at 100% 0%, rgba(13, 77, 44, 0.04) 0px, transparent 50%)`,
         }}
       >
         <div className="w-full max-w-[460px]">
@@ -162,10 +177,11 @@ export default function AuthLayout({
               to="/"
               className="lg:hidden inline-flex items-center gap-2 mb-8"
             >
-              <span className="font-bold text-xl text-gray-900">
-                Seed Tracker NG
+              <span className="font-black text-xl text-brand-green">
+                Niger State Seed Tracker
               </span>
             </Link>
+            <div className="hidden lg:block niger-rule mb-5" />
             <h2 className="text-4xl font-black text-gray-900 mb-3 tracking-tight">
               {heading}
             </h2>

@@ -91,7 +91,7 @@ export function StakeholderDirectory() {
             Value Chain Directory
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Connect with verified actors across Nigeria&apos;s seed ecosystem
+            Connect with verified actors across Niger State&apos;s seed ecosystem
           </p>
         </motion.div>
 
@@ -157,7 +157,7 @@ export function StakeholderDirectory() {
                           {stakeholder.type}
                         </Badge>
                         <div className="flex items-center gap-1 text-sm text-gray-600">
-                          <Star className="w-4 h-4 fill-[#004225] text-[#004225]" />
+                          <Star className="w-4 h-4 fill-[#0d4d2c] text-[#0d4d2c]" />
                           <span className="font-medium">
                             {stakeholder.rating}
                           </span>

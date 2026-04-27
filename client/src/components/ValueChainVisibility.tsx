@@ -80,19 +80,19 @@ export function ValueChainVisibility() {
       icon: Eye,
       title: "Real-Time Visibility",
       description:
-        "Track seed movement from production to farmer's field with live inventory data across all 3 states.",
+        "Track seed movement from production to farmer's field with live inventory data across Niger State and partner states.",
     },
     {
       icon: TrendingUp,
       title: "Market Intelligence",
       description:
-        "Access price trends, actor performance metrics, and demand forecasts to make informed decisions.",
+        "Access price trends, actor performance metrics, and demand forecasts to make informed decisions in the Power State.",
     },
     {
       icon: Globe,
-      title: "Nationwide Reach",
+      title: "Niger State Reach",
       description:
-        "Connect with verified actors in every geopolitical zone — from production clusters to last-mile retail.",
+        "Connect with verified actors in every Niger State LGA — from production clusters to last-mile retail.",
     },
   ];
 
@@ -129,16 +129,17 @@ export function ValueChainVisibility() {
           transition={{ duration: 0.6 }}
           className="mx-auto mb-16 max-w-3xl text-center"
         >
-          <span className="mb-4 inline-block rounded-full bg-white/10 px-4 py-2 text-sm font-bold text-white border border-white/20 backdrop-blur-md">
+          <span className="mb-4 inline-flex items-center gap-2 rounded-full bg-brand-sun/15 px-4 py-2 text-sm font-black text-brand-sun border border-brand-sun/40 backdrop-blur-md tracking-wide">
+            <span className="w-1.5 h-1.5 rounded-full bg-brand-sun" />
             Data Architecture
           </span>
-          <h2 className="mb-6 text-4xl font-extrabold leading-tight text-white md:text-5xl lg:text-5xl tracking-tight">
+          <h2 className="mb-4 text-4xl font-black leading-tight text-white md:text-5xl lg:text-5xl tracking-tight">
             Complete Value Chain Visibility
           </h2>
+          <div className="niger-rule mx-auto mb-6" />
           <p className="text-lg md:text-xl text-white/80 max-w-3xl mx-auto font-medium leading-relaxed">
-            Our platform provides real-time insights into inventory levels,
-            actor performance, and market dynamics across Nigeria&apos;s entire
-            seed ecosystem.
+            Real-time insights into inventory levels, actor performance, and
+            market dynamics across Niger State&apos;s entire seed ecosystem.
           </p>
         </motion.div>
 

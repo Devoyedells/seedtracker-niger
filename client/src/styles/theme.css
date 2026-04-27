@@ -10,23 +10,23 @@
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: #030213;
+  --primary: #0d4d2c;
   --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.95 0.0058 264.53);
-  --secondary-foreground: #030213;
-  --muted: #ececf0;
-  --muted-foreground: #717182;
-  --accent: #e9ebef;
-  --accent-foreground: #030213;
+  --secondary: #eef5ee;
+  --secondary-foreground: #0d4d2c;
+  --muted: #f1f5f1;
+  --muted-foreground: #5b6f5b;
+  --accent: #f3eedd;
+  --accent-foreground: #6b4d10;
   --destructive: #d4183d;
   --destructive-foreground: #ffffff;
-  --border: rgba(0, 0, 0, 0.1);
+  --border: rgba(13, 77, 44, 0.12);
   --input: transparent;
-  --input-background: #f3f3f5;
+  --input-background: #f4f8f4;
   --switch-background: #cbced4;
   --font-weight-medium: 500;
   --font-weight-normal: 400;
-  --ring: oklch(0.708 0 0);
+  --ring: #0d4d2c;
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -35,7 +35,7 @@
   --radius: 0.625rem;
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: #030213;
+  --sidebar-primary: #0d4d2c;
   --sidebar-primary-foreground: oklch(0.985 0 0);
   --sidebar-accent: oklch(0.97 0 0);
   --sidebar-accent-foreground: oklch(0.205 0 0);
@@ -81,9 +81,24 @@
 }
 
 @theme inline {
-  --color-brand-green: #004225; /* Deep, elegant agriculture green */
-  --color-brand-earth: #b85d19; /* Warm terra cotta/burnt orange for contrast */
-  --color-brand-sun: #d4af37; /* Elegant gold for highlights */
+  /* ──────────────────────────────────────────────────────────────
+     NIGER STATE PALETTE
+     - Deep green:        primary brand color
+     - Soft green:        backgrounds & subtle surfaces
+     - Mist green:        very light wash for sections
+     - Warm gold:         premium accent (honey gold, not bright)
+     - Deep gold:         hover / pressed gold
+     - Cream:             warm off-white tied to gold
+     - Earth:             secondary contrast (terracotta)
+     ────────────────────────────────────────────────────────────── */
+  --color-brand-green: #0d4d2c;       /* Deep Niger State green */
+  --color-brand-green-deep: #083820;  /* Deeper hover/press green */
+  --color-brand-soft: #e7f1e8;        /* Soft green background */
+  --color-brand-mist: #f4f9f4;        /* Very light green wash */
+  --color-brand-sun: #b98a2e;         /* Warm honey gold (premium) */
+  --color-brand-sun-deep: #8f681f;    /* Deeper gold for hover */
+  --color-brand-cream: #fbf6e7;       /* Warm cream */
+  --color-brand-earth: #b85d19;       /* Warm terracotta (kept) */
 
   --text-4xl: 2rem;
   --text-4xl--line-height: 2.5rem;
@@ -144,26 +159,29 @@
     font-family: var(--font-family);
   }
 
-  /**
-  * Default typography styles for HTML elements (h1-h4, p, label, button, input).
-  * These are in @layer base, so Tailwind utility classes (like text-sm, text-lg) automatically override them.
-  */
-
   html {
     font-size: var(--font-size);
     font-family: var(--font-family);
+  }
+
+  /* Selection in Niger State warm gold */
+  ::selection {
+    background-color: rgba(185, 138, 46, 0.25);
+    color: #0d4d2c;
   }
 
   h1 {
     font-size: var(--text-2xl);
     font-weight: var(--font-weight-medium);
     line-height: 1.5;
+    letter-spacing: -0.01em;
   }
 
   h2 {
     font-size: var(--text-xl);
     font-weight: var(--font-weight-medium);
     line-height: 1.5;
+    letter-spacing: -0.01em;
   }
 
   h3 {
@@ -221,5 +239,13 @@
       padding-left: 150px;
       padding-right: 150px;
     }
+  }
+
+  /* Niger State signature accent — thin gold rule used for headings/dividers */
+  .niger-rule {
+    height: 3px;
+    width: 56px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #b98a2e 0%, #d6b25a 100%);
   }
 }

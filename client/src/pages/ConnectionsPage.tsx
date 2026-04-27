@@ -71,7 +71,7 @@ const STATE_BOUNDS: Record<
       [8.05, 5.65],
     ],
     name: "Ekiti State",
-    color: "#004225",
+    color: "#0d4d2c",
   },
   niger: {
     bounds: [
@@ -79,7 +79,7 @@ const STATE_BOUNDS: Record<
       [11.2, 7.2],
     ],
     name: "Niger State",
-    color: "#004225",
+    color: "#b98a2e",
   },
   anambra: {
     bounds: [
@@ -87,7 +87,7 @@ const STATE_BOUNDS: Record<
       [6.6, 7.55],
     ],
     name: "Anambra State",
-    color: "#004225",
+    color: "#0d4d2c",
   },
 };
 
@@ -336,7 +336,7 @@ export default function ConnectionsPage() {
           box-shadow: none !important;
           font-size: 11px !important;
           font-weight: 700 !important;
-          color: #004225 !important;
+          color: #0d4d2c !important;
           letter-spacing: 0.05em !important;
           text-transform: uppercase !important;
           padding: 0 !important;
@@ -352,13 +352,14 @@ export default function ConnectionsPage() {
       `}</style>
 
       {/* Header & Filters */}
-      <div className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-100 shadow-sm flex-shrink-0 flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <div className="bg-white rounded-3xl p-6 sm:p-8 border border-brand-green/10 shadow-[0_4px_18px_-8px_rgba(13,77,44,0.10)] flex-shrink-0 flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
           <h1 className="text-2xl font-black text-gray-900 tracking-tight flex items-center gap-2">
-            <MapIcon className="w-6 h-6 text-brand-green" /> Connections
+            <MapIcon className="w-6 h-6 text-brand-green" /> Niger State Connections
           </h1>
           <p className="text-gray-500 text-sm font-medium mt-1">
-            Geospatial visualization of all registered value chain actors.
+            Geospatial visualization of registered value chain actors —
+            highlighting Niger State.
           </p>
         </div>
 
@@ -366,7 +367,7 @@ export default function ConnectionsPage() {
           {/* Scan QR Button */}
           <button
             onClick={openScanner}
-            className="w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-2.5 bg-brand-green text-white font-bold rounded-xl hover:bg-[#00301b] transition-colors shadow-lg shadow-brand-green/20 active:scale-95"
+            className="w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-2.5 bg-brand-green text-white font-bold rounded-xl hover:bg-brand-green-deep transition-colors shadow-lg shadow-brand-green/20 active:scale-95"
           >
             <ScanLine className="w-4 h-4" />
             Scan QR
@@ -378,9 +379,9 @@ export default function ConnectionsPage() {
             className="w-full sm:w-auto bg-gray-50 border border-gray-200 text-sm font-medium rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-brand-green/20"
           >
             <option value="all">Every State</option>
-            <option value="Ekiti">Ekiti State</option>
-            <option value="Niger">Niger State</option>
+            <option value="Niger">Niger State (Power)</option>
             <option value="Anambra">Anambra State</option>
+            <option value="Ekiti">Ekiti State</option>
           </select>
 
           <select

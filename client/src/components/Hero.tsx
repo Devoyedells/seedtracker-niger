@@ -120,16 +120,24 @@ export function Hero() {
         <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-8">
           {/* Left Content */}
           <div className="flex-1 w-full text-center lg:text-left z-20">
-            {/* Badge */}
+            {/* Niger State Badge */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full text-white mb-8 border border-white/20"
+              data-testid="hero-state-badge"
+              className="inline-flex items-center gap-2 bg-brand-sun/15 backdrop-blur-md px-4 py-2 rounded-full text-white mb-8 border border-brand-sun/40 shadow-lg shadow-brand-sun/10"
             >
-              <Network className="w-4 h-4 text-brand-sun" />
-              <span className="text-sm font-bold tracking-wide">
-                Seed Information Management Platform
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-sun opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-sun" />
+              </span>
+              <span className="text-[11px] font-black tracking-[0.2em] uppercase text-brand-sun">
+                Niger State Edition
+              </span>
+              <span className="h-3 w-px bg-white/30" />
+              <span className="text-xs font-bold tracking-wide text-white/90">
+                Seed Information Platform
               </span>
             </motion.div>
 
@@ -138,11 +146,15 @@ export function Hero() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.1 }}
-              className="mb-6 text-5xl font-extrabold leading-[1.1] text-white md:text-6xl lg:text-7xl tracking-tight"
+              data-testid="hero-headline"
+              className="mb-6 text-5xl font-black leading-[1.05] text-white md:text-6xl lg:text-7xl tracking-tight"
             >
-              Connecting <br className="hidden sm:block" />
-              Nigeria&apos;s Seed <br className="hidden sm:block" />
-              <span className="text-brand-sun">Ecosystem</span>
+              Powering <br className="hidden sm:block" />
+              Niger State&apos;s <br className="hidden sm:block" />
+              <span className="relative inline-block">
+                <span className="text-brand-sun">Seed Harvest</span>
+                <span className="absolute -bottom-2 left-0 h-1 w-full bg-gradient-to-r from-brand-sun via-brand-sun/70 to-transparent rounded-full" />
+              </span>
             </motion.h1>
 
             {/* Subheadline */}
@@ -152,9 +164,9 @@ export function Hero() {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="mb-10 max-w-2xl text-lg text-white/80 md:text-xl lg:mx-0 leading-relaxed font-medium"
             >
-              Register as a value chain actor, list your products, connect with
-              stakeholders, and access Nigeria&apos;s comprehensive seed
-              marketplace across all 3 states.
+              Register as a Niger State value chain actor, list your products,
+              connect with stakeholders across the Power State, and join the
+              wider seed marketplace covering Niger, Anambra and Ekiti.
             </motion.p>
 
             {/* CTA Buttons */}
@@ -166,15 +178,17 @@ export function Hero() {
             >
               <Button
                 size="lg"
-                className="w-full shrink-0 bg-white text-brand-green px-8 py-7 font-bold text-base hover:bg-gray-50 sm:w-auto rounded-full shadow-2xl transition-all"
+                data-testid="hero-cta-register"
+                className="w-full shrink-0 bg-brand-sun text-white px-8 py-7 font-bold text-base hover:bg-brand-sun-deep sm:w-auto rounded-full shadow-2xl shadow-brand-sun/30 transition-all hover:-translate-y-0.5"
               >
-                Register as Actor
+                Register as Niger Actor
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Button>
               <Button
                 size="lg"
                 variant="outline"
-                className="w-full shrink-0 border-2 border-white/30 bg-transparent text-white hover:bg-white hover:text-brand-green sm:w-auto rounded-full px-8 py-7 font-bold text-base transition-all"
+                data-testid="hero-cta-explore"
+                className="w-full shrink-0 border-2 border-white/30 bg-white/5 text-white hover:bg-white hover:text-brand-green sm:w-auto rounded-full px-8 py-7 font-bold text-base transition-all"
               >
                 Explore Platform
               </Button>
@@ -198,12 +212,12 @@ export function Hero() {
                 ))}
               </div>
               <p className="text-sm font-medium text-white/80">
-                <span className="font-bold text-white">
+                <span className="font-bold text-brand-sun">
                   {stats?.totalActors >= 1000
                     ? `${(stats.totalActors / 1000).toFixed(1)}k+`
                     : stats?.totalActors}
                 </span>{" "}
-                verified actors integrated
+                actors integrated · 3-state network
               </p>
             </motion.div>
           </div>
@@ -222,16 +236,16 @@ export function Hero() {
                 className="absolute right-0 sm:right-0 lg:-right-8 top-0 lg:top-4 z-20 w-[180px] sm:w-[240px] lg:w-[260px] rounded-2xl sm:rounded-3xl bg-white p-4 sm:p-6 shadow-2xl border border-gray-100"
               >
                 <div className="mb-3 sm:mb-4 flex flex-col gap-1">
-                  <p className="text-[10px] sm:text-xs uppercase tracking-widest text-gray-400 font-bold">
-                    Total Network Reach
+                  <p className="text-[10px] sm:text-xs uppercase tracking-widest text-brand-sun-deep font-bold">
+                    Network Reach
                   </p>
-                  <h3 className="text-xl sm:text-3xl font-black text-gray-900 leading-tight">
+                  <h3 className="text-xl sm:text-3xl font-black text-brand-green leading-tight">
                     {stats?.stateCounts ? stats.stateCounts.length : 3} states
                   </h3>
                 </div>
                 <div className="flex items-center gap-2 mt-4">
-                  <div className="inline-flex items-center gap-1 rounded-full bg-brand-green/10 px-3 py-1 text-xs font-black text-brand-green">
-                    <span className="text-[10px]">+</span>100% Coverage
+                  <div className="inline-flex items-center gap-1 rounded-full bg-brand-sun/15 px-3 py-1 text-xs font-black text-brand-sun-deep border border-brand-sun/30">
+                    <span className="text-[10px]">★</span>Niger · Anambra · Ekiti
                   </div>
                 </div>
                 {/* Simulated Graph */}
@@ -261,10 +275,10 @@ export function Hero() {
                 className="absolute -left-2 sm:left-0 lg:-left-12 top-24 sm:top-28 lg:top-40 z-10 w-[200px] sm:w-[260px] lg:w-[300px] rounded-[24px] sm:rounded-[32px] bg-white p-4 sm:p-6 lg:p-8 shadow-2xl border border-gray-100"
               >
                 <div className="mb-4 sm:mb-6 flex items-center justify-between">
-                  <h4 className="text-lg sm:text-xl font-black text-gray-900">
+                  <h4 className="text-lg sm:text-xl font-black text-brand-green">
                     Key Actors
                   </h4>
-                  <div className="flex items-center justify-center p-2 rounded-xl bg-gray-50 text-gray-400">
+                  <div className="flex items-center justify-center p-2 rounded-xl bg-brand-soft text-brand-green">
                     <Network className="w-4 h-4" />
                   </div>
                 </div>
@@ -403,24 +417,24 @@ export function Hero() {
                   repeat: Infinity,
                   ease: "easeInOut",
                 }}
-                className="absolute right-0 sm:-right-4 lg:-right-12 bottom-0 sm:bottom-4 lg:bottom-12 z-30 w-[170px] sm:w-[220px] lg:w-[260px] transform rounded-2xl sm:rounded-3xl bg-brand-sun p-4 sm:p-6 lg:p-8 text-brand-green shadow-2xl"
+                className="absolute right-0 sm:-right-4 lg:-right-12 bottom-0 sm:bottom-4 lg:bottom-12 z-30 w-[170px] sm:w-[220px] lg:w-[260px] transform rounded-2xl sm:rounded-3xl bg-brand-sun p-4 sm:p-6 lg:p-8 text-white shadow-2xl shadow-brand-sun/40"
               >
                 <div className="mb-3 sm:mb-4 flex items-center justify-between">
                   <span className="text-base sm:text-lg font-black tracking-tight">
-                    Active Listings
+                    Niger Listings
                   </span>
                   <div className="flex -space-x-2">
-                    <div className="h-5 w-5 sm:h-6 sm:w-6 rounded-full bg-brand-green/20 border border-brand-sun"></div>
-                    <div className="h-5 w-5 sm:h-6 sm:w-6 rounded-full bg-white/40 border border-brand-sun"></div>
+                    <div className="h-5 w-5 sm:h-6 sm:w-6 rounded-full bg-white/30 border border-white/60"></div>
+                    <div className="h-5 w-5 sm:h-6 sm:w-6 rounded-full bg-white/50 border border-white/60"></div>
                   </div>
                 </div>
                 <div className="mb-4 sm:mb-6">
                   <div className="flex items-baseline gap-2">
-                    <p className="font-mono text-3xl sm:text-4xl font-black text-brand-green">
+                    <p className="font-mono text-3xl sm:text-4xl font-black text-white">
                       14.5k<span className="text-lg sm:text-xl">+</span>
                     </p>
                   </div>
-                  <p className="text-[10px] sm:text-xs font-bold uppercase tracking-widest opacity-80 mt-1">
+                  <p className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-white/85 mt-1">
                     Certified Seeds
                   </p>
                 </div>

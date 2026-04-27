@@ -52,18 +52,18 @@ export default function LoginPage() {
       subheading="Welcome back! Please enter your details."
       heroTitle={
         <>
-          Master Your <br /> Agri-Business <br />{" "}
-          <span className="text-brand-sun">Impact</span>
+          Master Your <br /> Niger State <br />{" "}
+          <span className="text-brand-sun">Seed Network</span>
         </>
       }
-      heroDescription="Welcome back to the node of Nigeria's seed success. Stay visible, stay verified, and keep your business integrated with the nation's agricultural progress."
+      heroDescription="Welcome back to Niger State's seed value chain. Stay visible, stay verified, and keep your business connected to the Power State's agricultural progress."
       statCards={[
         {
           icon: <Sprout className="w-6 h-6" />,
           title: "Seed Varieties",
           value: "14.5k+",
           detail: "Active",
-          colorClass: "bg-[#22c55e]",
+          colorClass: "bg-brand-sun",
           animationDelay: "0s",
         },
         {
@@ -71,15 +71,15 @@ export default function LoginPage() {
           title: "Verified Actors",
           value: "10k+",
           detail: "Integrated",
-          colorClass: "bg-[#fbbf24]",
+          colorClass: "bg-brand-sun",
           animationDelay: "0.2s",
         },
         {
           icon: <Activity className="w-6 h-6" />,
-          title: "Platform Reach",
-          value: "3 states",
-          detail: "Coverage",
-          colorClass: "bg-[#3b82f6]",
+          title: "Niger Coverage",
+          value: "25 LGAs",
+          detail: "Mapped",
+          colorClass: "bg-brand-sun",
           animationDelay: "0.4s",
         },
       ]}
@@ -171,7 +171,8 @@ export default function LoginPage() {
 
         <Button
           type="submit"
-          className="w-full py-7 rounded-2xl text-lg font-black shadow-xl shadow-brand-green/20 transform active:scale-[0.98] transition-all bg-brand-green text-white hover:bg-brand-green/90"
+          data-testid="login-submit-button"
+          className="w-full py-7 rounded-2xl text-lg font-black shadow-xl shadow-brand-green/20 transform active:scale-[0.98] transition-all bg-brand-green text-white hover:bg-brand-green-deep"
           disabled={isLoading}
         >
           {isLoading ? (

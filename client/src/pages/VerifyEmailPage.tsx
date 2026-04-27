@@ -51,7 +51,7 @@ export default function VerifyEmailPage() {
         setIsLoading(true);
         try {
           await verifyEmail(email, value);
-          toast.success("Email verified! Welcome to Seed Tracker NG.");
+          toast.success("Email verified! Welcome to Niger State Seed Tracker.");
           navigate("/dashboard");
         } catch (err) {
           if (axios.isAxiosError(err)) {
@@ -103,14 +103,14 @@ export default function VerifyEmailPage() {
           Almost <br /> There <span className="text-brand-sun">🎉</span>
         </>
       }
-      heroDescription="We've sent a verification code to your email. Enter it below to activate your account and join Nigeria's seed value chain network."
+      heroDescription="We've sent a verification code to your email. Enter it below to activate your account and join the Niger State seed value chain network."
       statCards={[
         {
           icon: <MailCheck className="w-6 h-6" />,
           title: "Email Verification",
           value: "Secure",
           detail: "6-digit code",
-          colorClass: "bg-[#22c55e]",
+          colorClass: "bg-brand-sun",
           animationDelay: "0s",
         },
       ]}

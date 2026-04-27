@@ -56,21 +56,21 @@ export default function RegisterPage() {
   return (
     <AuthLayout
       heading="Create Account"
-      subheading="Register as an actor in the Seed Value Chain."
+      subheading="Register as an actor in the Niger State Seed Value Chain."
       heroTitle={
         <>
-          Transform Your <br /> Value Chain <br />{" "}
-          <span className="text-brand-sun">Visibility</span>
+          Transform Niger <br /> State&apos;s Value <br />{" "}
+          <span className="text-brand-sun">Chain Visibility</span>
         </>
       }
-      heroDescription="Establish your presence in Nigeria's leading seed marketplace. Join thousands of verified actors making their mark on national food security."
+      heroDescription="Establish your presence in the Niger State seed marketplace. Join verified actors helping shape the Power State's agricultural future — part of a 3-state national network."
       statCards={[
         {
           icon: <Sprout className="w-6 h-6" />,
           title: "Seed Varieties",
           value: "14.5k+",
           detail: "Active",
-          colorClass: "bg-[#22c55e]",
+          colorClass: "bg-brand-sun",
           animationDelay: "0s",
         },
         {
@@ -78,7 +78,7 @@ export default function RegisterPage() {
           title: "Verified Actors",
           value: "10k+",
           detail: "Integrated",
-          colorClass: "bg-[#fbbf24]",
+          colorClass: "bg-brand-sun",
           animationDelay: "0.2s",
         },
       ]}
@@ -186,9 +186,9 @@ export default function RegisterPage() {
                 <option value="" disabled>
                   Select State
                 </option>
-                <option value="Ekiti">Ekiti</option>
+                <option value="Niger">Niger State (Power State)</option>
                 <option value="Anambra">Anambra</option>
-                <option value="Niger">Niger</option>
+                <option value="Ekiti">Ekiti</option>
               </select>
             </div>
           </div>
@@ -276,7 +276,8 @@ export default function RegisterPage() {
 
         <Button
           type="submit"
-          className="w-full py-7 rounded-2xl text-lg font-black shadow-xl shadow-brand-green/20 transform active:scale-[0.98] transition-all bg-brand-green text-white hover:bg-brand-green/90"
+          data-testid="register-submit-button"
+          className="w-full py-7 rounded-2xl text-lg font-black shadow-xl shadow-brand-green/20 transform active:scale-[0.98] transition-all bg-brand-green text-white hover:bg-brand-green-deep"
           disabled={isLoading}
         >
           {isLoading ? (

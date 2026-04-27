@@ -78,7 +78,8 @@ export default function DashboardLayout({
   return (
     // Outer shell: full viewport, no overflow — all scrolling handled inside
     <div
-      className="flex h-screen overflow-hidden bg-[#f5f6f8]"
+      data-testid="dashboard-shell"
+      className="flex h-screen overflow-hidden bg-gradient-to-br from-brand-mist via-white to-brand-soft/40"
       style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
     >
       {/* ── Mobile Backdrop ──────────────────────────────────────── */}
@@ -116,12 +117,16 @@ export default function DashboardLayout({
 
         {/* Logo */}
         <div className="relative z-10 flex items-center gap-3 px-6 pt-7 pb-6 flex-shrink-0">
-          <div>
-            <div className="text-white font-black text-[15px] leading-none tracking-tight">
-              Seed Tracker
+          <div className="relative w-10 h-10 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center flex-shrink-0">
+            <Sprout className="w-5 h-5 text-brand-sun" strokeWidth={2.5} />
+            <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-brand-sun" />
+          </div>
+          <div className="min-w-0">
+            <div className="text-white font-black text-[14px] leading-none tracking-tight truncate">
+              Niger State
             </div>
-            <div className="text-white/40 text-[11px] font-bold uppercase tracking-widest mt-0.5">
-              NG
+            <div className="text-brand-sun text-[10px] font-bold uppercase tracking-[0.18em] mt-1.5">
+              Seed Tracker
             </div>
           </div>
           {/* Close btn — mobile only */}
@@ -216,10 +221,10 @@ export default function DashboardLayout({
 
           {/* Breadcrumb */}
           <div className="flex items-center gap-2">
-            <span className="text-gray-400 text-sm font-semibold hidden sm:inline">
-              Seed Tracker NG
+            <span className="text-brand-green text-sm font-black hidden sm:inline">
+              Niger State Seed Tracker
             </span>
-            <span className="text-gray-300 hidden sm:inline">/</span>
+            <span className="text-brand-sun hidden sm:inline">/</span>
             <span className="text-gray-900 text-sm font-black">
               {currentPage}
             </span>

@@ -391,7 +391,7 @@ export default function ProfilePage() {
                   level="H"
                   includeMargin={true}
                   bgColor="#ffffff"
-                  fgColor="#004225"
+                  fgColor="#0d4d2c"
                 />
               </div>
               <p className="text-xs font-bold text-gray-600 mb-0.5">
@@ -425,7 +425,7 @@ export default function ProfilePage() {
                     };
                     img.src = `data:image/svg+xml;base64,${btoa(svgData)}`;
                   }}
-                  className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 bg-brand-green text-white text-xs font-bold rounded-xl hover:bg-[#00301b] transition-colors"
+                  className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 bg-brand-green text-white text-xs font-bold rounded-xl hover:bg-brand-green-deep transition-colors"
                 >
                   <Download className="w-3.5 h-3.5" /> Download
                 </button>

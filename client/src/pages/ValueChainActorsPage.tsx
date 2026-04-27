@@ -70,13 +70,14 @@ export default function ValueChainActorsPage() {
   return (
     <div className="space-y-6 animate-in fade-in duration-500">
       {/* Header */}
-      <div className="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-white rounded-3xl p-8 border border-brand-green/10 shadow-[0_4px_18px_-8px_rgba(13,77,44,0.10)] flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-black text-gray-900 tracking-tight flex items-center gap-2">
-            <BookUser className="w-6 h-6 text-brand-green" /> View Directory
+            <BookUser className="w-6 h-6 text-brand-green" /> Actor Directory
           </h1>
           <p className="text-gray-500 text-sm font-medium mt-1">
-            Browse and search value chain actors within your jurisdiction.
+            Browse and search Niger State value chain actors and partner-state
+            members.
           </p>
         </div>
         <div className="relative max-w-sm w-full">

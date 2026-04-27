@@ -71,15 +71,15 @@ export function ActorRegistration() {
   return (
     <section
       id="registration"
-      className="relative overflow-hidden bg-white py-20 lg:py-32"
+      className="relative overflow-hidden bg-gradient-to-b from-white via-brand-mist to-white py-20 lg:py-32"
       ref={ref}
     >
       {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-[0.03]">
+      <div className="absolute inset-0 opacity-[0.04]">
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
-            backgroundImage: `radial-gradient(circle at 1px 1px, #008751 1px, transparent 0)`,
+            backgroundImage: `radial-gradient(circle at 1px 1px, #0d4d2c 1px, transparent 0)`,
             backgroundSize: "40px 40px",
           }}
         />
@@ -93,15 +93,17 @@ export function ActorRegistration() {
           transition={{ duration: 0.6 }}
           className="mx-auto mb-16 max-w-3xl text-center"
         >
-          <span className="mb-4 inline-block rounded-full bg-brand-green/10 px-4 py-2 text-sm font-bold text-brand-green">
-            Join the Ecosystem
+          <span className="mb-4 inline-flex items-center gap-2 rounded-full bg-brand-sun/15 border border-brand-sun/30 px-4 py-2 text-sm font-black text-brand-sun-deep tracking-wide">
+            <span className="w-1.5 h-1.5 rounded-full bg-brand-sun" />
+            Join Niger State
           </span>
-          <h2 className="mb-6 text-3xl font-extrabold text-gray-900 md:text-4xl lg:text-5xl tracking-tight">
+          <h2 className="mb-4 text-3xl font-black text-gray-900 md:text-4xl lg:text-5xl tracking-tight">
             Register as a Value Chain Actor
           </h2>
-          <p className="text-lg text-gray-600">
-            Join thousands of registered actors across Nigeria&apos;s seed value
-            chain and unlock new opportunities immediately.
+          <div className="niger-rule mx-auto mb-6" />
+          <p className="text-lg text-gray-600 leading-relaxed">
+            Join Niger State&apos;s growing seed value chain network and unlock
+            opportunities across the Power State and beyond.
           </p>
         </motion.div>
 
@@ -115,10 +117,10 @@ export function ActorRegistration() {
                 initial={{ opacity: 0, x: -15 }}
                 animate={isInView ? { opacity: 1, x: 0 } : {}}
                 transition={{ duration: 0.5, delay: index * 0.15 }}
-                className="group relative rounded-2xl bg-white p-5 sm:p-6 shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
+                className="group relative rounded-2xl bg-white p-5 sm:p-6 shadow-[0_4px_18px_-8px_rgba(13,77,44,0.10)] border border-brand-green/10 transition-all duration-300 hover:shadow-[0_18px_36px_-12px_rgba(13,77,44,0.20)] hover:-translate-y-1 hover:border-brand-sun/40"
               >
                 {/* Number Badge */}
-                <div className="absolute -left-3 -top-3 flex h-10 w-10 items-center justify-center rounded-full bg-brand-green text-lg font-black text-white shadow-lg">
+                <div className="absolute -left-3 -top-3 flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-brand-green to-brand-green-deep text-lg font-black text-white shadow-lg ring-4 ring-white">
                   {actor.id}
                 </div>
 
@@ -139,8 +141,8 @@ export function ActorRegistration() {
                       {actor.description}
                     </p>
                     {/* Highlight */}
-                    <div className="inline-flex flex-wrap items-center gap-x-2 gap-y-1 rounded-xl bg-gray-50 px-3 py-1.5 text-xs sm:text-sm font-semibold text-gray-700 sm:rounded-full border border-gray-100">
-                      <ShieldCheck className="h-4 w-4 text-brand-green" />
+                    <div className="inline-flex flex-wrap items-center gap-x-2 gap-y-1 rounded-xl bg-brand-soft px-3 py-1.5 text-xs sm:text-sm font-semibold text-brand-green sm:rounded-full border border-brand-green/15">
+                      <ShieldCheck className="h-4 w-4 text-brand-sun-deep" />
                       {actor.highlight}
                     </div>
                   </div>
@@ -162,13 +164,14 @@ export function ActorRegistration() {
             >
               <a
                 href="#register"
-                className="inline-flex items-center gap-2 rounded-full bg-brand-green hover:bg-brand-green/90 px-8 py-4 font-bold text-white transition-all duration-300 hover:shadow-lg shadow-md"
+                data-testid="actor-registration-cta"
+                className="inline-flex items-center gap-2 rounded-full bg-brand-green hover:bg-brand-green-deep px-8 py-4 font-bold text-white transition-all duration-300 hover:shadow-xl shadow-md shadow-brand-green/25 hover:-translate-y-0.5"
               >
-                Start Registration Now
+                Start Niger State Registration
                 <ArrowRight className="h-5 w-5" />
               </a>
               <p className="text-gray-500 mt-4 text-sm max-w-xs mx-auto lg:mx-0">
-                100% free signup. Verified profiles.
+                100% free signup. Verified Niger State profiles.
               </p>
             </motion.div>
           </div>
@@ -195,12 +198,12 @@ export function ActorRegistration() {
               <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-black/50 to-transparent" />
 
               {/* Floating Stats */}
-              <div className="absolute bottom-6 right-6 sm:bottom-8 sm:right-8 rounded-2xl bg-white p-5 shadow-2xl border border-gray-100 animate-[bounce_4s_infinite_ease-in-out]">
+              <div className="absolute bottom-6 right-6 sm:bottom-8 sm:right-8 rounded-2xl bg-white p-5 shadow-2xl border border-brand-sun/30 animate-[bounce_4s_infinite_ease-in-out]">
                 <div className="text-3xl font-black text-brand-green flex items-center gap-1">
-                  10<span className="text-xl">+</span>
+                  10<span className="text-xl text-brand-sun-deep">+</span>
                 </div>
-                <div className="text-sm font-semibold text-gray-500 uppercase tracking-wide mt-1">
-                  Value Chain
+                <div className="text-xs font-black text-brand-sun-deep uppercase tracking-widest mt-1">
+                  Niger State
                   <br />
                   Roles Available
                 </div>

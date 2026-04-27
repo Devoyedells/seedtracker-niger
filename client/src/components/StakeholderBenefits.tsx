@@ -111,7 +111,11 @@ export function StakeholderBenefits() {
   const activeData = stakeholders[activeTab];
 
   return (
-    <section id="about" className="py-24 bg-gray-50/50" ref={ref}>
+    <section
+      id="about"
+      className="py-24 bg-gradient-to-b from-white via-brand-mist to-brand-soft/30"
+      ref={ref}
+    >
       <div className="section-px">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -119,15 +123,17 @@ export function StakeholderBenefits() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <div className="inline-block mb-4 px-4 py-1.5 rounded-full bg-brand-green/5 border border-brand-green/10 text-sm font-semibold text-brand-green">
+          <div className="inline-flex items-center gap-2 mb-4 px-4 py-1.5 rounded-full bg-brand-sun/15 border border-brand-sun/30 text-sm font-black text-brand-sun-deep tracking-wide">
+            <span className="w-1.5 h-1.5 rounded-full bg-brand-sun" />
             Value Chain Sync
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            Built for Every Stakeholder
+          <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-4 tracking-tight">
+            Built for Every Niger State Stakeholder
           </h2>
+          <div className="niger-rule mx-auto mb-6" />
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Discover tailored tools and insights designed to accelerate growth
-            across the entire agricultural ecosystem.
+            across the entire Niger State agricultural ecosystem.
           </p>
         </motion.div>
 
