@@ -108,7 +108,7 @@ export function Hero() {
             >
               <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-sun text-brand-green-ink text-[10px] font-black uppercase tracking-[0.22em] shadow-md shadow-brand-sun/30">
                 <Sparkles className="w-3 h-3" />
-                Niger State Edition
+                Niger State 
               </span>
               <span className="text-[11px] font-bold tracking-wide text-white/85">
                 Official seed value chain platform

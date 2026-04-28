@@ -45,7 +45,7 @@ export function NigerEmblem({
           fontFamily="Montserrat, sans-serif"
         >
           <textPath href="#niger-circle-text" startOffset="0">
-            NIGER STATE · POWER · EXCELLENCE · HARVEST · NIGER STATE · POWER ·
+           · NIGER STATE · POWER · EXCELLENCE · HARVEST · NIGER STATE ·
           </textPath>
         </text>
       </svg>

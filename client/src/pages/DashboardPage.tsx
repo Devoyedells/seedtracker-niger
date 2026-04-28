@@ -345,7 +345,7 @@ export default function DashboardPage() {
         <div className="absolute top-6 right-6 hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand-sun text-brand-green-ink shadow-md shadow-brand-sun/30">
           <span className="w-1.5 h-1.5 rounded-full bg-brand-green-ink" />
           <span className="text-[10px] font-black uppercase tracking-[0.22em]">
-            ★ Niger State Edition
+            ★ Niger State ★
           </span>
         </div>
 

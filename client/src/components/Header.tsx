@@ -105,7 +105,7 @@ export function Header() {
                 <div
                   className={`text-[10px] font-black mt-1 uppercase tracking-[0.22em] ${isSolidBg ? "text-brand-sun-deep" : "text-brand-sun-bright"}`}
                 >
-                  ★ Power State Edition
+                  ★ Power State ★
                 </div>
               </div>
             </Link>
